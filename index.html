@@ -42,8 +42,10 @@
     }
 
     /* ===== CURSOR ===== */
-    * {
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ctext y='20' font-size='20'%3E🌸%3C/text%3E%3C/svg%3E") 12 12, auto;
+    @media (pointer: fine) {
+      * {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ctext y='20' font-size='20'%3E🌸%3C/text%3E%3C/svg%3E") 12 12, auto;
+      }
     }
 
     /* ===== SPARKLE LAYER ===== */
@@ -1250,7 +1252,7 @@
       margin-top: 10px;
     }
 
-    @media(max-width:700px) {
+    @media(max-width:900px) {
       section {
         padding: 80px 20px 60px;
       }
@@ -2091,7 +2093,7 @@
       const canvas = document.getElementById('three-canvas');
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
       renderer.setClearColor(0, 0);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -2227,8 +2229,14 @@
       });
 
       let t = 0;
+      let isVisible = false;
+      const observer = new IntersectionObserver(entries => { isVisible = entries[0].isIntersecting; });
+      observer.observe(canvas);
+
       function animate() {
-        requestAnimationFrame(animate); t += 0.016;
+        requestAnimationFrame(animate); 
+        if (!isVisible) return;
+        t += 0.016;
         scene.rotation.y += (rotY - scene.rotation.y) * 0.08;
         scene.rotation.x += (rotX - scene.rotation.x) * 0.08;
         flowers.forEach((f, i) => {
@@ -2251,7 +2259,7 @@
     (function () {
       const canvas = document.getElementById('cake-canvas');
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      renderer.setClearColor(0, 0); renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setClearColor(0, 0); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       function resize() { const w = canvas.clientWidth, h = canvas.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
       const scene = new THREE.Scene();
       const cam = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
@@ -2307,8 +2315,14 @@
         document.head.appendChild(s);
       };
       let t = 0;
+      let isVisible = false;
+      const observer = new IntersectionObserver(entries => { isVisible = entries[0].isIntersecting; });
+      observer.observe(canvas);
+
       function animate() {
-        requestAnimationFrame(animate); t += 0.016;
+        requestAnimationFrame(animate); 
+        if (!isVisible) return;
+        t += 0.016;
         scene.rotation.y += (rotY - scene.rotation.y) * 0.08;
         if (!candlesOut) { flames.forEach((f, i) => { f.scale.set(0.8 + Math.sin(t * 8 + i) * 0.3, 0.8 + Math.sin(t * 9 + i * 2) * 0.4, 0.8 + Math.sin(t * 7 + i) * 0.3); }); fLight.intensity = 1.2 + Math.sin(t * 7) * 0.4; }
         resize(); renderer.render(scene, cam);
