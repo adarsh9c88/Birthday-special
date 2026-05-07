@@ -2108,12 +2108,12 @@
     // ===== 3D FLOWER GARDEN =====
     try {
     (function () {
+      if (typeof THREE === 'undefined') throw new Error('THREE not loaded');
       const canvas = document.getElementById('three-canvas');
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, powerPreference: "low-power" });
       renderer.setClearColor(0, 0);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-      renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.setPixelRatio(1);
+      renderer.shadowMap.enabled = false;
 
       function resize() { const w = canvas.clientWidth, h = canvas.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
       const scene = new THREE.Scene();
@@ -2269,7 +2269,7 @@
         } catch(e) {
           console.error('Garden async error:', e);
           const b = document.getElementById('three-canvas');
-          if (b) b.outerHTML = '<div style="padding:20px;color:red;font-size:14px;background:white;border-radius:10px;">Garden Async Error: ' + e.message + '</div>';
+          if (b) b.outerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;animation:load-float 3s ease-in-out infinite;"><div style="font-size:5rem;">🌸🦋🌺</div><div style="font-family:\'Pacifico\',cursive;font-size:1.5rem;color:#C97AB0;margin-top:10px;">Magical Garden</div></div>';
         }
       }
       animate();
@@ -2277,15 +2277,16 @@
     } catch (e) { 
       console.error('Garden error:', e); 
       const b = document.getElementById('three-canvas');
-      if (b) b.outerHTML = '<div style="padding:20px;color:red;font-size:14px;background:white;border-radius:10px;">Garden Error: ' + e.message + '</div>';
+      if (b) b.outerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;animation:load-float 3s ease-in-out infinite;"><div style="font-size:5rem;">🌸🦋🌺</div><div style="font-family:\'Pacifico\',cursive;font-size:1.5rem;color:#C97AB0;margin-top:10px;">Magical Garden</div></div>';
     }
 
     // ===== 3D CAKE =====
     try {
     (function () {
+      if (typeof THREE === 'undefined') throw new Error('THREE not loaded');
       const canvas = document.getElementById('cake-canvas');
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      renderer.setClearColor(0, 0); renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, powerPreference: "low-power" });
+      renderer.setClearColor(0, 0); renderer.setPixelRatio(1);
       function resize() { const w = canvas.clientWidth, h = canvas.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
       const scene = new THREE.Scene();
       const cam = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
@@ -2352,7 +2353,7 @@
         } catch(e) {
           console.error('Cake async error:', e);
           const b = document.getElementById('cake-canvas');
-          if (b) b.outerHTML = '<div style="padding:20px;color:red;font-size:14px;background:white;border-radius:10px;">Cake Async Error: ' + e.message + '</div>';
+          if (b) b.outerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;animation:load-float 3s ease-in-out infinite;"><div style="font-size:5rem;">🎂✨🕯️</div><div style="font-family:\'Pacifico\',cursive;font-size:1.5rem;color:#C97AB0;margin-top:10px;">Birthday Cake</div></div>';
         }
       }
       animate();
@@ -2360,7 +2361,7 @@
     } catch (e) { 
       console.error('Cake error:', e); 
       const b = document.getElementById('cake-canvas');
-      if (b) b.outerHTML = '<div style="padding:20px;color:red;font-size:14px;background:white;border-radius:10px;">Cake Error: ' + e.message + '</div>';
+      if (b) b.outerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;animation:load-float 3s ease-in-out infinite;"><div style="font-size:5rem;">🎂✨🕯️</div><div style="font-family:\'Pacifico\',cursive;font-size:1.5rem;color:#C97AB0;margin-top:10px;">Birthday Cake</div></div>';
     }
 
     // ===== SMOOTH SCROLL (LENIS & GSAP) =====
