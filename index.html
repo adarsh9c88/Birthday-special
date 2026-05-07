@@ -1873,12 +1873,14 @@
       el.style.cssText = `left:${Math.random() * 100}%;animation-duration:${4 + Math.random() * 6}s;animation-delay:${Math.random() * 4}s`;
       lfc.appendChild(el);
     }
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hide');
-        setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
-      }, 3000);
-    });
+    function hideLoader() {
+      const l = document.getElementById('loader');
+      if (!l || l.style.display === 'none') return;
+      l.classList.add('hide');
+      setTimeout(() => l.style.display = 'none', 1000);
+    }
+    window.addEventListener('load', () => setTimeout(hideLoader, 1500));
+    setTimeout(hideLoader, 5000);
 
     // ===== NAVBAR SCROLL EFFECT =====
     window.addEventListener('scroll', () => {
@@ -2089,6 +2091,7 @@
     }
 
     // ===== 3D FLOWER GARDEN =====
+    try {
     (function () {
       const canvas = document.getElementById('three-canvas');
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -2254,8 +2257,10 @@
       }
       animate();
     })();
+    } catch (e) { console.error('Garden error:', e); }
 
     // ===== 3D CAKE =====
+    try {
     (function () {
       const canvas = document.getElementById('cake-canvas');
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -2329,8 +2334,10 @@
       }
       animate();
     })();
+    } catch (e) { console.error('Cake error:', e); }
 
     // ===== SMOOTH SCROLL (LENIS & GSAP) =====
+    try {
     gsap.registerPlugin(ScrollTrigger);
 
     const lenis = new Lenis({
@@ -2373,6 +2380,10 @@
         }
       );
     });
+    } catch(e) {
+      console.error('Scroll animations failed:', e);
+      document.querySelectorAll('.reveal').forEach(el => el.style.visibility = 'visible');
+    }
 
     // ===== SECURITY LOGIC =====
     (function () {
