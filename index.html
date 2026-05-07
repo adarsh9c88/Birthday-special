@@ -2096,7 +2096,7 @@
       const canvas = document.getElementById('three-canvas');
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
       renderer.setClearColor(0, 0);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -2232,13 +2232,9 @@
       });
 
       let t = 0;
-      let isVisible = false;
-      const observer = new IntersectionObserver(entries => { isVisible = entries[0].isIntersecting; });
-      observer.observe(canvas);
 
       function animate() {
         requestAnimationFrame(animate); 
-        if (!isVisible) return;
         t += 0.016;
         scene.rotation.y += (rotY - scene.rotation.y) * 0.08;
         scene.rotation.x += (rotX - scene.rotation.x) * 0.08;
@@ -2264,7 +2260,7 @@
     (function () {
       const canvas = document.getElementById('cake-canvas');
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      renderer.setClearColor(0, 0); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.setClearColor(0, 0); renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
       function resize() { const w = canvas.clientWidth, h = canvas.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
       const scene = new THREE.Scene();
       const cam = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
@@ -2320,13 +2316,9 @@
         document.head.appendChild(s);
       };
       let t = 0;
-      let isVisible = false;
-      const observer = new IntersectionObserver(entries => { isVisible = entries[0].isIntersecting; });
-      observer.observe(canvas);
 
       function animate() {
         requestAnimationFrame(animate); 
-        if (!isVisible) return;
         t += 0.016;
         scene.rotation.y += (rotY - scene.rotation.y) * 0.08;
         if (!candlesOut) { flames.forEach((f, i) => { f.scale.set(0.8 + Math.sin(t * 8 + i) * 0.3, 0.8 + Math.sin(t * 9 + i * 2) * 0.4, 0.8 + Math.sin(t * 7 + i) * 0.3); }); fLight.intensity = 1.2 + Math.sin(t * 7) * 0.4; }
