@@ -197,14 +197,17 @@
       top: 0;
       width: 100%;
       z-index: 200;
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 2px solid rgba(255, 183, 197, 0.25);
-      padding: 10px 40px;
+      padding: 10px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       transition: box-shadow 0.3s;
+      box-sizing: border-box;
+      gap: 12px;
     }
 
     nav.scrolled {
@@ -213,38 +216,78 @@
 
     .nav-logo {
       font-family: 'Pacifico', cursive;
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       color: #C97AB0;
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .nav-logo img {
-      width: 34px;
-      height: 34px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       object-fit: cover;
+      flex-shrink: 0;
     }
 
+    /* Nav links — always visible on tablet/desktop */
     .nav-links {
       display: flex;
-      gap: 20px;
+      gap: 14px;
       list-style: none;
+      align-items: center;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      flex-shrink: 1;
+      min-width: 0;
     }
+
+    .nav-links::-webkit-scrollbar { display: none; }
 
     .nav-links a {
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       color: var(--text-mid);
       transition: color 0.2s;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
     }
 
-    .nav-links a:hover {
-      color: #C97AB0;
+    .nav-links a:hover { color: #C97AB0; }
+
+    /* Hamburger — hidden by default, shown only on phones */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      background: none;
+      border: none;
+      z-index: 201;
+      flex-shrink: 0;
     }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2.5px;
+      background: #C97AB0;
+      border-radius: 3px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: center;
+    }
+
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
     /* ===== SECTION BASE ===== */
     section {
@@ -279,7 +322,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding-top: 70px;
+      padding-top: 80px;
       position: relative;
       overflow: hidden;
     }
@@ -1150,6 +1193,160 @@
       border: 2px solid rgba(255, 200, 220, 0.4);
     }
 
+    /* ===== MBBS / FUTURE DOCTOR ===== */
+    #mbbs {
+      background: linear-gradient(160deg, #EAF6FF 0%, #F4ECFF 50%, #FFF0F6 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .mbbs-layout {
+      display: flex;
+      gap: 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    #dna-canvas {
+      flex: 1;
+      min-width: 280px;
+      height: 460px;
+      border-radius: 28px;
+      cursor: grab;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.6), rgba(230,240,255,0.2));
+      box-shadow: 0 25px 70px rgba(120, 150, 220, 0.18);
+      border: 2px solid rgba(200, 220, 255, 0.5);
+    }
+    #dna-canvas:active { cursor: grabbing; }
+    .mbbs-side {
+      flex: 0 0 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .mbbs-card {
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 18px 20px;
+      box-shadow: 0 10px 30px rgba(150, 170, 220, 0.15);
+      border: 1px solid rgba(255,255,255,0.7);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: transform 0.3s ease;
+    }
+    .mbbs-card:hover { transform: translateY(-4px) scale(1.02); }
+    .mbbs-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 8px rgba(160, 180, 230, 0.4));
+    }
+    .mbbs-card h4 {
+      font-family: 'Pacifico', cursive;
+      color: #7A8AC9;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+      font-weight: 400;
+    }
+    .mbbs-card p {
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      line-height: 1.5;
+    }
+    .mbbs-stethoscope {
+      position: absolute;
+      font-size: 4rem;
+      opacity: 0.08;
+      pointer-events: none;
+      animation: float-med 8s ease-in-out infinite;
+    }
+    @keyframes float-med {
+      0%,100% { transform: translateY(0) rotate(-5deg); }
+      50% { transform: translateY(-25px) rotate(5deg); }
+    }
+
+    /* ===== MBBS TIMELINE ===== */
+    .mbbs-timeline-wrap { max-width: 980px; margin: 80px auto 0; position: relative; z-index: 2; }
+    .mbbs-timeline-title { font-family: 'Pacifico', cursive; font-size: 1.9rem; color: #C97AB0; text-align: center; margin-bottom: 6px; }
+    .mbbs-timeline-sub { text-align: center; color: var(--text-mid); font-size: 0.95rem; font-weight: 600; margin-bottom: 50px; }
+    .mbbs-timeline { list-style: none; position: relative; padding: 0; margin: 0; }
+    .mbbs-timeline::before {
+      content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 3px;
+      background: linear-gradient(to bottom, rgba(255,183,197,0.25), rgba(201,184,240,0.25), rgba(184,237,216,0.25));
+      transform: translateX(-50%); border-radius: 3px;
+    }
+    .mbbs-timeline::after {
+      content: ""; position: absolute; left: 50%; top: 0; width: 3px;
+      height: var(--mbbs-progress, 0%);
+      background: linear-gradient(to bottom, #FF8FAB, #A892E0, #7DD4AD, #FFD166);
+      transform: translateX(-50%); border-radius: 3px;
+      box-shadow: 0 0 18px rgba(255, 143, 171, 0.5);
+      transition: height 0.4s ease;
+    }
+    .mbbs-step {
+      position: relative; width: 50%; padding: 18px 40px; box-sizing: border-box;
+      opacity: 0.4; transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .mbbs-step:nth-child(odd) { left: 0; text-align: right; }
+    .mbbs-step:nth-child(even) { left: 50%; text-align: left; }
+    .mbbs-step.is-active { opacity: 1; transform: translateY(0); }
+    .mbbs-dot {
+      position: absolute; top: 22px; width: 44px; height: 44px; border-radius: 50%;
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; box-shadow: 0 6px 16px rgba(180, 150, 220, 0.25);
+      border: 2px solid rgba(255,255,255,0.8);
+      transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease; z-index: 2;
+    }
+    .mbbs-step:nth-child(odd) .mbbs-dot { right: -22px; }
+    .mbbs-step:nth-child(even) .mbbs-dot { left: -22px; }
+    .mbbs-step.is-active .mbbs-dot {
+      background: linear-gradient(135deg, #FFB7C5, #C9B8F0); transform: scale(1.18);
+      box-shadow: 0 0 0 6px rgba(255,183,197,0.25), 0 10px 24px rgba(200,140,200,0.4);
+    }
+    .mbbs-step-card {
+      display: inline-block; background: rgba(255,255,255,0.85); backdrop-filter: blur(8px);
+      border-radius: 18px; padding: 16px 20px;
+      box-shadow: 0 10px 28px rgba(160, 180, 220, 0.18);
+      border: 1px solid rgba(255,255,255,0.75); max-width: 420px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .mbbs-step.is-active .mbbs-step-card { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(200, 140, 200, 0.25); }
+    .mbbs-step-tag {
+      display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 1.5px;
+      color: #C97AB0; background: rgba(255,183,197,0.25); padding: 4px 10px;
+      border-radius: 50px; margin-bottom: 8px; text-transform: uppercase;
+    }
+    .mbbs-step-card h4 { font-family: 'Pacifico', cursive; color: #7A8AC9; font-size: 1.1rem; margin-bottom: 6px; font-weight: 400; }
+    .mbbs-step-card p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.55; }
+    @media (max-width: 720px) {
+      .mbbs-timeline::before, .mbbs-timeline::after { left: 20px; }
+      .mbbs-step, .mbbs-step:nth-child(odd), .mbbs-step:nth-child(even) {
+        width: 100%; left: 0; text-align: left; padding: 18px 18px 18px 50px;
+      }
+      .mbbs-step:nth-child(odd) .mbbs-dot,
+      .mbbs-step:nth-child(even) .mbbs-dot { left: -2px; right: auto; }
+      .mbbs-step-card { max-width: 100%; }
+    }
+
+    /* ===== WISH LIGHT BURST ===== */
+    #wishBurst { position: fixed; inset: 0; pointer-events: none; z-index: 9996; opacity: 0; }
+    #wishBurst.is-on { animation: wish-burst 1.4s ease-out forwards; }
+    #wishBurst::before {
+      content: ""; position: absolute; top: 50%; left: 50%; width: 40px; height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,213,128,0.9) 30%, rgba(255,143,171,0.6) 55%, rgba(201,184,240,0) 75%);
+      transform: translate(-50%, -50%) scale(0); filter: blur(2px);
+    }
+    #wishBurst.is-on::before { animation: wish-burst-core 1.4s ease-out forwards; }
+    @keyframes wish-burst { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
+    @keyframes wish-burst-core {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(60); opacity: 0; }
+    }
+
     .cake-side {
       flex: 0 0 260px;
       text-align: center;
@@ -1253,78 +1450,76 @@
     }
 
     @media(max-width:900px) {
-      section {
-        padding: 80px 20px 60px;
-      }
+      section { padding: 80px 20px 60px; }
 
-      .hero-inner {
-        flex-direction: column-reverse;
-        text-align: center;
-      }
+      .hero-inner { flex-direction: column-reverse; text-align: center; }
+      .hero-chips { justify-content: center; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .wish-layout, .music-layout, .garden-layout, .cake-layout { flex-direction: column; }
+      .garden-info, .garden-video-card { flex: unset; width: 100%; max-width: 420px; }
+      .music-player { padding: 28px 18px; }
+      .playlist-window { grid-template-columns: 36px minmax(0, 1fr) 36px; gap: 7px; }
+      .playlist-arrow { width: 36px; height: 36px; font-size: 1.5rem; }
+    }
 
-      .hero-chips {
-        justify-content: center;
-      }
+    /* ===== RESPONSIVE NAV ===== */
 
-      .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    /* Compact nav for iPad landscape / small laptops (≤1100px) */
+    @media(max-width: 1100px) {
+      nav { padding: 10px 20px; }
+      .nav-links { gap: 10px; }
+      .nav-links a { font-size: 0.74rem; }
+      .nav-logo { font-size: 0.95rem; }
+      .nav-logo img { width: 26px; height: 26px; }
+    }
 
-      .wish-layout,
-      .music-layout,
-      .garden-layout,
-      .cake-layout {
-        flex-direction: column;
-      }
+    /* Scrollable compact nav for tablets/iPad portrait (≤768px) */
+    @media(max-width: 768px) {
+      nav { padding: 10px 16px; gap: 8px; }
+      .nav-logo { font-size: 0.85rem; }
+      .nav-logo img { width: 24px; height: 24px; }
+      .nav-links { gap: 8px; }
+      .nav-links a { font-size: 0.7rem; }
+    }
 
-      .garden-info,
-      .garden-video-card {
-        flex: unset;
-        width: 100%;
-        max-width: 420px;
-      }
-
-      .music-player {
-        padding: 28px 18px;
-      }
-
-      .playlist-window {
-        grid-template-columns: 36px minmax(0, 1fr) 36px;
-        gap: 7px;
-      }
-
-      .playlist-arrow {
-        width: 36px;
-        height: 36px;
-        font-size: 1.5rem;
-      }
-
-      nav {
-        padding: 12px 20px;
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .nav-logo {
-        font-size: 1.1rem;
-      }
+    /* Phone: hamburger menu (≤560px) */
+    @media(max-width: 560px) {
+      .nav-hamburger { display: flex; }
 
       .nav-links {
-        gap: 15px;
-        overflow-x: auto;
-        white-space: nowrap;
-        width: 100%;
-        justify-content: center;
-        padding-bottom: 5px;
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.97);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 10px 20px 18px;
+        gap: 0;
+        border-bottom: 2px solid rgba(255, 183, 197, 0.3);
+        box-shadow: 0 10px 30px rgba(200, 120, 180, 0.18);
+        z-index: 199;
+        overflow-x: visible;
+        flex-shrink: unset;
       }
 
-      .nav-links::-webkit-scrollbar {
-        display: none;
-      }
+      .nav-links.open { display: flex; }
+
+      .nav-links li { width: 100%; }
 
       .nav-links a {
-        font-size: 0.85rem;
+        display: block;
+        font-size: 0.9rem;
+        padding: 10px 4px;
+        border-bottom: 1px solid rgba(255, 183, 197, 0.2);
+        white-space: normal;
       }
+
+      .nav-links li:last-child a { border-bottom: none; }
+
+      #hero { padding-top: 70px; }
     }
 
     /* ===== SECURITY BOX ===== */
@@ -1489,6 +1684,41 @@
         transform: rotate(0deg);
       }
     }
+
+    /* ===== BACK TO TOP BUTTON ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 55px;
+      height: 55px;
+      background: linear-gradient(135deg, #FFB7C5, #C97AB0);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(200, 120, 180, 0.4);
+      z-index: 900;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(200, 120, 180, 0.6);
+      background: linear-gradient(135deg, #FF8FAB, #A892E0);
+    }
   </style>
 </head>
 
@@ -1503,6 +1733,7 @@
   </div>
 
   <div id="sparkleLayer"></div>
+  <div id="wishBurst"></div>
 
   <!-- LOADER -->
   <div id="loader">
@@ -1520,13 +1751,19 @@
     <div class="nav-logo">
       <img src="images/ChatGPT Image May 7, 2026, 11_44_24 AM.png" alt="N"> Nafisa's Birthday 🎀
     </div>
-    <ul class="nav-links">
+    <button class="nav-hamburger" id="navHamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="#wishes">Letter</a></li>
       <li><a href="#garden">Garden</a></li>
       <li><a href="#music">Music</a></li>
       <li><a href="#cats">Cats</a></li>
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="#cake">Cake</a></li>
+      <li><a href="#mbbs">Future Dr.</a></li>
       <li><a href="#jar">Memories</a></li>
     </ul>
   </nav>
@@ -1551,6 +1788,8 @@
           <span class="chip">🎨 Artist Soul</span>
           <span class="chip">🎵 Music Heart</span>
           <span class="chip">☕ Coffee Girl</span>
+          <span class="chip">👩‍⚕️ Future Doctor</span>
+          <span class="chip">🩺 MBBS Warrior</span>
         </div>
       </div>
       <div class="hero-chibi-wrap">
@@ -1867,6 +2106,49 @@
     </div>
   </section>
 
+  <!-- MBBS / FUTURE DOCTOR -->
+  <section id="mbbs">
+    <span class="mbbs-stethoscope" style="top:8%;left:5%">🩺</span>
+    <span class="mbbs-stethoscope" style="top:20%;right:8%;animation-delay:-2s">💊</span>
+    <span class="mbbs-stethoscope" style="bottom:15%;left:10%;animation-delay:-4s">🧬</span>
+    <span class="mbbs-stethoscope" style="bottom:25%;right:6%;animation-delay:-6s">❤️</span>
+    <h2 class="section-title reveal">Future Dr. Nafisa 👩‍⚕️</h2>
+    <p class="section-sub reveal">Drag the DNA helix · Every twist a step closer to becoming a doctor 🩺</p>
+    <div class="mbbs-layout">
+      <canvas id="dna-canvas" class="reveal from-left"></canvas>
+      <div class="mbbs-side reveal from-right">
+        <div class="mbbs-card">
+          <span class="mbbs-icon">🧬</span>
+          <div><h4>Built from biology</h4><p>Every cell in this DNA spins for the doctor you're becoming — strong, patient, brilliant.</p></div>
+        </div>
+        <div class="mbbs-card">
+          <span class="mbbs-icon">🩺</span>
+          <div><h4>The stethoscope is calling</h4><p>One day soon, hearts will beat a little safer because Dr. Nafisa is listening.</p></div>
+        </div>
+        <div class="mbbs-card">
+          <span class="mbbs-icon">📚</span>
+          <div><h4>MBBS warrior mode</h4><p>Anatomy, biochem, pharma — you're conquering them one chapter, one chai at a time.</p></div>
+        </div>
+        <div class="mbbs-card">
+          <span class="mbbs-icon">💖</span>
+          <div><h4>Healer's heart</h4><p>The world needs doctors who care this deeply. You're already halfway there. ✨</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="mbbs-timeline-wrap reveal">
+      <h3 class="mbbs-timeline-title">Your MBBS Journey 🎓</h3>
+      <p class="mbbs-timeline-sub">Scroll through every chapter — past, present and the white coat ahead.</p>
+      <ol class="mbbs-timeline" id="mbbsTimeline">
+        <li class="mbbs-step" data-step="1"><div class="mbbs-dot">📖</div><div class="mbbs-step-card"><span class="mbbs-step-tag">1st Year</span><h4>Anatomy · Physiology · Biochem</h4><p>Cadavers, marrow, late-night Krebs cycle. The foundation gets laid here — and you nailed it.</p></div></li>
+        <li class="mbbs-step" data-step="2"><div class="mbbs-dot">🦠</div><div class="mbbs-step-card"><span class="mbbs-step-tag">2nd Year</span><h4>Pathology · Pharmac · Microbio</h4><p>Bugs, drugs and slides. The world starts looking different through a microscope.</p></div></li>
+        <li class="mbbs-step" data-step="3"><div class="mbbs-dot">⚖️</div><div class="mbbs-step-card"><span class="mbbs-step-tag">3rd Year</span><h4>Forensic · Community Med · ENT · Ophthal</h4><p>First real patients, first real diagnoses. The doctor in you is waking up.</p></div></li>
+        <li class="mbbs-step" data-step="4"><div class="mbbs-dot">🩻</div><div class="mbbs-step-card"><span class="mbbs-step-tag">Final Year Pt 1</span><h4>Medicine · Surgery · OBGYN · Peds</h4><p>Wards, rounds, sleepless nights. Every case file a tiny human story you carry home.</p></div></li>
+        <li class="mbbs-step" data-step="5"><div class="mbbs-dot">🎓</div><div class="mbbs-step-card"><span class="mbbs-step-tag">Final Year Pt 2</span><h4>Finals · Vivas · Practicals</h4><p>The mountain right before the summit. Breathe. You've got every answer in you.</p></div></li>
+        <li class="mbbs-step" data-step="6"><div class="mbbs-dot">🏥</div><div class="mbbs-step-card"><span class="mbbs-step-tag">Internship</span><h4>White coat. Stethoscope. Dr. Nafisa.</h4><p>The day they call you "doctor" for the first time — and it's not pretend anymore. ✨</p></div></li>
+      </ol>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <div class="footer-chibi">
@@ -1876,6 +2158,13 @@
     <div class="footer-hearts">💕 🌸 🐱 🎵 ☕ 🎨 💕</div>
     <p class="footer-sub">Made with love · Every pixel full of warmth for you 🌟</p>
   </footer>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top" onclick="if(window.__lenis){window.__lenis.scrollTo(0,{duration:1.2})}else{window.scrollTo({top:0,behavior:'smooth'})}">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
 
   <script>
     // ===== LOADER =====
@@ -1897,10 +2186,36 @@
     window.addEventListener('load', () => setTimeout(hideLoader, 1500));
     setTimeout(hideLoader, 5000);
 
-    // ===== NAVBAR SCROLL EFFECT =====
-    window.addEventListener('scroll', () => {
-      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-    });
+    // ===== NAVBAR SCROLL & BACK TO TOP =====
+    // Note: Handled inside Lenis scroll event below for compatibility
+    const backToTop = document.getElementById('backToTop');
+
+    // ===== HAMBURGER MENU =====
+    const hamburger = document.getElementById('navHamburger');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('open');
+        hamburger.classList.toggle('open', isOpen);
+        hamburger.setAttribute('aria-expanded', isOpen);
+      });
+      // Close menu when any link is clicked
+      navLinks.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          navLinks.classList.remove('open');
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        });
+      });
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('nav')) {
+          navLinks.classList.remove('open');
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
 
     // ===== CONFETTI in HERO =====
     const heroBg = document.getElementById('heroBg');
@@ -2310,16 +2625,24 @@
           const a = (i / 12) * Math.PI * 2; d.position.set(Math.cos(a) * 1.4, 2.72, Math.sin(a) * 1.4); scene.add(d);
         }
       });
-      // Candles
+      // Candles + flames + flame glow halos + per-flame point lights
       const cPos = [[0, 0], [0.5, 0.3], [-0.4, 0.4], [0.2, -0.5], [-0.5, -0.2]];
       const flames = [];
+      const halos = [];
+      const flameLights = [];
+      const haloMat = () => new THREE.MeshBasicMaterial({ color: 0xFFD27A, transparent: true, opacity: 0.55, depthWrite: false });
       cPos.forEach(([cx, cz], i) => {
         const candle = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.6, 12), new THREE.MeshLambertMaterial({ color: [0xFFB7C5, 0xC9B8F0, 0xB8EDD8, 0xFFD166, 0xFF8FAB][i] }));
         candle.position.set(cx, 3.1, cz); scene.add(candle);
-        const fl = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 8), new THREE.MeshLambertMaterial({ color: 0xFF8C00, emissive: 0xFF4500 }));
+        const fl = new THREE.Mesh(new THREE.SphereGeometry(0.1, 10, 10), new THREE.MeshBasicMaterial({ color: 0xFFB347 }));
         fl.position.set(cx, 3.5, cz); scene.add(fl); flames.push(fl);
+        const halo = new THREE.Mesh(new THREE.SphereGeometry(0.22, 12, 12), haloMat());
+        halo.position.set(cx, 3.5, cz); scene.add(halo); halos.push(halo);
+        const fpl = new THREE.PointLight(0xFFB347, 0.5, 2.2); fpl.position.set(cx, 3.6, cz); scene.add(fpl); flameLights.push(fpl);
       });
       const fLight = new THREE.PointLight(0xFF8C00, 1.5, 8); fLight.position.set(0, 3.5, 0); scene.add(fLight);
+      const burstLight = new THREE.PointLight(0xFFFFFF, 0, 30); burstLight.position.set(0, 3.5, 0); scene.add(burstLight);
+      let burstStart = -1;
       let isDrag = false, prevX = 0, rotY = 0, candlesOut = false;
       canvas.addEventListener('mousedown', e => { isDrag = true; prevX = e.clientX; });
       canvas.addEventListener('touchstart', e => { isDrag = true; prevX = e.touches[0].clientX; });
@@ -2329,17 +2652,27 @@
       window.addEventListener('touchmove', e => { if (!isDrag) return; rotY += (e.touches[0].clientX - prevX) * 0.012; prevX = e.touches[0].clientX; });
       window.blowCandles = function () {
         if (candlesOut) return; candlesOut = true;
-        flames.forEach(f => f.visible = false); fLight.intensity = 0;
+        flames.forEach(f => f.visible = false);
+        halos.forEach(h => h.visible = false);
+        flameLights.forEach(l => l.intensity = 0);
+        fLight.intensity = 0;
+        burstStart = t;
+        const burst = document.getElementById('wishBurst');
+        if (burst) { burst.classList.remove('is-on'); void burst.offsetWidth; burst.classList.add('is-on'); }
         document.getElementById('wishMsg').textContent = '🌟 Wish made! All your dreams come true, N! 💕🎀';
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 60; i++) {
           const c = document.createElement('div');
-          c.style.cssText = `position:fixed;width:10px;height:10px;border-radius:50%;background:${['#FFB7C5', '#C9B8F0', '#B8EDD8', '#FFD166', '#FF8FAB'][Math.floor(Math.random() * 5)]};left:${40 + Math.random() * 20}%;top:50%;pointer-events:none;z-index:9997;animation:cburst ${1 + Math.random()}s ease-out forwards`;
+          const dx = (Math.random() - 0.5) * 600;
+          const dy = -(120 + Math.random() * 360);
+          c.style.cssText = `position:fixed;width:${6 + Math.random()*8}px;height:${6 + Math.random()*8}px;border-radius:50%;background:${['#FFB7C5', '#C9B8F0', '#B8EDD8', '#FFD166', '#FF8FAB', '#FFFFFF'][Math.floor(Math.random() * 6)]};left:50%;top:55%;pointer-events:none;z-index:9997;box-shadow:0 0 12px currentColor;--dx:${dx}px;--dy:${dy}px;animation:cburst ${1 + Math.random()*0.8}s cubic-bezier(.2,.7,.3,1) forwards`;
           document.body.appendChild(c);
           setTimeout(() => c.remove(), 2000);
         }
-        const s = document.createElement('style');
-        s.textContent = '@keyframes cburst{0%{transform:translate(0,0);opacity:1}100%{transform:translate(' + (Math.random() > 0.5 ? '' : '-') + (80 + Math.random() * 200) + 'px,-' + (100 + Math.random() * 300) + 'px);opacity:0}}';
-        document.head.appendChild(s);
+        if (!document.getElementById('cburst-style')) {
+          const s = document.createElement('style'); s.id = 'cburst-style';
+          s.textContent = '@keyframes cburst{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.4);opacity:0}}';
+          document.head.appendChild(s);
+        }
       };
       let t = 0;
 
@@ -2348,7 +2681,25 @@
         try {
           t += 0.016;
           scene.rotation.y += (rotY - scene.rotation.y) * 0.08;
-          if (!candlesOut) { flames.forEach((f, i) => { f.scale.set(0.8 + Math.sin(t * 8 + i) * 0.3, 0.8 + Math.sin(t * 9 + i * 2) * 0.4, 0.8 + Math.sin(t * 7 + i) * 0.3); }); fLight.intensity = 1.2 + Math.sin(t * 7) * 0.4; }
+          if (!candlesOut) {
+            flames.forEach((f, i) => {
+              const flick = 0.85 + Math.sin(t * 18 + i * 1.7) * 0.18 + (Math.random() - 0.5) * 0.12;
+              f.scale.set(flick * 0.9, flick * 1.3 + Math.sin(t * 11 + i) * 0.15, flick * 0.9);
+              f.position.x = cPos[i][0] + (Math.random() - 0.5) * 0.02;
+              f.position.z = cPos[i][1] + (Math.random() - 0.5) * 0.02;
+              f.material.color.setHSL(0.08 + Math.sin(t*9+i)*0.02, 1, 0.55 + Math.random()*0.1);
+              const halo = halos[i];
+              halo.scale.setScalar(1 + Math.sin(t*10+i)*0.18 + Math.random()*0.08);
+              halo.material.opacity = 0.45 + Math.sin(t*14+i)*0.15;
+              flameLights[i].intensity = 0.55 + Math.sin(t*15+i*2)*0.25 + Math.random()*0.1;
+            });
+            fLight.intensity = 1.3 + Math.sin(t * 7) * 0.35 + (Math.random()-0.5)*0.2;
+            fLight.color.setHSL(0.08, 1, 0.55 + Math.sin(t*5)*0.05);
+          } else if (burstStart >= 0) {
+            const dt = t - burstStart;
+            burstLight.intensity = Math.max(0, 8 * Math.exp(-dt * 2.5));
+            if (dt > 3) burstStart = -1;
+          }
           resize(); renderer.render(scene, cam);
         } catch(e) {
           console.error('Cake async error:', e);
@@ -2378,13 +2729,59 @@
       smoothTouch: false,
       touchMultiplier: 2,
     });
+    window.__lenis = lenis; // expose for back-to-top button
 
     lenis.on('scroll', ScrollTrigger.update);
+
+    // ===== NAVBAR + BACK-TO-TOP via Lenis (fixes laptop scroll) =====
+    lenis.on('scroll', ({ scroll }) => {
+      document.getElementById('navbar').classList.toggle('scrolled', scroll > 50);
+      const btt = document.getElementById('backToTop');
+      if (btt) {
+        if (scroll > 500) btt.classList.add('visible');
+        else btt.classList.remove('visible');
+      }
+    });
 
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
     });
     gsap.ticker.lagSmoothing(0);
+
+    // ===== SMOOTH-SCROLL ANCHOR LINKS via Lenis =====
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (!id || id === '#') return;
+        const target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        lenis.scrollTo(target, { offset: -70, duration: 1.4 });
+      });
+    });
+
+    // ===== MBBS TIMELINE SCROLL HIGHLIGHT =====
+    (function () {
+      const list = document.getElementById('mbbsTimeline');
+      if (!list) return;
+      const steps = Array.from(list.querySelectorAll('.mbbs-step'));
+      const update = () => {
+        const vh = window.innerHeight;
+        const trigger = vh * 0.55;
+        let activeCount = 0;
+        steps.forEach(s => {
+          const r = s.getBoundingClientRect();
+          const isActive = r.top < trigger && r.bottom > 80;
+          s.classList.toggle('is-active', isActive);
+          if (r.top < trigger) activeCount++;
+        });
+        const progress = Math.min(100, (activeCount / steps.length) * 100);
+        list.style.setProperty('--mbbs-progress', progress + '%');
+      };
+      lenis.on('scroll', update);
+      window.addEventListener('resize', update);
+      update();
+    })();
 
     // GSAP Animations
     gsap.utils.toArray('.reveal').forEach(elem => {
@@ -2470,6 +2867,89 @@
         if (e.key === 'Enter') checkPassword();
       });
     })();
+  </script>
+
+  <!-- DNA Helix (MBBS section) -->
+  <script>
+  (function initDNA(){
+    const canvas = document.getElementById('dna-canvas');
+    if (!canvas || typeof THREE === 'undefined') return;
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const scene = new THREE.Scene();
+    const cam = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+    cam.position.set(0, 0, 10);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+    const d1 = new THREE.DirectionalLight(0xffffff, 0.9); d1.position.set(5,5,5); scene.add(d1);
+    const p1 = new THREE.PointLight(0xFFB7C5, 1, 30); p1.position.set(-4,2,4); scene.add(p1);
+    const p2 = new THREE.PointLight(0xC9B8F0, 1, 30); p2.position.set(4,-2,4); scene.add(p2);
+    const helix = new THREE.Group(); scene.add(helix);
+    const turns=4, pointsPerTurn=14, radius=1.4, heightPerTurn=1.6, total=turns*pointsPerTurn;
+    const sphereGeo = new THREE.SphereGeometry(0.22, 20, 20);
+    const matA = new THREE.MeshStandardMaterial({ color: 0xFF8FAB, roughness: 0.35, metalness: 0.2, emissive: 0x441122, emissiveIntensity: 0.2 });
+    const matB = new THREE.MeshStandardMaterial({ color: 0xA892E0, roughness: 0.35, metalness: 0.2, emissive: 0x221144, emissiveIntensity: 0.2 });
+    const rungMat = new THREE.MeshStandardMaterial({ color: 0xFFD166, roughness: 0.4, emissive: 0x332200, emissiveIntensity: 0.15 });
+    const totalH = turns * heightPerTurn;
+    for (let i = 0; i < total; i++) {
+      const t = i / pointsPerTurn, angle = t * Math.PI * 2;
+      const y = i * (totalH / total) - totalH/2;
+      const x1=Math.cos(angle)*radius, z1=Math.sin(angle)*radius;
+      const x2=Math.cos(angle+Math.PI)*radius, z2=Math.sin(angle+Math.PI)*radius;
+      const a = new THREE.Mesh(sphereGeo, matA); a.position.set(x1,y,z1); helix.add(a);
+      const b = new THREE.Mesh(sphereGeo, matB); b.position.set(x2,y,z2); helix.add(b);
+      if (i % 2 === 0) {
+        const dx=x2-x1, dz=z2-z1, len=Math.sqrt(dx*dx+dz*dz);
+        const rung = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,len,8), rungMat);
+        rung.position.set((x1+x2)/2,y,(z1+z2)/2);
+        rung.rotation.z = Math.PI/2; rung.rotation.y = -Math.atan2(dz,dx);
+        helix.add(rung);
+      }
+    }
+    function makeTextSprite(text, size=256){
+      const c=document.createElement('canvas'); c.width=c.height=size;
+      const ctx=c.getContext('2d'); ctx.font=(size*0.7)+'px serif';
+      ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(text,size/2,size/2);
+      const tex=new THREE.CanvasTexture(c);
+      const mat=new THREE.SpriteMaterial({map:tex,transparent:true});
+      return new THREE.Sprite(mat);
+    }
+    const icons=['🩺','💊','💉','🧪','❤️','🩹','🧬','📚'];
+    const iconGroup=new THREE.Group();
+    icons.forEach((emo,i)=>{
+      const s=makeTextSprite(emo); const ang=(i/icons.length)*Math.PI*2; const r=4.2;
+      s.position.set(Math.cos(ang)*r, Math.sin(ang*1.3)*1.5, Math.sin(ang)*r-1);
+      s.scale.set(0.9,0.9,0.9); s.userData.baseY=s.position.y; s.userData.phase=i;
+      iconGroup.add(s);
+    });
+    scene.add(iconGroup);
+    let isDown=false,sx=0,sy=0,rotY=0,rotX=0,vY=0.005;
+    canvas.addEventListener('pointerdown',e=>{isDown=true;sx=e.clientX;sy=e.clientY;});
+    window.addEventListener('pointerup',()=>isDown=false);
+    window.addEventListener('pointermove',e=>{
+      if(!isDown)return;
+      rotY+=(e.clientX-sx)*0.008; rotX+=(e.clientY-sy)*0.005;
+      rotX=Math.max(-1,Math.min(1,rotX)); sx=e.clientX; sy=e.clientY; vY=0;
+    });
+    function resize(){
+      const r=canvas.getBoundingClientRect();
+      renderer.setSize(r.width,r.height,false);
+      cam.aspect=r.width/r.height; cam.updateProjectionMatrix();
+    }
+    resize(); window.addEventListener('resize',resize);
+    let raf;
+    function tick(){
+      if(!isDown) rotY+=vY;
+      helix.rotation.y=rotY; helix.rotation.x=rotX;
+      const t=performance.now()*0.001;
+      iconGroup.rotation.y=-rotY*0.3+t*0.1;
+      iconGroup.children.forEach((s,i)=>{ s.position.y=s.userData.baseY+Math.sin(t*1.2+s.userData.phase)*0.35; });
+      renderer.render(scene,cam); raf=requestAnimationFrame(tick);
+    }
+    const obs=new IntersectionObserver(es=>{
+      es.forEach(e=>{ if(e.isIntersecting&&!raf) tick(); });
+    },{rootMargin:'200px'});
+    obs.observe(canvas);
+  })();
   </script>
 </body>
 
