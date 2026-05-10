@@ -1,4 +1,4 @@
-~`````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -33,7 +33,11 @@
       box-sizing: border-box;
     }
 
-    /* html { scroll-behavior: smooth; } removed for Lenis */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 76px;
+    }
+
     body {
       font-family: 'Quicksand', sans-serif;
       background: var(--cream);
@@ -1072,102 +1076,6 @@
       font-weight: 700;
     }
 
-    /* ===== GALLERY ===== */
-    #gallery {
-      background: linear-gradient(135deg, #EDF8F3 0%, #FFF0F6 100%);
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      max-width: 860px;
-      margin: 0 auto;
-    }
-
-    .gi {
-      border-radius: 20px;
-      aspect-ratio: 1;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 24px rgba(180, 130, 200, 0.13);
-      border: 2px solid rgba(185, 237, 216, 0.3);
-      cursor: pointer;
-      overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .gi:hover {
-      transform: scale(1.06) rotate(1.5deg);
-      box-shadow: 0 18px 40px rgba(180, 130, 200, 0.25);
-    }
-
-    .gi svg {
-      width: 85%;
-      height: 85%;
-    }
-
-    /* ===== MEMORY JAR ===== */
-    #jar {
-      background: linear-gradient(135deg, #F5F0FF 0%, #FFF5F0 100%);
-      text-align: center;
-    }
-
-    .jar-wrap {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .jar-svg-area {
-      width: 200px;
-      margin: 0 auto 36px;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-
-    .jar-svg-area:hover {
-      transform: scale(1.06) rotate(-2deg);
-    }
-
-    .jar-label {
-      font-size: 0.83rem;
-      color: var(--text-mid);
-      font-weight: 600;
-      margin-top: 8px;
-    }
-
-    .memories-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-      gap: 14px;
-    }
-
-    .memo {
-      background: white;
-      border-radius: 16px;
-      padding: 18px 14px;
-      font-size: 0.88rem;
-      line-height: 1.6;
-      color: #6B4F6E;
-      box-shadow: 0 6px 20px rgba(180, 130, 200, 0.1);
-      border: 2px solid rgba(255, 183, 197, 0.3);
-      cursor: pointer;
-      transition: transform 0.2s;
-      text-align: left;
-    }
-
-    .memo:hover {
-      transform: rotate(-1.5deg) translateY(-5px);
-    }
-
-    .memo .me {
-      font-size: 1.5rem;
-      display: block;
-      margin-bottom: 7px;
-    }
-
     /* ===== BIRTHDAY CAKE 3D ===== */
     #cake {
       background: linear-gradient(135deg, #FFF0F6 0%, #FFF8E0 100%);
@@ -1454,7 +1362,6 @@
 
       .hero-inner { flex-direction: column-reverse; text-align: center; }
       .hero-chips { justify-content: center; }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
       .wish-layout, .music-layout, .garden-layout, .cake-layout { flex-direction: column; }
       .garden-info, .garden-video-card { flex: unset; width: 100%; max-width: 420px; }
       .music-player { padding: 28px 18px; }
@@ -1761,10 +1668,8 @@
       <li><a href="#garden">Garden</a></li>
       <li><a href="#music">Music</a></li>
       <li><a href="#cats">Cats</a></li>
-      <li><a href="#gallery">Gallery</a></li>
       <li><a href="#cake">Cake</a></li>
       <li><a href="#mbbs">Future Dr.</a></li>
-      <li><a href="#jar">Memories</a></li>
     </ul>
   </nav>
 
@@ -1808,7 +1713,7 @@
       </div>
       <div class="wish-card reveal from-right">
         <div id="security-box">
-          <div id="prompt-text">Password is mai pura din kya krta hu (write in small letter)</div>
+          <div id="prompt-text">Password [mai pura din kya krta hu (write in small letter)]</div>
           <input type="text" id="password-input" placeholder="Enter password..." autocomplete="off" autocorrect="off"
             spellcheck="false">
           <button id="submit-btn">Unlock Letter</button>
@@ -1817,10 +1722,10 @@
           <p class="wish-letter">
             Dear <span class="hl">Nafisa</span>,<br><br>
             Happy Birthday Nafisa aaj ka din tere liye bhot jyda <span class="hl">Special</span> hai
-            I'm glad ki us din randomly teri request accept kr ke msg kiya you was unexpected friend that i got from
+            I'm glad ki us din randomly teri request accept kr liya. You was unexpected friend that i got from
             god,
             I hope you will be with me in every sitatuion <span class="hl">NAFISA</span> — 🌷<br><br>
-            And tum pakka Doctor Banegi for sure you will achieve your all dream's that you prayed
+            And tum pakka ek acchi Doctor Banogi for sure you will achieve your all dream's that you prayed.
             In future hum kabhi na kabhi milne ke jauru abhi toh me aise website hi bana skta hu aur kuch jyda nhi kr
             paunga uske liye sorry 😭<span class="hl">Nafisa</span>. ☕✨<br><br>
             May this year bring you overflowing flower fields, melodies that move your heart to tears,
@@ -1936,160 +1841,6 @@
     </div>
   </section>
 
-  <!-- GALLERY -->
-  <section id="gallery">
-    <h2 class="section-title reveal">Chibi Art Gallery 🎨</h2>
-    <p class="section-sub reveal">Little artworks made just for you 🌸</p>
-    <div class="gallery-grid">
-      <div class="gi reveal from-scale" onclick="popGi(this)">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="200" fill="#FFF5F8" />
-          <line x1="100" y1="155" x2="100" y2="65" stroke="#8B5A4A" stroke-width="3" />
-          <line x1="100" y1="100" x2="78" y2="84" stroke="#8B5A4A" stroke-width="2" />
-          <g>
-            <ellipse cx="100" cy="78" rx="18" ry="10" fill="#FFB7C5" transform="rotate(0 100 100)" />
-            <ellipse cx="100" cy="78" rx="18" ry="10" fill="#FFD6E8" transform="rotate(60 100 100)" />
-            <ellipse cx="100" cy="78" rx="18" ry="10" fill="#FFB7C5" transform="rotate(120 100 100)" />
-            <ellipse cx="100" cy="78" rx="18" ry="10" fill="#FFD6E8" transform="rotate(180 100 100)" />
-            <ellipse cx="100" cy="78" rx="18" ry="10" fill="#FFB7C5" transform="rotate(240 100 100)" />
-            <ellipse cx="100" cy="78" rx="18" ry="10" fill="#FFD6E8" transform="rotate(300 100 100)" />
-          </g>
-          <circle cx="100" cy="100" r="10" fill="#FFD166" />
-          <text x="100" y="178" text-anchor="middle" font-size="11" fill="#C97AB0" font-family="Quicksand,sans-serif"
-            font-weight="700">Cherry Blossom</text>
-        </svg>
-      </div>
-      <div class="gi reveal from-scale" onclick="popGi(this)" style="transition-delay:0.1s">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="200" fill="#F3ECFF" />
-          <line x1="100" y1="160" x2="100" y2="65" stroke="#7B9E7B" stroke-width="3" />
-          <line x1="100" y1="100" x2="78" y2="82" stroke="#7B9E7B" stroke-width="2" />
-          <line x1="100" y1="90" x2="122" y2="72" stroke="#7B9E7B" stroke-width="2" />
-          <ellipse cx="100" cy="82" rx="7" ry="26" fill="#A892E0" />
-          <ellipse cx="84" cy="90" rx="6" ry="20" fill="#C9B8F0" />
-          <ellipse cx="116" cy="80" rx="6" ry="20" fill="#A892E0" />
-          <text x="100" y="178" text-anchor="middle" font-size="11" fill="#A892E0" font-family="Quicksand,sans-serif"
-            font-weight="700">Lavender Fields</text>
-        </svg>
-      </div>
-      <div class="gi reveal from-scale" onclick="popGi(this)" style="transition-delay:0.2s">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="200" fill="#F0FFF8" />
-          <line x1="100" y1="155" x2="100" y2="68" stroke="#7B9E7B" stroke-width="3" />
-          <g>
-            <ellipse cx="100" cy="78" rx="16" ry="8" fill="white" stroke="#DDD" stroke-width="0.5"
-              transform="rotate(0 100 100)" />
-            <ellipse cx="100" cy="78" rx="16" ry="8" fill="white" stroke="#DDD" stroke-width="0.5"
-              transform="rotate(30 100 100)" />
-            <ellipse cx="100" cy="78" rx="16" ry="8" fill="white" stroke="#DDD" stroke-width="0.5"
-              transform="rotate(60 100 100)" />
-            <ellipse cx="100" cy="78" rx="16" ry="8" fill="white" stroke="#DDD" stroke-width="0.5"
-              transform="rotate(90 100 100)" />
-            <ellipse cx="100" cy="78" rx="16" ry="8" fill="white" stroke="#DDD" stroke-width="0.5"
-              transform="rotate(120 100 100)" />
-            <ellipse cx="100" cy="78" rx="16" ry="8" fill="white" stroke="#DDD" stroke-width="0.5"
-              transform="rotate(150 100 100)" />
-          </g>
-          <circle cx="100" cy="100" r="11" fill="#FFD166" />
-          <text x="100" y="178" text-anchor="middle" font-size="11" fill="#7DD4AD" font-family="Quicksand,sans-serif"
-            font-weight="700">Daisy Dream</text>
-        </svg>
-      </div>
-      <div class="gi reveal from-scale" onclick="popGi(this)" style="transition-delay:0.1s">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="200" fill="#FFFBF0" />
-          <line x1="100" y1="155" x2="100" y2="65" stroke="#5A8A3A" stroke-width="4" />
-          <ellipse cx="80" cy="110" rx="16" ry="8" fill="#7BB85A" transform="rotate(-30 80 110)" />
-          <g>
-            <ellipse cx="100" cy="76" rx="18" ry="8" fill="#FFD166" transform="rotate(0 100 100)" />
-            <ellipse cx="100" cy="76" rx="18" ry="8" fill="#FFC437" transform="rotate(25 100 100)" />
-            <ellipse cx="100" cy="76" rx="18" ry="8" fill="#FFD166" transform="rotate(50 100 100)" />
-            <ellipse cx="100" cy="76" rx="18" ry="8" fill="#FFC437" transform="rotate(75 100 100)" />
-            <ellipse cx="100" cy="76" rx="18" ry="8" fill="#FFD166" transform="rotate(100 100 100)" />
-            <ellipse cx="100" cy="76" rx="18" ry="8" fill="#FFC437" transform="rotate(125 100 100)" />
-            <ellipse cx="100" cy="76" rx="18" ry="8" fill="#FFD166" transform="rotate(150 100 100)" />
-            <ellipse cx="100" cy="76" rx="18" ry="8" fill="#FFC437" transform="rotate(175 100 100)" />
-          </g>
-          <circle cx="100" cy="100" r="14" fill="#7B4A1A" />
-          <text x="100" y="178" text-anchor="middle" font-size="11" fill="#E8A020" font-family="Quicksand,sans-serif"
-            font-weight="700">Sunflower Friend</text>
-        </svg>
-      </div>
-      <div class="gi reveal from-scale" onclick="popGi(this)" style="transition-delay:0.2s">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="200" fill="#FFF0F8" />
-          <line x1="100" y1="155" x2="100" y2="95" stroke="#5A8A3A" stroke-width="3" />
-          <ellipse cx="82" cy="118" rx="14" ry="7" fill="#7BB85A" transform="rotate(-30 82 118)" />
-          <circle cx="100" cy="88" r="22" fill="#FF6B95" />
-          <circle cx="92" cy="82" r="14" fill="#FF8FAB" />
-          <circle cx="108" cy="84" r="12" fill="#FFB7C5" />
-          <circle cx="100" cy="79" r="9" fill="#FFD6E8" />
-          <circle cx="100" cy="83" r="5" fill="#FF8FAB" />
-          <text x="100" y="178" text-anchor="middle" font-size="11" fill="#FF6B95" font-family="Quicksand,sans-serif"
-            font-weight="700">Blushing Rose</text>
-        </svg>
-      </div>
-      <div class="gi reveal from-scale" onclick="popGi(this)" style="transition-delay:0.3s">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="200" fill="#F5F0FF" />
-          <ellipse cx="100" cy="148" rx="30" ry="20" fill="#F0D8F8" />
-          <circle cx="100" cy="108" r="32" fill="#F5E0FF" />
-          <ellipse cx="76" cy="103" rx="9" ry="7" fill="#E8A0D0" opacity="0.6" />
-          <ellipse cx="124" cy="103" rx="9" ry="7" fill="#E8A0D0" opacity="0.6" />
-          <ellipse cx="84" cy="102" rx="7" ry="8" fill="#3A1A3A" />
-          <ellipse cx="116" cy="102" rx="7" ry="8" fill="#3A1A3A" />
-          <circle cx="87" cy="99" r="2.5" fill="white" />
-          <circle cx="119" cy="99" r="2.5" fill="white" />
-          <path d="M88 116 Q100 124 112 116" stroke="#C97AB0" stroke-width="2" fill="none" stroke-linecap="round" />
-          <polygon points="74,88 65,70 83,79" fill="#F5E0FF" />
-          <polygon points="126,88 135,70 117,79" fill="#F5E0FF" />
-          <polygon points="75,86 68,72 82,79" fill="#E8A0D0" />
-          <polygon points="125,86 132,72 118,79" fill="#E8A0D0" />
-          <text x="100" y="178" text-anchor="middle" font-size="11" fill="#C97AB0" font-family="Quicksand,sans-serif"
-            font-weight="700">Kitty in Bloom</text>
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <!-- MEMORY JAR -->
-  <section id="jar">
-    <h2 class="section-title reveal">Memory Jar 🫙</h2>
-    <p class="section-sub reveal">Little moments that make you, you 💕</p>
-    <div class="jar-wrap reveal">
-      <div class="jar-svg-area" onclick="shakeJar()">
-        <svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" id="jarSvg">
-          <rect x="50" y="24" width="100" height="20" rx="7" fill="#C490C0" />
-          <rect x="58" y="18" width="84" height="12" rx="6" fill="#D4A0D4" />
-          <path
-            d="M50 44 Q40 65 40 125 Q40 195 50 210 Q60 222 100 222 Q140 222 150 210 Q160 195 160 125 Q160 65 150 44 Z"
-            fill="rgba(255,220,235,0.88)" stroke="#E8B0CC" stroke-width="2" />
-          <path d="M64 56 Q60 85 60 125" stroke="rgba(255,255,255,0.65)" stroke-width="5" stroke-linecap="round"
-            fill="none" />
-          <text x="80" y="100" font-size="18">💕</text>
-          <text x="105" y="122" font-size="15">⭐</text>
-          <text x="70" y="145" font-size="17">🌸</text>
-          <text x="106" y="162" font-size="14">🎵</text>
-          <text x="74" y="185" font-size="13">🐱</text>
-          <text x="108" y="192" font-size="11">✨</text>
-        </svg>
-        <div class="jar-label">🫙 Click to shake!</div>
-      </div>
-      <div class="memories-grid">
-        <div class="memo"><span class="me">🎵</span>When a song plays and you close your eyes and just feel every note
-          completely.</div>
-        <div class="memo"><span class="me">🐱</span>Cats always find you first, like they know you're the safest person
-          in the room.</div>
-        <div class="memo"><span class="me">🎨</span>You make something beautiful out of nothing — that's your quiet kind
-          of magic.</div>
-        <div class="memo"><span class="me">☕</span>That cozy coffee morning energy you carry that makes everything feel
-          peaceful.</div>
-        <div class="memo"><span class="me">💕</span>Your laugh — the one that lights up every room it enters without
-          even trying.</div>
-      </div>
-    </div>
-  </section>
-
   <!-- BIRTHDAY CAKE 3D -->
   <section id="cake">
     <h2 class="section-title reveal">Make a Wish! 🎂</h2>
@@ -2194,6 +1945,12 @@
     const hamburger = document.getElementById('navHamburger');
     const navLinks = document.getElementById('navLinks');
     if (hamburger && navLinks) {
+      const closeMobileNav = () => {
+        navLinks.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      };
+
       hamburger.addEventListener('click', () => {
         const isOpen = navLinks.classList.toggle('open');
         hamburger.classList.toggle('open', isOpen);
@@ -2201,21 +1958,41 @@
       });
       // Close menu when any link is clicked
       navLinks.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          navLinks.classList.remove('open');
-          hamburger.classList.remove('open');
-          hamburger.setAttribute('aria-expanded', 'false');
-        });
+        a.addEventListener('click', closeMobileNav);
       });
       // Close menu when clicking outside
       document.addEventListener('click', (e) => {
         if (!e.target.closest('nav')) {
-          navLinks.classList.remove('open');
-          hamburger.classList.remove('open');
-          hamburger.setAttribute('aria-expanded', 'false');
+          closeMobileNav();
         }
       });
     }
+
+    function scrollToPageAnchor(hash) {
+      if (!hash || hash === '#') return false;
+      const target = document.querySelector(hash);
+      if (!target) return false;
+
+      if (window.__lenis && typeof window.__lenis.scrollTo === 'function') {
+        window.__lenis.scrollTo(target, { offset: -70, duration: 1.1 });
+      } else {
+        const top = target.getBoundingClientRect().top + window.pageYOffset - 70;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+
+      if (window.location.hash !== hash) {
+        history.pushState(null, '', hash);
+      }
+      return true;
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        if (scrollToPageAnchor(a.getAttribute('href'))) {
+          e.preventDefault();
+        }
+      });
+    });
 
     // ===== CONFETTI in HERO =====
     const heroBg = document.getElementById('heroBg');
@@ -2402,22 +2179,6 @@
       document.head.appendChild(s);
       card.appendChild(b);
       setTimeout(() => b.remove(), 1600);
-    }
-
-    // ===== GALLERY POP =====
-    function popGi(el) {
-      el.style.transform = 'scale(1.2) rotate(-3deg)';
-      setTimeout(() => el.style.transform = '', 500);
-    }
-
-    // ===== JAR SHAKE =====
-    function shakeJar() {
-      const j = document.getElementById('jarSvg');
-      j.style.animation = 'jshake 0.45s ease-in-out';
-      const s = document.createElement('style');
-      s.textContent = '@keyframes jshake{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg)}75%{transform:rotate(9deg)}}';
-      document.head.appendChild(s);
-      setTimeout(() => j.style.animation = '', 450);
     }
 
     // ===== 3D FLOWER GARDEN =====
@@ -2747,18 +2508,6 @@
       lenis.raf(time * 1000);
     });
     gsap.ticker.lagSmoothing(0);
-
-    // ===== SMOOTH-SCROLL ANCHOR LINKS via Lenis =====
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const id = a.getAttribute('href');
-        if (!id || id === '#') return;
-        const target = document.querySelector(id);
-        if (!target) return;
-        e.preventDefault();
-        lenis.scrollTo(target, { offset: -70, duration: 1.4 });
-      });
-    });
 
     // ===== MBBS TIMELINE SCROLL HIGHLIGHT =====
     (function () {
