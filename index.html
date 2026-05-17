@@ -734,29 +734,142 @@
       }
     }
 
-    /* ===== MUSIC ===== */
+    /* ===== MUSIC - CARD STYLE ===== */
     #music {
-      background: linear-gradient(135deg, #F5E6D3 0%, #FDF0E6 100%);
+      background: linear-gradient(135deg, #FDF6EE 0%, #F5E6D3 50%, #EDD5B8 100%);
+      padding: 80px 20px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #music::before {
+      content: '🎵 🎶 🎸 🎹';
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      font-size: 1.5rem;
+      opacity: 0.1;
+      letter-spacing: 15px;
+      pointer-events: none;
+    }
+
+    #music::after {
+      content: '✨ 🌟 💫 ⭐';
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      font-size: 1.2rem;
+      opacity: 0.15;
+      letter-spacing: 12px;
+      pointer-events: none;
     }
 
     .music-layout {
       display: flex;
-      gap: 50px;
       align-items: center;
-      max-width: 1000px;
+      justify-content: center;
+      gap: 60px;
+      max-width: 1100px;
       margin: 0 auto;
       flex-wrap: wrap;
     }
 
-    .music-chibi {
+    .music-image {
       flex-shrink: 0;
       text-align: center;
     }
 
-    .music-chibi img {
-      width: clamp(170px, 22vw, 240px);
+    .music-chibi-img {
+      width: clamp(200px, 25vw, 300px);
       filter: drop-shadow(0 16px 32px rgba(180, 130, 200, 0.3));
-      animation: music-dance 2s ease-in-out infinite;
+      animation: music-float 3s ease-in-out infinite;
+    }
+
+    @keyframes music-float {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-15px) rotate(2deg); }
+    }
+
+    .music-card-showcase {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      min-width: 300px;
+      padding: 20px 0;
+    }
+
+    .card-stack {
+      position: relative;
+      width: 85%;
+      max-width: 340px;
+      height: 480px;
+      margin: 30px auto 40px;
+      perspective: 1000px;
+    }
+
+    /* Music Navigation Controls */
+    .music-nav-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 16px;
+    }
+
+    .music-nav-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid rgba(196, 122, 58, 0.5);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(245, 230, 211, 0.7));
+      color: #8B4513;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(139, 69, 19, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .music-nav-btn:hover {
+      transform: scale(1.1);
+      background: linear-gradient(135deg, #FDF6EE, #F5E6D3);
+      box-shadow: 0 6px 20px rgba(139, 69, 19, 0.35);
+    }
+
+    .music-nav-btn:active {
+      transform: scale(0.95);
+    }
+
+    .music-nav-btn.large {
+      width: 56px;
+      height: 56px;
+      font-size: 1.4rem;
+    }
+
+    .music-counter {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #8B4513;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 8px 20px;
+      border-radius: 20px;
+      box-shadow: 0 3px 10px rgba(139, 69, 19, 0.15);
+      border: 1.5px solid rgba(196, 122, 58, 0.3);
+      min-width: 90px;
+      text-align: center;
+    }
+
+    .music-hint {
+      font-size: 0.85rem;
+      color: #C47A3A;
+      text-align: center;
+      font-weight: 600;
+      opacity: 0.8;
+      margin-top: 8px;
     }
 
     @keyframes music-dance {
@@ -1114,15 +1227,54 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      background: white;
+      background: linear-gradient(145deg, #FDFBF7 0%, #F7F2EA 50%, #F0EBE0 100%);
       border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      box-shadow: 
+        0 4px 12px rgba(139, 69, 19, 0.1),
+        0 2px 6px rgba(139, 69, 19, 0.08),
+        0 1px 3px rgba(139, 69, 19, 0.05);
       overflow: hidden;
       cursor: grab;
       user-select: none;
       -webkit-user-select: none;
       touch-action: none;
       -webkit-touch-callout: none;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      border: 1px solid rgba(139, 69, 19, 0.08);
+    }
+
+    /* Stacked card layered edge - creates depth illusion */
+    .stack-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* Subtle layered shadow for depth */
+    .stack-card::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 4px;
+      right: 4px;
+      height: 16px;
+      background: linear-gradient(to bottom, rgba(139, 69, 19, 0.08), transparent);
+      border-radius: 0 0 20px 20px;
+      pointer-events: none;
+    }
+
+    .stack-card:hover {
+      box-shadow: 
+        0 12px 32px rgba(139, 69, 19, 0.18),
+        0 6px 12px rgba(139, 69, 19, 0.12),
+        0 2px 6px rgba(139, 69, 19, 0.08);
     }
 
     .stack-card:active {
@@ -1155,17 +1307,14 @@
 
     .stack-card.active {
       z-index: 10;
-      box-shadow: 0 12px 32px rgba(180, 130, 200, 0.25);
-      animation: cardPulse 3s ease-in-out infinite;
-    }
-
-    @keyframes cardPulse {
-      0%, 100% { box-shadow: 0 12px 32px rgba(180, 130, 200, 0.25); }
-      50% { box-shadow: 0 16px 40px rgba(180, 130, 200, 0.35); }
+      box-shadow: 
+        0 16px 40px rgba(139, 69, 19, 0.2),
+        0 8px 20px rgba(139, 69, 19, 0.15),
+        0 4px 10px rgba(139, 69, 19, 0.1);
     }
 
     .stack-card.active:hover {
-      transform: scale(1.02);
+      transform: translateY(-4px);
     }
 
     .swipe-indicator {
@@ -1220,6 +1369,390 @@
       font-size: 0.85rem;
       color: var(--text-mid);
       margin-top: 10px;
+    }
+
+    /* ===== MUSIC CARD SECTION (merged with #music) ===== */
+    #music-cards {
+      display: none; /* Removed - now using #music */
+    }
+
+    /* Album-art placeholder — same 320px height as .stack-card img */
+    .music-card-cover {
+      width: 100%;
+      height: 320px;
+      background: linear-gradient(145deg, #FAF3E8 0%, #F0E4D4 50%, #E5D9C6 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      user-select: none;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      flex-shrink: 0;
+      position: relative;
+      border-radius: 16px;
+      box-shadow: 
+        0 2px 8px rgba(139, 69, 19, 0.08),
+        0 1px 3px rgba(139, 69, 19, 0.05);
+      overflow: hidden;
+    }
+
+    /* Stacked card layered edge effect */
+    .music-card-cover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 16px;
+      pointer-events: none;
+    }
+
+    /* Subtle paper texture overlay */
+    .music-card-cover::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(139, 69, 19, 0.01) 10px,
+          rgba(139, 69, 19, 0.01) 20px
+        );
+      pointer-events: none;
+    }
+
+    .music-card-cover .cover-emoji {
+      font-size: 5rem;
+      line-height: 1;
+      animation: cover-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes cover-pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.08); }
+    }
+
+    .music-card-cover .cover-track-num {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--caramel);
+      opacity: 0.7;
+    }
+
+    /* Active card — enhanced stacked effect with stronger shadow */
+    #musicStack .stack-card.active .music-card-cover {
+      background: linear-gradient(145deg, #F5E6D3 0%, #E8D9C2 50%, #DCC9B0 100%);
+      box-shadow: 
+        0 20px 40px rgba(139, 69, 19, 0.2),
+        0 8px 16px rgba(139, 69, 19, 0.15),
+        0 2px 4px rgba(139, 69, 19, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    /* Active card highlight edge */
+    #musicStack .stack-card.active .music-card-cover::before {
+      border: 2px solid rgba(212, 149, 106, 0.3);
+    }
+
+    /* Now-playing badge on active card */
+    .music-now-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: linear-gradient(135deg, #C47A3A, #8B4513);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 50px;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+
+    #musicStack .stack-card.active .music-now-badge {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Swipe direction hint arrows */
+    .music-swipe-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.8rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 20;
+    }
+
+    .music-swipe-arrow.left  { left: 14px; }
+    .music-swipe-arrow.right { right: 14px; }
+
+    #musicStack .stack-card.active:hover .music-swipe-arrow { opacity: 0.3; }
+
+    /* Dragging — show arrow on the drag side */
+    #musicStack.dragging-right .stack-card.active .music-swipe-arrow.right { opacity: 0.7; }
+    #musicStack.dragging-left  .stack-card.active .music-swipe-arrow.left  { opacity: 0.7; }
+
+    /* ===== ENHANCED MUSIC CARD STYLES ===== */
+    .music-card {
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .music-card:hover {
+      transform: translateY(-4px) scale(1.02) !important;
+    }
+
+    .music-card:active {
+      transform: scale(0.98) !important;
+    }
+
+    .music-card .card-content {
+      padding: 16px 18px;
+      text-align: left;
+    }
+
+    .music-card-track-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .music-card-title {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.05rem;
+      color: #8B4513;
+      margin: 0;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+
+    .music-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .music-card-artist {
+      font-size: 0.82rem;
+      color: #C47A3A;
+      font-weight: 600;
+    }
+
+    .music-card-duration {
+      font-size: 0.78rem;
+      color: #8B4513;
+      background: rgba(212, 149, 106, 0.2);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .music-progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(196, 122, 58, 0.2);
+      border-radius: 10px;
+      margin-top: 12px;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .music-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #D4956A, #8B4513);
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    .music-card-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(196, 122, 58, 0.2);
+    }
+
+    .mc-play-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #D4956A, #8B4513);
+      border: none;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      box-shadow: 0 3px 10px rgba(139, 69, 19, 0.25);
+      flex-shrink: 0;
+    }
+
+    .mc-play-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 5px 14px rgba(139, 69, 19, 0.4);
+    }
+
+    .mc-play-btn:active {
+      transform: scale(0.92);
+    }
+
+    .mc-control-btns {
+      display: flex;
+      gap: 4px;
+      margin-left: auto;
+    }
+
+    .mc-nav-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(196, 122, 58, 0.4);
+      color: #8B4513;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .mc-nav-btn:hover {
+      background: #F5E6D3;
+      transform: scale(1.1);
+    }
+
+    .mc-nav-btn:active {
+      transform: scale(0.9);
+    }
+
+    /* Active card enhancements - enhanced stacked effect */
+    #musicStack .stack-card.active {
+      box-shadow: 
+        0 16px 40px rgba(139, 69, 19, 0.2),
+        0 8px 20px rgba(139, 69, 19, 0.15),
+        0 4px 10px rgba(139, 69, 19, 0.1);
+    }
+
+    #musicStack .stack-card.active .music-card-title {
+      color: #C47A3A;
+    }
+
+    #musicStack .stack-card.active .music-card-artist {
+      color: #8B4513;
+    }
+
+    /* Card lift effect on hover during swipe */
+    #musicStack .stack-card.active:hover {
+      transform: translateY(-4px);
+      box-shadow: 
+        0 20px 50px rgba(139, 69, 19, 0.25),
+        0 10px 25px rgba(139, 69, 19, 0.2);
+    }
+
+    /* Card entrance animation */
+    @keyframes card-entrance {
+      0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .music-card.just-loaded {
+      animation: card-entrance 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    /* Card selection animation */
+    @keyframes card-selected {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    #musicStack .stack-card.selected .music-card-cover {
+      animation: card-selected 0.3s ease-in-out;
+    }
+
+    /* Playing indicator */
+    .music-playing-indicator {
+      display: none;
+      align-items: center;
+      gap: 2px;
+      margin-left: 6px;
+    }
+
+    .music-playing-indicator span {
+      width: 3px;
+      background: #C47A3A;
+      border-radius: 2px;
+    }
+
+    .music-playing-indicator span:nth-child(1) { height: 10px; }
+    .music-playing-indicator span:nth-child(2) { height: 16px; }
+    .music-playing-indicator span:nth-child(3) { height: 12px; }
+
+    /* Show indicator when card is active and playing */
+    #musicStack .stack-card.active.is-playing .music-playing-indicator {
+      display: flex;
+    }
+
+    #musicStack .stack-card.active.is-playing .music-playing-indicator span {
+      animation: playing-bar 0.8s ease-in-out infinite;
+    }
+
+    #musicStack .stack-card.active.is-playing .music-playing-indicator span:nth-child(1) { animation-delay: 0s; }
+    #musicStack .stack-card.active.is-playing .music-playing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    #musicStack .stack-card.active.is-playing .music-playing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes playing-bar {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.4); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .music-card .card-content {
+        padding: 14px 16px;
+      }
+      .music-card-title {
+        font-size: 1rem;
+      }
+      .music-card-controls {
+        margin-top: 10px;
+        padding-top: 10px;
+      }
+      .mc-play-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 0.9rem;
+      }
     }
 
     /* ===== BIRTHDAY CAKE 3D ===== */
@@ -1729,6 +2262,95 @@
         width: 36px;
         height: 36px;
         font-size: 1.5rem;
+      }
+
+      /* Music Card Responsive */
+      .music-card-showcase {
+        padding: 10px 0;
+      }
+
+      .music-layout {
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .card-stack {
+        width: 90%;
+        max-width: 300px;
+        height: 420px;
+        margin: 20px auto 30px;
+      }
+
+      .music-nav-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+      }
+
+      .music-nav-btn.large {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+
+      .music-counter {
+        font-size: 0.9rem;
+        padding: 6px 16px;
+        min-width: 80px;
+      }
+    }
+
+    @media(max-width:480px) {
+      #music {
+        padding: 60px 15px 80px;
+      }
+
+      .music-layout {
+        flex-direction: column;
+        gap: 25px;
+      }
+
+      .music-image {
+        order: -1;
+      }
+
+      .music-chibi-img {
+        width: 180px;
+      }
+
+      .card-stack {
+        width: 92%;
+        max-width: 280px;
+        height: 380px;
+        margin: 15px auto 25px;
+      }
+
+      .music-nav-controls {
+        gap: 20px;
+      }
+
+      .music-nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      .music-nav-btn.large {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+      }
+
+      .music-hint {
+        font-size: 0.75rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .section-sub {
+        font-size: 0.85rem;
       }
     }
 
@@ -2435,6 +3057,7 @@
       <li><a href="#wishes">Letter</a></li>
       <li><a href="#garden">Garden</a></li>
       <li><a href="#music">Music</a></li>
+      <li><a href="#music-cards">Now Playing</a></li>
       <li><a href="#art">Art</a></li>
       <li><a href="#cake">Cake</a></li>
       <li><a href="#mbbs">Future Dr.</a></li>
@@ -2549,40 +3172,51 @@
     </div>
   </section>
 
-  <!-- MUSIC -->
+  <!-- MUSIC PLAYER - CARD STYLE -->
   <section id="music">
-    <h2 class="section-title reveal">Nafisa's Playlist 🎵</h2>
-    <p class="section-sub reveal">Songs that feel like you 🎶</p>
+    <h2 class="section-title reveal">Your Music Collection 🎵</h2>
+    <p class="section-sub reveal">Tap a card to play · Swipe to browse ✨</p>
+
     <div class="music-layout">
-      <div class="music-chibi reveal from-left">
-        <img src="images/ChatGPT Image May 7, 2026, 01_32_37 PM.png" alt="N listening to music">
+      <!-- Left Side - Image -->
+      <div class="music-image reveal from-left">
+        <img src="images/ChatGPT Image May 7, 2026, 01_32_37 PM.png" alt="Nafisa listening to music" class="music-chibi-img">
       </div>
-      <div class="music-player reveal from-right">
-        <div class="vinyl" id="vinyl" onclick="togglePlay()">
-          <div class="vinyl-center">🎵</div>
+
+      <!-- Right Side - Card Stack -->
+      <div class="music-card-showcase reveal from-right">
+        <div class="card-stack" id="musicStack">
+          <!-- Cards are injected by JS -->
         </div>
-        <div class="track-name" id="trackName">Aashiq Tera</div>
-        <div class="track-mood" id="trackMood">Downloaded playlist - 01 of 32</div>
-        <audio class="music-audio" id="audioPlayer" preload="metadata"></audio>
-        <div class="progress-bar" onclick="seekTrack(event,this)">
-          <div class="progress-fill" id="progressFill"></div>
+
+        <!-- Navigation Controls -->
+        <div class="music-nav-controls">
+          <button class="music-nav-btn large" id="musicPrevBtn" aria-label="Previous track">
+            <span>⏮</span>
+          </button>
+          <div class="music-counter" id="musicCounter">1 / 32</div>
+          <button class="music-nav-btn large" id="musicNextBtn" aria-label="Next track">
+            <span>⏭</span>
+          </button>
         </div>
-        <div class="music-controls">
-          <button class="mc-btn" onclick="prevTrack()" aria-label="Previous song">&#9198;</button>
-          <button class="mc-btn play-btn" id="playBtn" onclick="togglePlay()"
-            aria-label="Play or pause">&#9654;</button>
-          <button class="mc-btn" onclick="nextTrack()" aria-label="Next song">&#9197;</button>
-        </div>
-        <div class="playlist-window">
-          <button class="playlist-arrow" id="playlistPrev" onclick="slidePlaylist(-1)"
-            aria-label="Previous songs">&#8249;</button>
-          <div class="playlists" id="playlist"></div>
-          <button class="playlist-arrow" id="playlistNext" onclick="slidePlaylist(1)"
-            aria-label="Next songs">&#8250;</button>
-        </div>
-        <div class="playlist-meta" id="playlistMeta"></div>
+
+        <p class="music-hint">Use arrows or swipe on cards to change tracks</p>
       </div>
     </div>
+
+    <!-- Hidden Audio Player -->
+    <audio class="music-audio" id="audioPlayer" preload="metadata"></audio>
+
+    <!-- Hidden elements for JS compatibility -->
+    <div id="trackName" style="display:none">Aashiq Tera</div>
+    <div id="trackMood" style="display:none">01 of 32</div>
+    <button id="playBtn" style="display:none">▶</button>
+    <div id="progressFill" style="display:none"></div>
+    <div id="playlist" style="display:none"></div>
+    <div id="playlistMeta" style="display:none"></div>
+    <button id="playlistPrev" style="display:none">&#8249;</button>
+    <button id="playlistNext" style="display:none">&#8250;</button>
+    <div id="vinyl" style="display:none"></div>
   </section>
 
   <!-- ART SHOWCASE -->
@@ -2591,52 +3225,52 @@
     <p class="section-sub reveal">Swipe right to browse artworks ⟳</p>
     <div class="card-stack" id="artStack">
       <div class="stack-card" data-index="6">
-        <img src="images/art7.jpeg" alt="The Enigmatic Gaze">
+        <img src="images/art7.jpeg" alt="Rose Wax Candle">
         <div class="card-content">
-          <div class="art-name">The Enigmatic Gaze</div>
-          <div class="art-desc">An intimate artistic portrait of a black cat.</div>
+          <div class="art-name">Crimson Rose Candle</div>
+          <div class="art-desc">A handcrafted rose-shaped wax candle, rich red &amp; glowing with warmth.</div>
         </div>
       </div>
       <div class="stack-card" data-index="5">
-        <img src="images/art6.jpeg" alt="Evening Sanctuary">
+        <img src="images/art6.jpeg" alt="Purple Daisy Candle">
         <div class="card-content">
-          <div class="art-name">Evening Sanctuary</div>
-          <div class="art-desc">A cozy interior with warm amber glow.</div>
+          <div class="art-name">Violet Daisy Candle</div>
+          <div class="art-desc">A handmade purple daisy candle, sculpted petal by petal — delicate &amp; dreamy.</div>
         </div>
       </div>
       <div class="stack-card" data-index="4">
-        <img src="images/art5.jpeg" alt="Lunar Tranquility">
+        <img src="images/art5.jpeg" alt="Music Scrapbook Page">
         <div class="card-content">
-          <div class="art-name">Lunar Tranquility</div>
-          <div class="art-desc">Moon reflected upon gentle oceanic waters.</div>
+          <div class="art-name">Soundtrack of My Soul</div>
+          <div class="art-desc">A vintage music journal spread — cassette tapes, morning ocean reads &amp; raw feelings.</div>
         </div>
       </div>
       <div class="stack-card" data-index="3">
-        <img src="images/art4.jpeg" alt="Gallery Collection">
+        <img src="images/art4.jpeg" alt="Wandering In Time Scrapbook">
         <div class="card-content">
-          <div class="art-name">Gallery Collection</div>
-          <div class="art-desc">Five distinct artistic feline personalities.</div>
+          <div class="art-name">Wandering in Time</div>
+          <div class="art-desc">Film strips, moody interiors &amp; the quiet words — "Don't settle for yourself."</div>
         </div>
       </div>
       <div class="stack-card" data-index="2">
-        <img src="images/art3.jpeg" alt="Garden Reverie">
+        <img src="images/art3.jpeg" alt="Self Love Club Scrapbook">
         <div class="card-content">
-          <div class="art-name">Garden Reverie</div>
-          <div class="art-desc">A feline basking among blooming tulips.</div>
+          <div class="art-name">Self Love Club</div>
+          <div class="art-desc">Crimson skies, lamp-lit streets &amp; a "Self Love Club" sticker — a reminder to choose yourself.</div>
         </div>
       </div>
       <div class="stack-card" data-index="1">
-        <img src="images/art2.jpeg" alt="The Royal Guardian">
+        <img src="images/art2.jpeg" alt="Sinking Into The Sunset Scrapbook">
         <div class="card-content">
-          <div class="art-name">The Royal Guardian</div>
-          <div class="art-desc">A majestic feline with golden crown.</div>
+          <div class="art-name">Sinking Into the Sunset</div>
+          <div class="art-desc">Warm brown collage pages with "Good Luck" vibes, sunsets &amp; self-love clippings.</div>
         </div>
       </div>
       <div class="stack-card" data-index="0">
-        <img src="images/art1.jpeg" alt="The Kitchen Maestro">
+        <img src="images/art1.jpeg" alt="Dusk Travel Scrapbook Journal">
         <div class="card-content">
-          <div class="art-name">The Kitchen Maestro</div>
-          <div class="art-desc">An adorable feline in a cook's apron.</div>
+          <div class="art-name">Dusk Travel Journal</div>
+          <div class="art-desc">A scrapbook full of adventures — film strips, colour swatches &amp; "Happiness" stickers.</div>
         </div>
       </div>
     </div>
@@ -2993,6 +3627,8 @@
       isPlaying = playing;
       playBtn.innerHTML = playing ? '&#10074;&#10074;' : '&#9654;';
       document.getElementById('vinyl').classList.toggle('spinning', playing);
+      // Update music card play state
+      if (typeof updateMcPlayState === 'function') updateMcPlayState();
     }
     function playCurrent() {
       const playPromise = audioEl.play();
@@ -3017,6 +3653,9 @@
       const duration = audioEl.duration;
       const pct = Number.isFinite(duration) && duration > 0 ? (audioEl.currentTime / duration) * 100 : 0;
       progressFill.style.width = pct + '%';
+      // Update music card progress bar
+      var mcProgressFill = document.getElementById('mc-progress-fill-' + curTrack);
+      if (mcProgressFill) mcProgressFill.style.width = pct + '%';
     }
     function prevTrack() { selectTrack(curTrack - 1, isPlaying); }
     function nextTrack(autoPlay = isPlaying) { selectTrack(curTrack + 1, autoPlay); }
@@ -3033,7 +3672,11 @@
       progressFill.style.width = (pct * 100) + '%';
     }
     audioEl.addEventListener('timeupdate', updateProgress);
-    audioEl.addEventListener('loadedmetadata', updateProgress);
+    audioEl.addEventListener('loadedmetadata', function() {
+      updateProgress();
+      // Update duration on active music card
+      if (typeof updateMcDuration === 'function') updateMcDuration();
+    });
     audioEl.addEventListener('play', () => setPlayingState(true));
     audioEl.addEventListener('pause', () => setPlayingState(false));
     audioEl.addEventListener('ended', () => nextTrack(true));
@@ -3207,7 +3850,353 @@
       });
     })();
 
+    // ===== MUSIC CARD SHOWCASE =====
+    (function () {
+      var stack = document.getElementById('musicStack');
+      if (!stack) return;
+
+      var EMOJIS = ['🎵','🎶','🎼','🎸','🎹','🎷','🎺','🥁','🎻','✨'];
+      var SWIPE_THRESHOLD = 70;
+      var musicIdx = 0;        // index of currently active (top) card
+      var mcTotal  = 0;
+      var mcAnimating = false;
+      var mcCards  = [];
+      var mcDragStartX = null;
+      var mcDragging   = false;
+      var mcCurrentCard = null;
+
+      // ── Build cards from the shared `tracks` array ──────────────────
+      function buildMusicCards() {
+        stack.innerHTML = '';
+        mcTotal = tracks.length;
+
+        // Duration placeholder (will be updated when audio loads)
+        var defaultDuration = getRandomDuration();
+
+        // Render in reverse so index-0 ends up on top (highest z-index)
+        for (var i = mcTotal - 1; i >= 0; i--) {
+          var t = tracks[i];
+          var card = document.createElement('div');
+          card.className = 'stack-card music-card' + (i === 0 ? ' active' : '');
+          card.setAttribute('data-track-index', i);
+
+          var emoji = EMOJIS[i % EMOJIS.length];
+          var duration = t.duration || defaultDuration;
+          var artist = t.artist || "Nafisa's Playlist";
+
+          card.innerHTML =
+            '<div class="music-card-cover">' +
+              '<span class="cover-emoji">' + emoji + '</span>' +
+              '<span class="cover-track-num">Track ' + String(i + 1).padStart(2, '0') + ' of ' + mcTotal + '</span>' +
+              '<span class="music-now-badge">▶ Playing</span>' +
+              '<span class="music-swipe-arrow left">◀</span>' +
+              '<span class="music-swipe-arrow right">▶</span>' +
+            '</div>' +
+            '<div class="card-content">' +
+              '<div class="music-card-track-info">' +
+                '<div class="music-card-title" id="mc-title-' + i + '">' + t.name + '</div>' +
+                '<div class="music-card-meta">' +
+                  '<span class="music-card-artist">' + artist + '</span>' +
+                  '<span class="music-card-duration" id="mc-duration-' + i + '">' + duration + '</span>' +
+                '</div>' +
+                '<div class="music-progress-bar" id="mc-progress-' + i + '">' +
+                  '<div class="music-progress-fill" id="mc-progress-fill-' + i + '"></div>' +
+                '</div>' +
+                '<div class="music-card-controls">' +
+                  '<button class="mc-play-btn" data-track="' + i + '" aria-label="Play track">' +
+                    '<span class="play-icon">▶</span>' +
+                  '</button>' +
+                  '<div class="music-playing-indicator">' +
+                    '<span></span><span></span><span></span>' +
+                  '</div>' +
+                  '<div class="mc-control-btns">' +
+                    '<button class="mc-nav-btn mc-prev" data-track="' + i + '" aria-label="Previous">⏮</button>' +
+                    '<button class="mc-nav-btn mc-next" data-track="' + i + '" aria-label="Next">⏭</button>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+
+          // Click entire card to play
+          card.addEventListener('click', function(e) {
+            if (e.target.closest('.mc-play-btn') || e.target.closest('.mc-nav-btn')) return;
+            
+            // Handle progress bar click - seek
+            var progressBar = e.target.closest('.music-progress-bar');
+            if (progressBar && audioEl.duration) {
+              var rect = progressBar.getBoundingClientRect();
+              var pct = (e.clientX - rect.left) / rect.width;
+              audioEl.currentTime = pct * audioEl.duration;
+              return;
+            }
+            
+            var trackIndex = parseInt(card.getAttribute('data-track-index'));
+            playMusicCard(trackIndex);
+          });
+
+          stack.appendChild(card);
+        }
+
+        mcCards = Array.from(stack.querySelectorAll('.stack-card'));
+
+        // Apply stacking transforms
+        mcCards.forEach(function (card, i) {
+          card.style.zIndex   = mcCards.length - i;
+          card.style.transform = 'translateY(' + (i * 4) + 'px) scale(' + (1 - i * 0.03) + ')';
+          card.style.opacity  = i < 4 ? '1' : '0.3';
+        });
+
+        // Add event listeners for control buttons (with proper handling)
+        document.querySelectorAll('.mc-play-btn').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var trackIndex = parseInt(btn.getAttribute('data-track'));
+            if (trackIndex === curTrack) {
+              togglePlay();
+            } else {
+              curTrack = trackIndex;
+              audioEl.src = tracks[curTrack].src;
+              audioEl.load();
+              playCurrent();
+              syncMcLabel();
+            }
+          });
+        });
+
+        document.querySelectorAll('.mc-nav-btn').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (btn.classList.contains('mc-prev')) {
+              mcGoPrev();
+            } else if (btn.classList.contains('mc-next')) {
+              mcGoNext();
+            }
+          });
+        });
+
+        updateMcCounter();
+      }
+
+      // Generate random duration for tracks
+      function getRandomDuration() {
+        var minutes = Math.floor(Math.random() * 3) + 2;
+        var seconds = Math.floor(Math.random() * 60);
+        return String(minutes) + ':' + String(seconds).padStart(2, '0');
+      }
+
+      // Play a specific track from card
+      function playMusicCard(trackIndex) {
+        if (trackIndex === curTrack) {
+          togglePlay();
+        } else {
+          curTrack = trackIndex;
+          loadTrack(curTrack);
+          playCurrent();
+          syncMcLabel();
+          updateMcPlayState();
+        }
+      }
+
+      // ── Counter ──────────────────────────────────────────────────────
+      function updateMcCounter() {
+        var el = document.getElementById('musicCounter');
+        if (el) el.textContent = (musicIdx + 1) + ' / ' + mcTotal;
+      }
+
+      // ── Sync card title to the current track name ────────────────────
+      function syncMcLabel() {
+        var activeCard = stack.querySelector('.stack-card.active');
+        if (!activeCard) return;
+        var nameEl = activeCard.querySelector('.music-card-title');
+        if (nameEl) nameEl.textContent = tracks[curTrack].name;
+        var numEl = activeCard.querySelector('.cover-track-num');
+        if (numEl) numEl.textContent = 'Track ' + String(curTrack + 1).padStart(2, '0') + ' of ' + mcTotal;
+        // Reset progress bar
+        var progressFillEl = activeCard.querySelector('.music-progress-fill');
+        if (progressFillEl) progressFillEl.style.width = '0%';
+        musicIdx = curTrack;
+        updateMcCounter();
+        updateMcPlayState();
+      }
+
+      // ── Update play/pause state on cards ───────────────────────────────
+      function updateMcPlayState() {
+        document.querySelectorAll('.mc-play-btn').forEach(function(btn) {
+          var trackIndex = parseInt(btn.getAttribute('data-track'));
+          var isCurrentTrack = trackIndex === curTrack;
+          var icon = btn.querySelector('.play-icon');
+          if (icon) {
+            icon.textContent = isCurrentTrack && isPlaying ? '⏸' : '▶';
+          }
+        });
+        
+        // Update active card playing state
+        var activeCard = stack.querySelector('.stack-card.active');
+        if (activeCard) {
+          activeCard.classList.toggle('is-playing', isPlaying);
+        }
+      }
+
+      // ── Update duration on active card when audio loads ───────────────
+      function updateMcDuration() {
+        var activeCard = stack.querySelector('.stack-card.active');
+        if (!activeCard) return;
+        var durationEl = activeCard.querySelector('.music-card-duration');
+        if (durationEl && audioEl.duration) {
+          var mins = Math.floor(audioEl.duration / 60);
+          var secs = Math.floor(audioEl.duration % 60);
+          durationEl.textContent = mins + ':' + String(secs).padStart(2, '0');
+          // Store in track data for other cards
+          tracks[curTrack].duration = mins + ':' + String(secs).padStart(2, '0');
+        }
+      }
+
+      // ── Fly the top card off in a direction ──────────────────────────
+      function flyMusicCard(direction) {
+        if (mcAnimating) return;
+        mcAnimating = true;
+
+        var active = stack.querySelector('.stack-card.active');
+        if (!active) { mcAnimating = false; return; }
+
+        var xTarget = direction === 'right' ? '130%' : '-130%';
+        var rot     = direction === 'right' ? '14deg' : '-14deg';
+
+        active.style.transition = 'transform 0.32s ease-out, opacity 0.32s';
+        active.style.transform  = 'translateX(' + xTarget + ') rotate(' + rot + ')';
+        active.style.opacity    = '0';
+
+        setTimeout(function () {
+          active.style.transition = 'none';
+          active.style.transform  = '';
+          active.style.opacity    = '';
+          active.classList.remove('active');
+
+          // Move flown card to the bottom of the DOM
+          stack.insertBefore(active, stack.firstChild);
+
+          // Re-query and re-stack
+          var all = stack.querySelectorAll('.stack-card');
+          all.forEach(function (c, i) {
+            c.style.transition = i === all.length - 1
+              ? 'transform 0.38s cubic-bezier(0.34,1.56,0.64,1)'
+              : '';
+            c.style.transform = 'translateY(' + (i * 4) + 'px) scale(' + (1 - i * 0.03) + ')';
+            c.style.zIndex    = all.length - i;
+            c.style.opacity   = i < 4 ? '1' : '0.3';
+            if (i === all.length - 1) c.classList.add('active');
+          });
+
+          setTimeout(function () {
+            all.forEach(function (c) { c.style.transition = ''; });
+            syncMcLabel();
+            mcAnimating = false;
+          }, 380);
+        }, 325);
+      }
+
+      // ── Next / Prev (wires to the existing player) ───────────────────
+      var mcNextDebounce = false;
+      var mcPrevDebounce = false;
+
+      function mcGoNext() {
+        if (mcNextDebounce || mcAnimating) return;
+        mcNextDebounce = true;
+        flyMusicCard('left');
+        nextTrack(isPlaying);
+        setTimeout(function () { mcNextDebounce = false; }, 500);
+      }
+
+      function mcGoPrev() {
+        if (mcPrevDebounce || mcAnimating) return;
+        mcPrevDebounce = true;
+        flyMusicCard('right');
+        prevTrack();
+        setTimeout(function () { mcPrevDebounce = false; }, 500);
+      }
+
+      // ── Button clicks ────────────────────────────────────────────────
+      document.getElementById('musicNextBtn').addEventListener('click', mcGoNext);
+      document.getElementById('musicPrevBtn').addEventListener('click', mcGoPrev);
+
+      // ── Touch swipe ──────────────────────────────────────────────────
+      var mcTouchStartX = 0;
+      stack.addEventListener('touchstart', function (e) {
+        if (mcAnimating) return;
+        mcTouchStartX = e.touches[0].clientX;
+        mcCurrentCard = stack.querySelector('.stack-card.active');
+        if (mcCurrentCard) mcCurrentCard.style.transition = 'none';
+      }, { passive: true });
+
+      stack.addEventListener('touchmove', function (e) {
+        if (!mcCurrentCard || mcAnimating) return;
+        var dx = e.touches[0].clientX - mcTouchStartX;
+        mcCurrentCard.style.transform = 'translateX(' + dx + 'px) rotate(' + (dx * 0.025) + 'deg)';
+        stack.classList.toggle('dragging-right', dx > 10);
+        stack.classList.toggle('dragging-left',  dx < -10);
+      }, { passive: true });
+
+      stack.addEventListener('touchend', function (e) {
+        stack.classList.remove('dragging-right', 'dragging-left');
+        if (!mcCurrentCard) return;
+        var dx = e.changedTouches[0].clientX - mcTouchStartX;
+        if (Math.abs(dx) >= SWIPE_THRESHOLD) {
+          dx > 0 ? mcGoNext() : mcGoPrev();
+        } else {
+          mcCurrentCard.style.transition = 'transform 0.3s ease';
+          mcCurrentCard.style.transform  = '';
+        }
+        mcCurrentCard = null;
+      }, { passive: true });
+
+      // ── Mouse drag ───────────────────────────────────────────────────
+      stack.addEventListener('mousedown', function (e) {
+        if (mcAnimating) return;
+        mcDragging    = true;
+        mcDragStartX  = e.clientX;
+        mcCurrentCard = stack.querySelector('.stack-card.active');
+        if (mcCurrentCard) mcCurrentCard.style.transition = 'none';
+      });
+
+      document.addEventListener('mousemove', function (e) {
+        if (!mcDragging || !mcCurrentCard || mcAnimating) return;
+        var dx = e.clientX - mcDragStartX;
+        mcCurrentCard.style.transform = 'translateX(' + dx + 'px) rotate(' + (dx * 0.025) + 'deg)';
+        stack.classList.toggle('dragging-right', dx > 10);
+        stack.classList.toggle('dragging-left',  dx < -10);
+      });
+
+      document.addEventListener('mouseup', function (e) {
+        stack.classList.remove('dragging-right', 'dragging-left');
+        if (!mcDragging || !mcCurrentCard) return;
+        mcDragging = false;
+        var dx = e.clientX - mcDragStartX;
+        if (Math.abs(dx) >= SWIPE_THRESHOLD) {
+          dx > 0 ? mcGoNext() : mcGoPrev();
+        } else {
+          mcCurrentCard.style.transition = 'transform 0.3s ease';
+          mcCurrentCard.style.transform  = '';
+        }
+        mcCurrentCard = null;
+        mcDragStartX  = null;
+      });
+
+      // ── Patch selectTrack to keep card in sync ───────────────────────
+      var _origSelectTrack = selectTrack;
+      selectTrack = function (i, autoPlay) {
+        _origSelectTrack(i, autoPlay);
+        // After a short tick, re-sync the card label
+        setTimeout(syncMcLabel, 30);
+      };
+
+      // ── Init ─────────────────────────────────────────────────────────
+      buildMusicCards();
+    })();
+
     // ===== 3D FLOWER GARDEN - UPGRADED =====
+
     try {
       (function () {
         if (typeof THREE === 'undefined') throw new Error('THREE not loaded');
