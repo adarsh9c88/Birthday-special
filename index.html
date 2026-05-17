@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1118,12 +1118,11 @@
       border-radius: 20px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.12);
       overflow: hidden;
-      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), 
-                  opacity 0.4s ease,
-                  box-shadow 0.4s ease;
       cursor: grab;
       user-select: none;
+      -webkit-user-select: none;
       touch-action: none;
+      -webkit-touch-callout: none;
     }
 
     .stack-card:active {
@@ -1157,6 +1156,12 @@
     .stack-card.active {
       z-index: 10;
       box-shadow: 0 12px 32px rgba(180, 130, 200, 0.25);
+      animation: cardPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes cardPulse {
+      0%, 100% { box-shadow: 0 12px 32px rgba(180, 130, 200, 0.25); }
+      50% { box-shadow: 0 16px 40px rgba(180, 130, 200, 0.35); }
     }
 
     .stack-card.active:hover {
@@ -1174,6 +1179,47 @@
     @keyframes pulse {
       0%, 100% { opacity: 0.5; }
       50% { opacity: 1; }
+    }
+
+    .art-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .art-nav-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(196, 122, 58, 0.4);
+      background: white;
+      color: #8B4513;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .art-nav-btn:hover {
+      background: #FDF6EE;
+      transform: scale(1.1);
+    }
+
+    .art-counter {
+      font-size: 1rem;
+      color: #8B4513;
+      font-weight: 600;
+      min-width: 50px;
+      text-align: center;
+    }
+
+    .swipe-hint {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      margin-top: 10px;
     }
 
     /* ===== BIRTHDAY CAKE 3D ===== */
@@ -2543,60 +2589,63 @@
   <section id="art">
     <h2 class="section-title reveal">Art Showcase 🎨</h2>
     <p class="section-sub reveal">Swipe right to browse artworks ⟳</p>
-    <div class="card-stack">
+    <div class="card-stack" id="artStack">
       <div class="stack-card" data-index="6">
         <img src="images/art7.jpeg" alt="The Enigmatic Gaze">
         <div class="card-content">
           <div class="art-name">The Enigmatic Gaze</div>
-          <div class="art-desc">An intimate artistic portrait of a black cat with mesmerizing eyes.</div>
+          <div class="art-desc">An intimate artistic portrait of a black cat.</div>
         </div>
       </div>
       <div class="stack-card" data-index="5">
         <img src="images/art6.jpeg" alt="Evening Sanctuary">
         <div class="card-content">
           <div class="art-name">Evening Sanctuary</div>
-          <div class="art-desc">A cozy interior bathed in warm amber glow with starlit sky.</div>
+          <div class="art-desc">A cozy interior with warm amber glow.</div>
         </div>
       </div>
       <div class="stack-card" data-index="4">
         <img src="images/art5.jpeg" alt="Lunar Tranquility">
         <div class="card-content">
           <div class="art-name">Lunar Tranquility</div>
-          <div class="art-desc">A luminous crescent moon reflected upon gentle oceanic waters.</div>
+          <div class="art-desc">Moon reflected upon gentle oceanic waters.</div>
         </div>
       </div>
       <div class="stack-card" data-index="3">
         <img src="images/art4.jpeg" alt="Gallery Collection">
         <div class="card-content">
           <div class="art-name">Gallery Collection</div>
-          <div class="art-desc">Five distinct artistic feline personalities in one composition.</div>
+          <div class="art-desc">Five distinct artistic feline personalities.</div>
         </div>
       </div>
       <div class="stack-card" data-index="2">
         <img src="images/art3.jpeg" alt="Garden Reverie">
         <div class="card-content">
           <div class="art-name">Garden Reverie</div>
-          <div class="art-desc">A contented feline basking among blooming tulips and verdant foliage.</div>
+          <div class="art-desc">A feline basking among blooming tulips.</div>
         </div>
       </div>
       <div class="stack-card" data-index="1">
         <img src="images/art2.jpeg" alt="The Royal Guardian">
         <div class="card-content">
           <div class="art-name">The Royal Guardian</div>
-          <div class="art-desc">A majestic feline sovereign with an ornate golden crown.</div>
+          <div class="art-desc">A majestic feline with golden crown.</div>
         </div>
       </div>
-      <div class="stack-card active" data-index="0">
+      <div class="stack-card" data-index="0">
         <img src="images/art1.jpeg" alt="The Kitchen Maestro">
         <div class="card-content">
           <div class="art-name">The Kitchen Maestro</div>
-          <div class="art-desc">An adorable feline in a cook's apron preparing culinary delights.</div>
+          <div class="art-desc">An adorable feline in a cook's apron.</div>
         </div>
       </div>
     </div>
-    <div class="swipe-indicator">
-      <span>⟳ Swipe right to view next</span>
+    <div class="art-nav">
+      <button class="art-nav-btn" onclick="prevArt()">◀</button>
+      <span class="art-counter">1 / 7</span>
+      <button class="art-nav-btn" onclick="nextArt()">▶</button>
     </div>
+    <p class="swipe-hint">Tap arrows or swipe right to browse</p>
   </section>
 
   <!-- BIRTHDAY CAKE 3D -->
@@ -3004,94 +3053,158 @@
       setTimeout(() => b.remove(), 1600);
     }
 
-    // ===== ART CARD STACK SWIPE =====
+// ===== ART SHOWCASE NAVIGATION =====
     (function() {
-      const stack = document.querySelector('.card-stack');
+      var artIndex = 0;
+      var artTotal = 7;
+      var isAnimating = false;
+      
+      var stack = document.getElementById('artStack');
       if (!stack) return;
       
-      const cards = Array.from(stack.querySelectorAll('.stack-card'));
-      let startX = 0, currentX = 0, isDragging = false;
-      let activeCard = stack.querySelector('.stack-card.active');
-      
-      cards.forEach((card, i) => {
-        const offset = i * 4;
-        const scale = 1 - (i * 0.03);
-        const zIndex = cards.length - i;
-        card.style.transform = `translateY(${offset}px) scale(${scale})`;
-        card.style.zIndex = zIndex;
+      var cards = stack.querySelectorAll('.stack-card');
+      cards.forEach(function(card, i) {
+        card.style.transform = 'translateY(' + (i * 4) + 'px) scale(' + (1 - i * 0.03) + ')';
+        card.style.zIndex = cards.length - i;
         card.style.opacity = i < 4 ? 1 : 0.3;
+        if (i === cards.length - 1) card.classList.add('active');
       });
       
-      function handleStart(e) {
-        if (!activeCard) return;
-        isDragging = true;
-        startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        activeCard.style.transition = 'none';
+      function updateCounter() {
+        var counter = document.querySelector('.art-counter');
+        if (counter) counter.textContent = (artIndex + 1) + ' / ' + artTotal;
       }
       
-      function handleMove(e) {
-        if (!isDragging || !activeCard) return;
-        const x = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        currentX = x - startX;
-        const rotate = currentX * 0.03;
-        activeCard.style.transform = `translateX(${currentX}px) rotate(${rotate}deg) scale(1.02)`;
-        activeCard.style.boxShadow = currentX > 40 ? `0 12px 32px rgba(180,130,200,0.35)` : '';
-      }
-      
-      function handleEnd() {
-        if (!isDragging || !activeCard) return;
-        isDragging = false;
+      window.nextArt = function() {
+        if (isAnimating) return;
+        isAnimating = true;
         
-        if (currentX > 120) {
-          swipeRight();
-        } else {
-          snapBack();
-        }
-        currentX = 0;
-      }
-      
-      function swipeRight() {
-        activeCard.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease';
-        activeCard.style.transform = 'translateX(150%) rotate(12deg)';
-        activeCard.style.opacity = '0';
+        var active = stack.querySelector('.stack-card.active');
+        if (!active) { isAnimating = false; return; }
         
-        setTimeout(() => {
-          activeCard.classList.remove('active');
-          activeCard.style.transition = '';
-          activeCard.style.transform = '';
-          activeCard.style.opacity = '';
-          stack.appendChild(activeCard);
+        active.style.transition = 'transform 0.3s ease-out, opacity 0.3s';
+        active.style.transform = 'translateX(120%) rotate(12deg)';
+        active.style.opacity = '0';
+        
+        setTimeout(function() {
+          active.style.transition = 'none';
+          active.style.transform = '';
+          active.style.opacity = '';
+          active.classList.remove('active');
+          stack.insertBefore(active, stack.firstChild);
           
-          const newCards = Array.from(stack.querySelectorAll('.stack-card'));
-          newCards.forEach((card, i) => {
-            const offset = i * 4;
-            const scale = 1 - (i * 0.03);
-            const zIndex = newCards.length - i;
-            card.style.transform = `translateY(${offset}px) scale(${scale})`;
-            card.style.zIndex = zIndex;
+          var newCards = stack.querySelectorAll('.stack-card');
+          newCards.forEach(function(card, i) {
+            if (i === 0) {
+              card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            }
+            card.style.transform = 'translateY(' + (i * 4) + 'px) scale(' + (1 - i * 0.03) + ')';
+            card.style.zIndex = newCards.length - i;
             card.style.opacity = i < 4 ? 1 : 0.3;
             if (i === newCards.length - 1) {
               card.classList.add('active');
-              activeCard = card;
-            } else {
-              card.classList.remove('active');
             }
           });
+          
+          setTimeout(function() {
+            newCards.forEach(function(c) { c.style.transition = ''; });
+          }, 400);
+          
+          artIndex = (artIndex + 1) % artTotal;
+          updateCounter();
+          isAnimating = false;
+        }, 300);
+      };
+      
+      window.prevArt = function() {
+        if (isAnimating) return;
+        isAnimating = true;
+        
+        var allCards = stack.querySelectorAll('.stack-card');
+        var lastCard = allCards[allCards.length - 1];
+        
+        lastCard.classList.add('active');
+        lastCard.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        lastCard.style.transform = 'translateY(0) scale(1)';
+        
+        setTimeout(function() {
+          allCards.forEach(function(card, i) {
+            card.style.transform = 'translateY(' + (i * 4) + 'px) scale(' + (1 - i * 0.03) + ')';
+            card.style.zIndex = allCards.length - i;
+            card.style.opacity = i < 4 ? 1 : 0.3;
+            if (i !== allCards.length - 1) card.classList.remove('active');
+          });
+          
+          artIndex = (artIndex - 1 + artTotal) % artTotal;
+          updateCounter();
+          isAnimating = false;
         }, 400);
-      }
+      };
       
-      function snapBack() {
-        activeCard.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        activeCard.style.transform = 'translateX(0) scale(1)';
-        activeCard.style.boxShadow = '';
-      }
+      // Swipe handling
+      var startX = 0, currentX = 0, isDragging = false;
+      var currentCard = null;
       
-      stack.addEventListener('mousedown', handleStart);
-      stack.addEventListener('touchstart', handleStart);
-      document.addEventListener('mousemove', handleMove);
-      document.addEventListener('touchmove', handleMove);
-      document.addEventListener('mouseup', handleEnd);
-      document.addEventListener('touchend', handleEnd);
+      stack.addEventListener('touchstart', function(e) {
+        if (isAnimating) return;
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        currentCard = stack.querySelector('.stack-card.active');
+        if (currentCard) currentCard.style.transition = 'none';
+      }, { passive: true });
+      
+      stack.addEventListener('touchmove', function(e) {
+        if (!isDragging || !currentCard || isAnimating) return;
+        currentX = e.touches[0].clientX - startX;
+        if (currentX > 0) {
+          currentCard.style.transform = 'translateX(' + currentX + 'px) rotate(' + (currentX * 0.02) + 'deg)';
+        }
+      }, { passive: true });
+      
+      stack.addEventListener('touchend', function() {
+        if (!isDragging || !currentCard) return;
+        isDragging = false;
+        
+        if (currentX > 40) {
+          window.nextArt();
+        } else if (currentCard) {
+          currentCard.style.transition = 'transform 0.3s ease';
+          currentCard.style.transform = 'translateX(0)';
+        }
+        currentX = 0;
+        currentCard = null;
+      });
+      
+      // Mouse support
+      stack.addEventListener('mousedown', function(e) {
+        if (isAnimating) return;
+        isDragging = true;
+        startX = e.clientX;
+        currentCard = stack.querySelector('.stack-card.active');
+        if (currentCard) currentCard.style.transition = 'none';
+      });
+      
+      document.addEventListener('mousemove', function(e) {
+        if (!isDragging || !currentCard || isAnimating) return;
+        currentX = e.clientX - startX;
+        if (currentX > 0) {
+          currentCard.style.transform = 'translateX(' + currentX + 'px) rotate(' + (currentX * 0.02) + 'deg)';
+        }
+      });
+      
+      document.addEventListener('mouseup', function() {
+        if (!isDragging || !currentCard) return;
+        isDragging = false;
+        
+        if (currentX > 40) {
+          window.nextArt();
+        } else if (currentCard) {
+          currentCard.style.transition = 'transform 0.3s ease';
+          currentCard.style.transform = 'translateX(0)';
+        }
+        currentX = 0;
+        currentCard = null;
+      });
     })();
 
     // ===== 3D FLOWER GARDEN - UPGRADED =====
