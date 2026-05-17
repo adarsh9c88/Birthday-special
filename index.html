@@ -1380,13 +1380,18 @@
     .music-card-cover {
       width: 100%;
       height: 320px;
+<<<<<<< HEAD
       background: linear-gradient(145deg, #FAF3E8 0%, #F0E4D4 50%, #E5D9C6 100%);
+=======
+      background: linear-gradient(135deg, #F5E6D3 0%, #EDD5B8 60%, rgba(196,122,58,0.12) 100%);
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 10px;
       user-select: none;
+<<<<<<< HEAD
       transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       flex-shrink: 0;
       position: relative;
@@ -1427,6 +1432,11 @@
           rgba(139, 69, 19, 0.01) 20px
         );
       pointer-events: none;
+=======
+      transition: background 0.4s ease;
+      flex-shrink: 0;
+      position: relative;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
     }
 
     .music-card-cover .cover-emoji {
@@ -1449,6 +1459,7 @@
       opacity: 0.7;
     }
 
+<<<<<<< HEAD
     /* Active card — enhanced stacked effect with stronger shadow */
     #musicStack .stack-card.active .music-card-cover {
       background: linear-gradient(145deg, #F5E6D3 0%, #E8D9C2 50%, #DCC9B0 100%);
@@ -1462,6 +1473,11 @@
     /* Active card highlight edge */
     #musicStack .stack-card.active .music-card-cover::before {
       border: 2px solid rgba(212, 149, 106, 0.3);
+=======
+    /* Active card — tint the placeholder slightly warmer */
+    #musicStack .stack-card.active .music-card-cover {
+      background: linear-gradient(135deg, #EDD5B8 0%, rgba(212,149,106,0.25) 100%);
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
     }
 
     /* Now-playing badge on active card */
@@ -1524,23 +1540,38 @@
     }
 
     .music-card .card-content {
+<<<<<<< HEAD
       padding: 16px 18px;
+=======
+      padding: 18px 20px;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
       text-align: left;
     }
 
     .music-card-track-info {
       display: flex;
       flex-direction: column;
+<<<<<<< HEAD
       gap: 8px;
+=======
+      gap: 6px;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
     }
 
     .music-card-title {
       font-family: 'Pacifico', cursive;
+<<<<<<< HEAD
       font-size: 1.05rem;
       color: #8B4513;
       margin: 0;
       line-height: 1.3;
       word-break: break-word;
+=======
+      font-size: 1.1rem;
+      color: #8B4513;
+      margin: 0;
+      line-height: 1.3;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
     }
 
     .music-card-meta {
@@ -1565,6 +1596,7 @@
       font-weight: 600;
     }
 
+<<<<<<< HEAD
     .music-progress-bar {
       width: 100%;
       height: 6px;
@@ -1590,42 +1622,86 @@
       gap: 8px;
       margin-top: 12px;
       padding-top: 10px;
+=======
+    .music-card-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 14px;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
       border-top: 1px solid rgba(196, 122, 58, 0.2);
     }
 
     .mc-play-btn {
+<<<<<<< HEAD
       width: 36px;
       height: 36px;
+=======
+      width: 38px;
+      height: 38px;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
       border-radius: 50%;
       background: linear-gradient(135deg, #D4956A, #8B4513);
       border: none;
       color: white;
+<<<<<<< HEAD
       font-size: 0.9rem;
+=======
+      font-size: 1rem;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+<<<<<<< HEAD
       transition: all 0.15s ease;
       box-shadow: 0 3px 10px rgba(139, 69, 19, 0.25);
+=======
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
       flex-shrink: 0;
     }
 
     .mc-play-btn:hover {
       transform: scale(1.1);
+<<<<<<< HEAD
       box-shadow: 0 5px 14px rgba(139, 69, 19, 0.4);
     }
 
     .mc-play-btn:active {
       transform: scale(0.92);
+=======
+      box-shadow: 0 6px 16px rgba(139, 69, 19, 0.45);
+    }
+
+    .mc-play-btn:active {
+      transform: scale(0.95);
+    }
+
+    .mc-play-btn.playing {
+      animation: mc-btn-pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes mc-btn-pulse {
+      0%, 100% { box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3); }
+      50% { box-shadow: 0 4px 20px rgba(212, 149, 106, 0.6); }
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
     }
 
     .mc-control-btns {
       display: flex;
+<<<<<<< HEAD
       gap: 4px;
+=======
+      gap: 6px;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
       margin-left: auto;
     }
 
     .mc-nav-btn {
+<<<<<<< HEAD
       width: 28px;
       height: 28px;
       border-radius: 50%;
@@ -1633,11 +1709,24 @@
       border: 1px solid rgba(196, 122, 58, 0.4);
       color: #8B4513;
       font-size: 0.75rem;
+=======
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1.5px solid rgba(196, 122, 58, 0.4);
+      color: #8B4513;
+      font-size: 0.85rem;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+<<<<<<< HEAD
       transition: all 0.15s ease;
+=======
+      transition: all 0.2s ease;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
     }
 
     .mc-nav-btn:hover {
@@ -1645,6 +1734,7 @@
       transform: scale(1.1);
     }
 
+<<<<<<< HEAD
     .mc-nav-btn:active {
       transform: scale(0.9);
     }
@@ -1655,6 +1745,11 @@
         0 16px 40px rgba(139, 69, 19, 0.2),
         0 8px 20px rgba(139, 69, 19, 0.15),
         0 4px 10px rgba(139, 69, 19, 0.1);
+=======
+    /* Active card enhancements */
+    #musicStack .stack-card.active {
+      box-shadow: 0 16px 48px rgba(180, 130, 200, 0.35);
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
     }
 
     #musicStack .stack-card.active .music-card-title {
@@ -1665,6 +1760,7 @@
       color: #8B4513;
     }
 
+<<<<<<< HEAD
     /* Card lift effect on hover during swipe */
     #musicStack .stack-card.active:hover {
       transform: translateY(-4px);
@@ -1673,6 +1769,8 @@
         0 10px 25px rgba(139, 69, 19, 0.2);
     }
 
+=======
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
     /* Card entrance animation */
     @keyframes card-entrance {
       0% {
@@ -1702,16 +1800,24 @@
 
     /* Playing indicator */
     .music-playing-indicator {
+<<<<<<< HEAD
       display: none;
       align-items: center;
       gap: 2px;
       margin-left: 6px;
+=======
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      margin-left: 8px;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
     }
 
     .music-playing-indicator span {
       width: 3px;
       background: #C47A3A;
       border-radius: 2px;
+<<<<<<< HEAD
     }
 
     .music-playing-indicator span:nth-child(1) { height: 10px; }
@@ -1734,6 +1840,22 @@
     @keyframes playing-bar {
       0%, 100% { transform: scaleY(1); }
       50% { transform: scaleY(0.4); }
+=======
+      animation: playing-bar 0.8s ease-in-out infinite;
+    }
+
+    .music-playing-indicator span:nth-child(1) { height: 12px; animation-delay: 0s; }
+    .music-playing-indicator span:nth-child(2) { height: 18px; animation-delay: 0.2s; }
+    .music-playing-indicator span:nth-child(3) { height: 14px; animation-delay: 0.4s; }
+
+    @keyframes playing-bar {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.5); }
+    }
+
+    #musicStack .stack-card:not(.active) .music-playing-indicator {
+      display: none;
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
     }
 
     /* Responsive adjustments */
@@ -3899,9 +4021,12 @@
                   '<span class="music-card-artist">' + artist + '</span>' +
                   '<span class="music-card-duration" id="mc-duration-' + i + '">' + duration + '</span>' +
                 '</div>' +
+<<<<<<< HEAD
                 '<div class="music-progress-bar" id="mc-progress-' + i + '">' +
                   '<div class="music-progress-fill" id="mc-progress-fill-' + i + '"></div>' +
                 '</div>' +
+=======
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
                 '<div class="music-card-controls">' +
                   '<button class="mc-play-btn" data-track="' + i + '" aria-label="Play track">' +
                     '<span class="play-icon">▶</span>' +
@@ -3920,6 +4045,7 @@
           // Click entire card to play
           card.addEventListener('click', function(e) {
             if (e.target.closest('.mc-play-btn') || e.target.closest('.mc-nav-btn')) return;
+<<<<<<< HEAD
             
             // Handle progress bar click - seek
             var progressBar = e.target.closest('.music-progress-bar');
@@ -3930,6 +4056,8 @@
               return;
             }
             
+=======
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
             var trackIndex = parseInt(card.getAttribute('data-track-index'));
             playMusicCard(trackIndex);
           });
@@ -3946,6 +4074,7 @@
           card.style.opacity  = i < 4 ? '1' : '0.3';
         });
 
+<<<<<<< HEAD
         // Add event listeners for control buttons (with proper handling)
         document.querySelectorAll('.mc-play-btn').forEach(function(btn) {
           btn.addEventListener('click', function(e) {
@@ -3973,6 +4102,28 @@
             } else if (btn.classList.contains('mc-next')) {
               mcGoNext();
             }
+=======
+        // Add event listeners for control buttons
+        document.querySelectorAll('.mc-play-btn').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var trackIndex = parseInt(btn.getAttribute('data-track'));
+            playMusicCard(trackIndex);
+          });
+        });
+
+        document.querySelectorAll('.mc-nav-btn.mc-prev').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            mcGoPrev();
+          });
+        });
+
+        document.querySelectorAll('.mc-nav-btn.mc-next').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            mcGoNext();
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
           });
         });
 
@@ -4013,9 +4164,12 @@
         if (nameEl) nameEl.textContent = tracks[curTrack].name;
         var numEl = activeCard.querySelector('.cover-track-num');
         if (numEl) numEl.textContent = 'Track ' + String(curTrack + 1).padStart(2, '0') + ' of ' + mcTotal;
+<<<<<<< HEAD
         // Reset progress bar
         var progressFillEl = activeCard.querySelector('.music-progress-fill');
         if (progressFillEl) progressFillEl.style.width = '0%';
+=======
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
         musicIdx = curTrack;
         updateMcCounter();
         updateMcPlayState();
@@ -4030,6 +4184,7 @@
           if (icon) {
             icon.textContent = isCurrentTrack && isPlaying ? '⏸' : '▶';
           }
+<<<<<<< HEAD
         });
         
         // Update active card playing state
@@ -4037,6 +4192,10 @@
         if (activeCard) {
           activeCard.classList.toggle('is-playing', isPlaying);
         }
+=======
+          btn.classList.toggle('playing', isCurrentTrack && isPlaying);
+        });
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
       }
 
       // ── Update duration on active card when audio loads ───────────────
@@ -4104,7 +4263,11 @@
       function mcGoNext() {
         if (mcNextDebounce || mcAnimating) return;
         mcNextDebounce = true;
+<<<<<<< HEAD
         flyMusicCard('left');
+=======
+        flyMusicCard('right');
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
         nextTrack(isPlaying);
         setTimeout(function () { mcNextDebounce = false; }, 500);
       }
@@ -4112,7 +4275,11 @@
       function mcGoPrev() {
         if (mcPrevDebounce || mcAnimating) return;
         mcPrevDebounce = true;
+<<<<<<< HEAD
         flyMusicCard('right');
+=======
+        flyMusicCard('left');
+>>>>>>> 828594dd54133f2e3b48fa4136e9108f330041cb
         prevTrack();
         setTimeout(function () { mcPrevDebounce = false; }, 500);
       }
