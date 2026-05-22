@@ -599,19 +599,87 @@
       flex-wrap: wrap;
     }
 
-    #three-canvas {
+    .canvas-container {
+      position: relative;
       flex: 1;
       min-width: 280px;
       height: 460px;
       border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(100, 200, 150, 0.2);
-      border: 2px solid rgba(185, 237, 216, 0.5);
+      box-shadow: 0 20px 60px rgba(78, 42, 93, 0.35);
+      border: 2px solid rgba(232, 163, 116, 0.45);
+      background: linear-gradient(to bottom, #110B29 0%, #3B154C 35%, #7D315B 65%, #C26353 90%, #E8A374 100%);
+      overflow: hidden;
+    }
+
+    #three-canvas {
+      width: 100%;
+      height: 100%;
       cursor: grab;
       display: block;
     }
 
     #three-canvas:active {
       cursor: grabbing;
+    }
+
+    #fullscreen-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(25, 15, 45, 0.7);
+      border: 1px solid rgba(232, 163, 116, 0.4);
+      color: #E8A374;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    #fullscreen-btn:hover {
+      background: rgba(232, 163, 116, 0.9);
+      color: #110B29;
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(232, 163, 116, 0.4);
+    }
+
+    #fullscreen-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Fullscreen State */
+    .canvas-container.fullscreen {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: none !important;
+      border-radius: 0 !important;
+      border: none !important;
+      z-index: 999999 !important;
+      box-shadow: none !important;
+    }
+
+    .canvas-container.fullscreen #fullscreen-btn {
+      top: 25px;
+      right: 25px;
+      bottom: auto;
+    }
+
+    .canvas-container.fullscreen #fullscreen-btn .expand-icon {
+      display: none !important;
+    }
+
+    .canvas-container.fullscreen #fullscreen-btn .compress-icon {
+      display: block !important;
     }
 
     .garden-info {
@@ -3181,7 +3249,19 @@
     <h2 class="section-title reveal">Your Enchanted Garden 🌺</h2>
     <p class="section-sub reveal">Drag to spin · Scroll to zoom · Click flowers to bloom! 🌸</p>
     <div class="garden-layout">
-      <canvas id="three-canvas" class="reveal from-left"></canvas>
+      <div class="canvas-container reveal from-left">
+        <canvas id="three-canvas"></canvas>
+        <button id="fullscreen-btn" title="Toggle Fullscreen">
+          <!-- Expand Icon -->
+          <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+          </svg>
+          <!-- Compress Icon -->
+          <svg class="compress-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+            <path d="M4 14h6v6M20 10h-6V4M14 10l7-7M10 14l-7 7"/>
+          </svg>
+        </button>
+      </div>
       <div class="garden-info reveal from-right">
         <h3>🌿 Garden Secrets</h3>
         <div class="garden-tip">
@@ -3589,6 +3669,192 @@
 
     // Music player and card stack logic has been moved to external music.js for better performance and clean code separation.
 
+    // ===== ART SHOWCASE NAVIGATION =====
+    (function () {
+      const stack = document.getElementById('artStack');
+      if (!stack) return;
+      
+      let artIndex = 0;
+      const artTotal = 7;
+      let isAnimating = false;
+      
+      function initArtCards() {
+        const cards = stack.querySelectorAll('.stack-card');
+        cards.forEach((card, i) => {
+          card.style.transform = `translateY(${i * 4}px) scale(${1 - i * 0.03})`;
+          card.style.zIndex = cards.length - i;
+          card.style.opacity = i < 4 ? 1 : 0.3;
+          if (i === 0) {
+            card.classList.add('active');
+          } else {
+            card.classList.remove('active');
+          }
+        });
+      }
+      
+      initArtCards();
+      
+      function updateCounter() {
+        const counter = document.querySelector('.art-counter');
+        if (counter) {
+          counter.textContent = `${artIndex + 1} / ${artTotal}`;
+        }
+      }
+      
+      window.nextArt = function () {
+        if (isAnimating) return;
+        isAnimating = true;
+        
+        const active = stack.querySelector('.stack-card.active');
+        if (!active) { isAnimating = false; return; }
+        
+        // Fly top card off-screen to the right
+        active.style.transition = 'transform 0.4s ease-in, opacity 0.3s ease-in';
+        active.style.transform = 'translateX(150%) rotate(12deg)';
+        active.style.opacity = '0';
+        
+        // Move to bottom after slide
+        setTimeout(() => {
+          active.style.transition = 'none';
+          active.style.transform = '';
+          active.style.opacity = '';
+          active.classList.remove('active');
+          stack.appendChild(active);
+          
+          const newCards = stack.querySelectorAll('.stack-card');
+          newCards.forEach((card, i) => {
+            if (i === 0) card.classList.add('active');
+            card.style.transition = 'transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1)';
+            card.style.transform = `translateY(${i * 4}px) scale(${1 - i * 0.03})`;
+            card.style.zIndex = newCards.length - i;
+            card.style.opacity = i < 4 ? 1 : 0.3;
+          });
+          
+          artIndex = (artIndex + 1) % artTotal;
+          updateCounter();
+          
+          setTimeout(() => {
+            newCards.forEach(c => { c.style.transition = ''; });
+            isAnimating = false;
+          }, 450);
+        }, 300);
+      };
+      
+      window.prevArt = function () {
+        if (isAnimating) return;
+        isAnimating = true;
+        
+        const cards = stack.querySelectorAll('.stack-card');
+        const lastCard = cards[cards.length - 1];
+        
+        // Position offscreen first
+        lastCard.style.transition = 'none';
+        lastCard.style.transform = 'translateX(150%) rotate(12deg)';
+        lastCard.style.opacity = '0';
+        lastCard.style.zIndex = cards.length;
+        
+        // Move to top of stack
+        stack.insertBefore(lastCard, stack.firstChild);
+        
+        // Force reflow
+        lastCard.offsetHeight;
+        
+        const newCards = stack.querySelectorAll('.stack-card');
+        newCards.forEach((card, i) => {
+          if (i === 0) {
+            card.classList.add('active');
+            card.style.transition = 'transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease';
+          } else {
+            card.classList.remove('active');
+            card.style.transition = 'transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1)';
+          }
+          card.style.transform = `translateY(${i * 4}px) scale(${1 - i * 0.03})`;
+          card.style.zIndex = newCards.length - i;
+          card.style.opacity = i < 4 ? 1 : 0.3;
+        });
+        
+        artIndex = (artIndex - 1 + artTotal) % artTotal;
+        updateCounter();
+        
+        setTimeout(() => {
+          newCards.forEach(c => { c.style.transition = ''; });
+          isAnimating = false;
+        }, 450);
+      };
+      
+      // Touch/Mouse dragging gestures
+      let startX = 0, startY = 0, currentX = 0, currentY = 0, isDragging = false;
+      let activeCard = null;
+      
+      function handleStart(clientX, clientY) {
+        if (isAnimating) return;
+        activeCard = stack.querySelector('.stack-card.active');
+        if (!activeCard) return;
+        isDragging = true;
+        startX = clientX;
+        startY = clientY;
+        activeCard.style.transition = 'none';
+      }
+      
+      function handleMove(clientX, clientY) {
+        if (!isDragging || !activeCard || isAnimating) return;
+        currentX = clientX - startX;
+        currentY = clientY - startY;
+        const rotate = currentX * 0.03;
+        activeCard.style.transform = `translateX(${currentX}px) translateY(${currentY}px) rotate(${rotate}deg) scale(1.02)`;
+        
+        if (Math.abs(currentX) > 40) {
+          activeCard.style.boxShadow = '0 16px 40px rgba(139, 69, 19, 0.25)';
+        } else {
+          activeCard.style.boxShadow = '';
+        }
+      }
+      
+      function handleEnd() {
+        if (!isDragging || !activeCard) return;
+        isDragging = false;
+        
+        const swipeThreshold = 80;
+        if (currentX > swipeThreshold) {
+          window.nextArt();
+        } else if (currentX < -swipeThreshold) {
+          window.prevArt();
+        } else {
+          activeCard.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
+          activeCard.style.transform = 'translateY(0) scale(1)';
+          activeCard.style.boxShadow = '';
+        }
+        currentX = 0;
+        currentY = 0;
+        activeCard = null;
+      }
+      
+      stack.addEventListener('touchstart', e => {
+        handleStart(e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive: true });
+      
+      stack.addEventListener('touchmove', e => {
+        handleMove(e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive: true });
+      
+      stack.addEventListener('touchend', () => {
+        handleEnd();
+      }, { passive: true });
+      
+      stack.addEventListener('mousedown', e => {
+        handleStart(e.clientX, e.clientY);
+        e.preventDefault();
+      });
+      
+      document.addEventListener('mousemove', e => {
+        handleMove(e.clientX, e.clientY);
+      });
+      
+      document.addEventListener('mouseup', () => {
+        handleEnd();
+      });
+    })();
+
     // ===== 3D FLOWER GARDEN - UPGRADED =====
 
     try {
@@ -3603,9 +3869,9 @@
 
         const scene = new THREE.Scene();
 
-        // Enhanced lighting (toned down & optimized to prevent washing out / white ground)
-        scene.add(new THREE.AmbientLight(0xfff5f8, 0.28));
-        const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x4A844A, 0.22); // Sky blue and lush green ground tones
+        // Enhanced dusk twilight lighting (warm peachy sunset and rich twilight shadows)
+        scene.add(new THREE.AmbientLight(0xfff5f8, 0.35));
+        const hemiLight = new THREE.HemisphereLight(0x4A2574, 0x2A5E2E, 0.28); // Violet twilight sky and deep forest green ground tones
         hemiLight.position.set(0, 50, 0);
         scene.add(hemiLight);
 
@@ -3622,8 +3888,8 @@
         resize();
         window.addEventListener('resize', resize);
 
-        // Main directional light with shadows (softened warm sun to 0.55 for rich contrast & gorgeous depth)
-        const dl = new THREE.DirectionalLight(0xfffae8, 0.55);
+        // Main directional sunset light with shadows (softened peachy golden sun for spectacular dusk realism)
+        const dl = new THREE.DirectionalLight(0xFFB7A1, 0.50);
         dl.position.set(5, 12, 6);
         dl.castShadow = true;
         dl.shadow.mapSize.width = 2048;
@@ -3762,6 +4028,241 @@
           [4.2, 1.8, 0xFFB7C5, 0xFF8FAB, 0.95]
         ];
         const flowers = fd.map(d => mkFlower(...d));
+
+        // Cozy 3D Garden Cottage
+        function mkHouse() {
+          const house = new THREE.Group();
+
+          // Materials with refined custom palettes
+          const wallMat = new THREE.MeshStandardMaterial({
+            color: 0xFDFBF7, // Ivory-cream walls
+            roughness: 0.85,
+            metalness: 0.05
+          });
+          const roofMat = new THREE.MeshStandardMaterial({
+            color: 0xBE5A38, // Terracotta red-orange
+            roughness: 0.7,
+            metalness: 0.1
+          });
+          const woodMat = new THREE.MeshStandardMaterial({
+            color: 0x5C4033, // Rich dark wood
+            roughness: 0.8,
+            metalness: 0.05
+          });
+          const lightWoodMat = new THREE.MeshStandardMaterial({
+            color: 0x8B5A2B, // Warm wooden balcony planks/posts
+            roughness: 0.7,
+            metalness: 0.05
+          });
+          const windowMat = new THREE.MeshStandardMaterial({
+            color: 0xFFECB3, // Warm glowing windows
+            emissive: 0xFFC107,
+            emissiveIntensity: 0.65,
+            roughness: 0.2,
+            metalness: 0.8
+          });
+          const glassFrameMat = new THREE.MeshStandardMaterial({
+            color: 0x3E2723, // Deep brown frames
+            roughness: 0.5
+          });
+          const stoneMat = new THREE.MeshStandardMaterial({
+            color: 0x7D7D7D, // Grey chimney stone
+            roughness: 0.9,
+            metalness: 0.1
+          });
+          const brassMat = new THREE.MeshStandardMaterial({
+            color: 0xDDAC4E, // Brass handle
+            roughness: 0.2,
+            metalness: 0.8
+          });
+
+          // 1. Walls
+          const walls = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.8, 2.0), wallMat);
+          walls.position.y = 0.9;
+          walls.castShadow = true;
+          walls.receiveShadow = true;
+          house.add(walls);
+
+          // 2. Gabled Roof (Pyramidal cone rotated 45deg)
+          const roof = new THREE.Mesh(new THREE.ConeGeometry(1.85, 1.25, 4), roofMat);
+          roof.position.y = 2.425;
+          roof.rotation.y = Math.PI / 4;
+          roof.castShadow = true;
+          roof.receiveShadow = true;
+          house.add(roof);
+
+          // 3. Chimney
+          const chimneyGroup = new THREE.Group();
+          chimneyGroup.position.set(0.75, 2.4, -0.6);
+          const chimneyMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 1.0, 8), stoneMat);
+          chimneyMesh.castShadow = true;
+          chimneyMesh.receiveShadow = true;
+          chimneyGroup.add(chimneyMesh);
+          
+          const chimneyCap = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.12, 8), stoneMat);
+          chimneyCap.position.y = 0.5;
+          chimneyCap.castShadow = true;
+          chimneyGroup.add(chimneyCap);
+          house.add(chimneyGroup);
+
+          // 4. Arched Ground Floor Door
+          const doorGroup = new THREE.Group();
+          doorGroup.position.set(0, 0.45, 1.01);
+          const doorBody = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.9, 0.06), woodMat);
+          doorBody.castShadow = true;
+          doorGroup.add(doorBody);
+          
+          const archGeo = new THREE.CylinderGeometry(0.275, 0.275, 0.06, 12, 1, false, 0, Math.PI);
+          const arch = new THREE.Mesh(archGeo, woodMat);
+          arch.rotation.x = Math.PI / 2;
+          arch.rotation.z = Math.PI;
+          arch.position.y = 0.45;
+          arch.castShadow = true;
+          doorGroup.add(arch);
+
+          const handle = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 8), brassMat);
+          handle.position.set(0.18, 0, 0.05);
+          doorGroup.add(handle);
+          house.add(doorGroup);
+
+          // 5. Windows
+          // Front window
+          const winFront = new THREE.Group();
+          winFront.position.set(-0.7, 0.9, 1.01);
+          const glassFront = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.6, 0.04), windowMat);
+          const frameFront = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.66, 0.02), glassFrameMat);
+          frameFront.position.z = -0.01;
+          winFront.add(glassFront, frameFront);
+          const gridH1 = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.04, 0.05), glassFrameMat);
+          const gridV1 = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.6, 0.05), glassFrameMat);
+          winFront.add(gridH1, gridV1);
+          house.add(winFront);
+
+          // Left window
+          const winLeft = new THREE.Group();
+          winLeft.position.set(-1.21, 0.9, 0);
+          winLeft.rotation.y = -Math.PI / 2;
+          const glassLeft = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.6, 0.04), windowMat);
+          const frameLeft = new THREE.Mesh(new THREE.BoxGeometry(0.66, 0.66, 0.02), glassFrameMat);
+          frameLeft.position.z = -0.01;
+          winLeft.add(glassLeft, frameLeft);
+          const gridH2 = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.04, 0.05), glassFrameMat);
+          const gridV2 = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.6, 0.05), glassFrameMat);
+          winLeft.add(gridH2, gridV2);
+          house.add(winLeft);
+
+          // Right window
+          const winRight = new THREE.Group();
+          winRight.position.set(1.21, 0.9, -0.4);
+          winRight.rotation.y = Math.PI / 2;
+          const glassRight = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.6, 0.04), windowMat);
+          const frameRight = new THREE.Mesh(new THREE.BoxGeometry(0.66, 0.66, 0.02), glassFrameMat);
+          frameRight.position.z = -0.01;
+          winRight.add(glassRight, frameRight);
+          const gridH3 = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.04, 0.05), glassFrameMat);
+          const gridV3 = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.6, 0.05), glassFrameMat);
+          winRight.add(gridH3, gridV3);
+          house.add(winRight);
+
+          // 6. Balcony with columns, railing, and a tiny pot plant
+          const balcony = new THREE.Group();
+          balcony.position.set(0.6, 0.9, 1.0);
+
+          // Floor
+          const balFloor = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.06, 0.5), lightWoodMat);
+          balFloor.position.set(0, -0.03, 0.25);
+          balFloor.castShadow = true;
+          balFloor.receiveShadow = true;
+          balcony.add(balFloor);
+
+          // Supports
+          const supportL = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.87, 8), lightWoodMat);
+          supportL.position.set(-0.35, -0.465, 0.45);
+          supportL.castShadow = true;
+          supportL.receiveShadow = true;
+          balcony.add(supportL);
+
+          const supportR = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.87, 8), lightWoodMat);
+          supportR.position.set(0.35, -0.465, 0.45);
+          supportR.castShadow = true;
+          supportR.receiveShadow = true;
+          balcony.add(supportR);
+
+          // Railings
+          const railHeight = 0.35;
+          const frontRail = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.04, 0.04), lightWoodMat);
+          frontRail.position.set(0, railHeight, 0.48);
+          frontRail.castShadow = true;
+          balcony.add(frontRail);
+
+          const leftRail = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04, 0.5), lightWoodMat);
+          leftRail.position.set(-0.38, railHeight, 0.25);
+          leftRail.castShadow = true;
+          balcony.add(leftRail);
+
+          const rightRail = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04, 0.5), lightWoodMat);
+          rightRail.position.set(0.38, railHeight, 0.25);
+          rightRail.castShadow = true;
+          balcony.add(rightRail);
+
+          // Balusters
+          for (let b = -3; b <= 3; b++) {
+            if (b === 0) continue;
+            const bal = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, railHeight, 4), lightWoodMat);
+            bal.position.set(b * 0.1, railHeight / 2, 0.48);
+            bal.castShadow = true;
+            balcony.add(bal);
+          }
+          for (let bz = 1; bz <= 3; bz++) {
+            const balL = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, railHeight, 4), lightWoodMat);
+            balL.position.set(-0.38, railHeight / 2, bz * 0.12);
+            balL.castShadow = true;
+            balcony.add(balL);
+
+            const balR = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, railHeight, 4), lightWoodMat);
+            balR.position.set(0.38, railHeight / 2, bz * 0.12);
+            balR.castShadow = true;
+            balcony.add(balR);
+          }
+
+          // Balcony Door
+          const balDoor = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.75, 0.04), woodMat);
+          balDoor.position.set(0, 0.375, 0.01);
+          balcony.add(balDoor);
+
+          const balDoorGlass = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.35, 0.05), windowMat);
+          balDoorGlass.position.set(0, 0.45, 0.02);
+          balcony.add(balDoorGlass);
+
+          // Tiny Terracotta Potted Plant
+          const potMat = new THREE.MeshStandardMaterial({ color: 0xCD853F, roughness: 0.9 });
+          const plantMat = new THREE.MeshStandardMaterial({ color: 0x2E7D32, roughness: 0.8 });
+          
+          const potGroup = new THREE.Group();
+          potGroup.position.set(0.24, 0.05, 0.35);
+          const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.045, 0.09, 8), potMat);
+          pot.castShadow = true;
+          potGroup.add(pot);
+
+          const plant = new THREE.Mesh(new THREE.SphereGeometry(0.075, 8, 8), plantMat);
+          plant.position.y = 0.07;
+          plant.castShadow = true;
+          potGroup.add(plant);
+          balcony.add(potGroup);
+
+          house.add(balcony);
+
+          // Position and rotation inside the back-center of the garden (end of the path)
+          house.position.set(0.0, -0.3, -6.5);
+          house.rotation.y = 0.25;
+          house.scale.setScalar(1.2);
+          house.userData.originalScale = 1.2;
+          
+          scene.add(house);
+        }
+
+        // Add the cottage to the scene
+        mkHouse();
 
         // Enhanced trees
         function mkTree(x, z) {
@@ -3982,6 +4483,31 @@
         }, { rootMargin: '50px' });
         
         obs.observe(canvas);
+
+        // Fullscreen Toggle Behavior
+        const fBtn = document.getElementById('fullscreen-btn');
+        if (fBtn) {
+          const cContainer = fBtn.closest('.canvas-container');
+          if (cContainer) {
+            fBtn.addEventListener('click', e => {
+              e.stopPropagation();
+              cContainer.classList.toggle('fullscreen');
+              // Instantly trigger window resize so Three.js camera/renderer adjusts to fullscreen or exit
+              setTimeout(() => {
+                window.dispatchEvent(new Event('resize'));
+              }, 60);
+            });
+
+            window.addEventListener('keydown', e => {
+              if (e.key === 'Escape' && cContainer.classList.contains('fullscreen')) {
+                cContainer.classList.remove('fullscreen');
+                setTimeout(() => {
+                  window.dispatchEvent(new Event('resize'));
+                }, 60);
+              }
+            });
+          }
+        }
       })();
     } catch (e) {
       console.error('Garden error:', e);
@@ -4622,17 +5148,17 @@
       goldLight.position.set(0, 6, 3);
       scene.add(goldLight);
 
-      // Main helix group - VERTICAL ORIENTATION (Y-axis)
+      // Main helix group - HORIZONTAL ORIENTATION (X-axis)
       const helix = new THREE.Group();
       scene.add(helix);
       
-      // DNA Parameters - Vertical helix along Y-axis
-      const turns = 5;               // More turns for better visualization
-      const pointsPerTurn = 16;     // Higher resolution
-      const radius = 1.2;           // Slightly tighter radius
-      const heightPerTurn = 1.4;    // Height per turn (vertical spacing)
+      // DNA Parameters - Horizontal helix along X-axis
+      const turns = 4.5;
+      const pointsPerTurn = 16;
+      const radius = 1.0;
+      const widthPerTurn = 1.8;
       const total = turns * pointsPerTurn;
-      const totalHeight = turns * heightPerTurn;
+      const totalWidth = turns * widthPerTurn;
       
       // Enhanced sphere geometry with better detail
       const sphereGeo = new THREE.SphereGeometry(0.2, 24, 24);
@@ -4670,7 +5196,7 @@
         metalness: 0.1
       });
       
-      // Create vertical DNA helix along Y-axis
+      // Create horizontal DNA helix along X-axis
       const backbonePointsA = [];
       const backbonePointsB = [];
       
@@ -4678,46 +5204,41 @@
         const t = i / pointsPerTurn;
         const angle = t * Math.PI * 2;
         
-        // VERTICAL: Y increases from bottom to top
-        const y = (i / total) * totalHeight - totalHeight / 2;
+        // HORIZONTAL: X increases from left to right
+        const x = (i / total) * totalWidth - totalWidth / 2;
         
-        // Two strands 180 degrees apart (phase offset of PI)
-        const x1 = Math.cos(angle) * radius;
+        // Two strands 180 degrees apart in the Y-Z plane
+        const y1 = Math.cos(angle) * radius;
         const z1 = Math.sin(angle) * radius;
-        const x2 = Math.cos(angle + Math.PI) * radius;
+        const y2 = Math.cos(angle + Math.PI) * radius;
         const z2 = Math.sin(angle + Math.PI) * radius;
         
         // Strand A spheres (pink)
         if (i < total) {
           const a = new THREE.Mesh(sphereGeo, matA);
-          a.position.set(x1, y, z1);
+          a.position.set(x, y1, z1);
           a.castShadow = true;
           helix.add(a);
           
           // Strand B spheres (purple)
           const b = new THREE.Mesh(sphereGeo, matB);
-          b.position.set(x2, y, z2);
+          b.position.set(x, y2, z2);
           b.castShadow = true;
           helix.add(b);
         }
         
         // Store backbone points for tube creation
-        backbonePointsA.push(new THREE.Vector3(x1, y, z1));
-        backbonePointsB.push(new THREE.Vector3(x2, y, z2));
+        backbonePointsA.push(new THREE.Vector3(x, y1, z1));
+        backbonePointsB.push(new THREE.Vector3(x, y2, z2));
         
         // Add rungs (connectors) every 2 points
         if (i < total && i % 2 === 0) {
-          const dx = x2 - x1;
-          const dz = z2 - z1;
-          const len = Math.sqrt(dx * dx + dz * dz);
-          
           const rung = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.06, 0.06, len, 12),
+            new THREE.CylinderGeometry(0.045, 0.045, radius * 2, 12),
             rungMat
           );
-          rung.position.set((x1 + x2) / 2, y, (z1 + z2) / 2);
-          rung.rotation.z = Math.PI / 2;
-          rung.rotation.y = -Math.atan2(dz, dx);
+          rung.position.set(x, 0, 0);
+          rung.rotation.x = angle;
           rung.castShadow = true;
           helix.add(rung);
         }
@@ -4757,14 +5278,14 @@
           particleMat.clone()
         );
         const angle = Math.random() * Math.PI * 2;
-        const dist = 2 + Math.random() * 2;
-        const yPos = (Math.random() - 0.5) * totalHeight;
+        const dist = 1.8 + Math.random() * 2.2;
+        const xPos = (Math.random() - 0.5) * totalWidth;
         p.position.set(
+          xPos,
           Math.cos(angle) * dist,
-          yPos,
           Math.sin(angle) * dist
         );
-        p.userData.originalY = yPos;
+        p.userData.originalX = xPos;
         p.userData.phase = Math.random() * Math.PI * 2;
         p.userData.speed = 0.5 + Math.random() * 1;
         particleGroup.add(p);
@@ -4790,16 +5311,16 @@
       
       icons.forEach((emo, i) => {
         const s = makeTextSprite(emo);
-        // Position icons in a circle around the DNA
         const ang = (i / icons.length) * Math.PI * 2;
-        const r = 4.5;
+        const r = 3.5;
+        const xPos = (i / (icons.length - 1) - 0.5) * 8.5; // Spread horizontally
         s.position.set(
+          xPos,
           Math.cos(ang) * r,
-          Math.sin(ang * 1.2) * 1.8,
-          Math.sin(ang) * r - 1
+          Math.sin(ang) * r
         );
         s.scale.set(0.85, 0.85, 0.85);
-        s.userData.baseY = s.position.y;
+        s.userData.baseX = xPos;
         s.userData.phase = i;
         iconGroup.add(s);
       });
@@ -4852,15 +5373,15 @@
         helix.rotation.y = rotY;
         helix.rotation.x = rotX;
         
-        // Animate particles floating around DNA
+        // Animate particles floating around DNA horizontally
         particleGroup.children.forEach(p => {
-          p.position.y = p.userData.originalY + Math.sin(time * p.userData.speed + p.userData.phase) * 0.3;
+          p.position.x = p.userData.originalX + Math.sin(time * p.userData.speed + p.userData.phase) * 0.3;
         });
         
-        // Animate icons
-        iconGroup.rotation.y = -rotY * 0.25 + time * 0.08;
+        // Rotate icons group around X axis (horizontal helix orbit)
+        iconGroup.rotation.x = time * 0.15;
         iconGroup.children.forEach((s, i) => {
-          s.position.y = s.userData.baseY + Math.sin(time * 1.0 + s.userData.phase) * 0.4;
+          s.position.x = s.userData.baseX + Math.sin(time * 0.8 + s.userData.phase) * 0.15;
         });
         
         renderer.render(scene, cam);
