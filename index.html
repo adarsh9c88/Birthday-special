@@ -1495,12 +1495,41 @@
           rgba(139, 69, 19, 0.01) 20px
         );
       pointer-events: none;
+      z-index: 3;
+    }
+
+    .music-card-cover .cover-bg-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 1;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    #musicStack .stack-card.active:hover .cover-bg-image {
+      transform: scale(1.1);
+    }
+
+    .music-card-cover .cover-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.52) 100%);
+      z-index: 2;
     }
 
     .music-card-cover .cover-emoji {
-      font-size: 5rem;
+      font-size: 4.5rem;
       line-height: 1;
       animation: cover-pulse 3s ease-in-out infinite;
+      z-index: 4;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
     }
 
     @keyframes cover-pulse {
@@ -1513,8 +1542,14 @@
       font-weight: 800;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--caramel);
-      opacity: 0.7;
+      color: #FFFFFF;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+      opacity: 0.95;
+      z-index: 4;
+    }
+
+    .music-now-badge {
+      z-index: 4;
     }
 
     /* Active card — enhanced stacked effect with stronger shadow */
@@ -1864,8 +1899,9 @@
 
     /* ===== BIRTHDAY CAKE 3D ===== */
     #cake {
-      background: linear-gradient(135deg, #FDF0E6 0%, #F5E6D3 100%);
+      background: linear-gradient(135deg, #FFF0F5 0%, #FFE4E1 40%, #FFD1DC 70%, #E8C3CD 100%);
       text-align: center;
+      position: relative;
     }
 
     .cake-layout {
@@ -1883,8 +1919,15 @@
       height: 400px;
       border-radius: 24px;
       cursor: grab;
-      box-shadow: 0 20px 60px rgba(255, 150, 180, 0.2);
-      border: 2px solid rgba(255, 200, 220, 0.4);
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.45), rgba(255, 240, 245, 0.25));
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 50px rgba(255, 143, 171, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      transition: box-shadow 0.3s ease;
+    }
+
+    #cake-canvas:hover {
+      box-shadow: 0 25px 60px rgba(255, 143, 171, 0.35);
     }
 
     /* ===== MBBS / FUTURE DOCTOR ===== */
@@ -2251,7 +2294,7 @@
 
     .wish-btn {
       margin-top: 20px;
-      background: linear-gradient(135deg, #D4956A, #8B4513);
+      background: linear-gradient(135deg, #FF8FAB, #C9B8F0);
       color: white;
       border: none;
       border-radius: 50px;
@@ -2261,7 +2304,7 @@
       font-weight: 700;
       cursor: pointer;
       letter-spacing: 0.5px;
-      box-shadow: 0 8px 25px rgba(139, 69, 19, 0.4);
+      box-shadow: 0 8px 25px rgba(255, 143, 171, 0.4);
       transition: transform 0.2s, box-shadow 0.2s;
       display: block;
       margin-left: auto;
@@ -2270,17 +2313,18 @@
 
     .wish-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(201, 122, 176, 0.5);
+      box-shadow: 0 12px 30px rgba(255, 143, 171, 0.6);
     }
 
     #wishMsg {
       text-align: center;
       margin-top: 18px;
       font-size: 1.15rem;
-      color: #8B4513;
+      color: #B25B70;
       font-weight: 700;
       min-height: 28px;
       font-family: 'Pacifico', cursive;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     }
 
     /* ===== FOOTER ===== */
@@ -4628,7 +4672,203 @@
             scene.add(drip);
           }
         });
+
+        // --- CUSTOM TOURING / 3D DECORATIONS & FRUITS ---
+        const creamMat = new THREE.MeshStandardMaterial({
+          color: 0xFFFFFF,
+          roughness: 0.1,
+          metalness: 0.1
+        });
+        const creamGeo = new THREE.DodecahedronGeometry(0.08, 1);
+
+        const strawMat = new THREE.MeshStandardMaterial({
+          color: 0xDE3163,
+          roughness: 0.2,
+          metalness: 0.05
+        });
+        const leafMat = new THREE.MeshStandardMaterial({
+          color: 0x2D6A4F,
+          roughness: 0.6
+        });
+
+        function createStrawberry() {
+          const group = new THREE.Group();
+          const bodyGeo = new THREE.ConeGeometry(0.08, 0.14, 8);
+          const body = new THREE.Mesh(bodyGeo, strawMat);
+          body.rotation.x = Math.PI;
+          body.castShadow = true;
+          group.add(body);
+          
+          const leafGeo = new THREE.SphereGeometry(0.035, 6, 6);
+          const leaf = new THREE.Mesh(leafGeo, leafMat);
+          leaf.position.y = 0.07;
+          leaf.scale.set(1.5, 0.3, 1.5);
+          group.add(leaf);
+          
+          return group;
+        }
+
+        const berryMat = new THREE.MeshStandardMaterial({
+          color: 0x3F3075,
+          roughness: 0.3,
+          metalness: 0.1
+        });
+        const berryGeo = new THREE.SphereGeometry(0.045, 12, 12);
+
+        // Bottom tier toppings (r = 1.7 at top y = 0.9)
+        for (let i = 0; i < 12; i++) {
+          const angle = (i / 12) * Math.PI * 2;
+          const cx = Math.cos(angle) * 1.68;
+          const cz = Math.sin(angle) * 1.68;
+          
+          const cream = new THREE.Mesh(creamGeo, creamMat);
+          cream.position.set(cx, 0.94, cz);
+          cream.castShadow = true;
+          cream.receiveShadow = true;
+          scene.add(cream);
+          
+          if (i % 2 === 0) {
+            const midAngle = angle + (Math.PI / 12);
+            const sx = Math.cos(midAngle) * 1.68;
+            const sz = Math.sin(midAngle) * 1.68;
+            const straw = createStrawberry();
+            straw.position.set(sx, 0.98, sz);
+            straw.rotation.set(0.2, -midAngle, 0.1);
+            scene.add(straw);
+          } else {
+            const midAngle = angle + (Math.PI / 12);
+            const bx1 = Math.cos(midAngle - 0.05) * 1.66;
+            const bz1 = Math.sin(midAngle - 0.05) * 1.66;
+            const bx2 = Math.cos(midAngle + 0.05) * 1.70;
+            const bz2 = Math.sin(midAngle + 0.05) * 1.70;
+            
+            const b1 = new THREE.Mesh(berryGeo, berryMat);
+            b1.position.set(bx1, 0.94, bz1);
+            b1.castShadow = true;
+            scene.add(b1);
+            
+            const b2 = new THREE.Mesh(berryGeo, berryMat);
+            b2.position.set(bx2, 0.94, bz2);
+            b2.castShadow = true;
+            scene.add(b2);
+          }
+        }
+
+        // Middle tier toppings (r = 1.5 at top y = 1.8)
+        for (let i = 0; i < 10; i++) {
+          const angle = (i / 10) * Math.PI * 2;
+          const cx = Math.cos(angle) * 1.48;
+          const cz = Math.sin(angle) * 1.48;
+          
+          const cream = new THREE.Mesh(creamGeo, creamMat);
+          cream.position.set(cx, 1.84, cz);
+          cream.castShadow = true;
+          cream.receiveShadow = true;
+          scene.add(cream);
+          
+          if (i % 2 === 0) {
+            const midAngle = angle + (Math.PI / 10);
+            const sx = Math.cos(midAngle) * 1.48;
+            const sz = Math.sin(midAngle) * 1.48;
+            const straw = createStrawberry();
+            straw.position.set(sx, 1.88, sz);
+            straw.rotation.set(0.2, -midAngle, 0.1);
+            scene.add(straw);
+          } else {
+            const midAngle = angle + (Math.PI / 10);
+            const bx1 = Math.cos(midAngle - 0.06) * 1.46;
+            const bz1 = Math.sin(midAngle - 0.06) * 1.46;
+            const bx2 = Math.cos(midAngle + 0.06) * 1.50;
+            const bz2 = Math.sin(midAngle + 0.06) * 1.50;
+            
+            const b1 = new THREE.Mesh(berryGeo, berryMat);
+            b1.position.set(bx1, 1.84, bz1);
+            b1.castShadow = true;
+            scene.add(b1);
+            
+            const b2 = new THREE.Mesh(berryGeo, berryMat);
+            b2.position.set(bx2, 1.84, bz2);
+            b2.castShadow = true;
+            scene.add(b2);
+          }
+        }
+
+        // Golden Heart Topper on Top Tier (y = 2.7)
+        const heartGroup = new THREE.Group();
+        const stemGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.7, 8);
+        const goldMat = new THREE.MeshStandardMaterial({
+          color: 0xFFD700,
+          metalness: 0.82,
+          roughness: 0.12
+        });
+        const stem = new THREE.Mesh(stemGeo, goldMat);
+        stem.position.y = 0.35;
+        stem.castShadow = true;
+        heartGroup.add(stem);
+
+        const heartMeshGroup = new THREE.Group();
+        heartMeshGroup.position.y = 0.7;
         
+        const sphereGeo = new THREE.SphereGeometry(0.08, 16, 16);
+        const sp1 = new THREE.Mesh(sphereGeo, goldMat);
+        sp1.position.x = -0.05;
+        sp1.castShadow = true;
+        heartMeshGroup.add(sp1);
+        
+        const sp2 = new THREE.Mesh(sphereGeo, goldMat);
+        sp2.position.x = 0.05;
+        sp2.castShadow = true;
+        heartMeshGroup.add(sp2);
+        
+        const coneGeo = new THREE.ConeGeometry(0.12, 0.18, 16);
+        const cone = new THREE.Mesh(coneGeo, goldMat);
+        cone.rotation.x = Math.PI;
+        cone.position.y = -0.06;
+        cone.castShadow = true;
+        heartMeshGroup.add(cone);
+        
+        heartGroup.add(heartMeshGroup);
+        heartGroup.position.set(-0.6, 2.7, -0.6);
+        heartGroup.rotation.y = 0.4;
+        scene.add(heartGroup);
+
+        // --- ENCHANTED GOLDEN FAIRY SPARKLES SYSTEM ---
+        const sparksGroup = new THREE.Group();
+        scene.add(sparksGroup);
+        
+        const sparkCount = 25;
+        const sparks = [];
+        const sparkGeo = new THREE.SphereGeometry(0.025, 8, 8);
+        const sparkMat = new THREE.MeshBasicMaterial({
+          color: 0xFFF099,
+          transparent: true,
+          opacity: 0.8
+        });
+        
+        for (let i = 0; i < sparkCount; i++) {
+          const sp = new THREE.Mesh(sparkGeo, sparkMat.clone());
+          const radius = 1.6 + Math.random() * 0.9;
+          const speed = 0.4 + Math.random() * 0.8;
+          const angle = Math.random() * Math.PI * 2;
+          const height = 0.2 + Math.random() * 3.2;
+          const bobSpeed = 1 + Math.random() * 2;
+          const bobHeight = 0.05 + Math.random() * 0.15;
+          
+          sp.position.set(Math.cos(angle) * radius, height, Math.sin(angle) * radius);
+          sparksGroup.add(sp);
+          
+          sparks.push({
+            mesh: sp,
+            radius,
+            speed,
+            angle,
+            height,
+            bobSpeed,
+            bobHeight,
+            seed: Math.random() * 100
+          });
+        }
+
         // Decorative elements on top
         const decoColors = [0xFFB7C5, 0xC9B8F0, 0xB8EDD8, 0xFFD166, 0xFF8FAB];
         decoColors.forEach((c, ci) => {
@@ -4724,6 +4964,8 @@
         window.addEventListener('mousemove', e => { if (!isDrag) return; rotY += (e.clientX - prevX) * 0.01; prevX = e.clientX; });
         window.addEventListener('touchmove', e => { if (!isDrag) return; rotY += (e.touches[0].clientX - prevX) * 0.01; prevX = e.touches[0].clientX; });
         
+        const blowoutParticles = [];
+
         window.blowCandles = function () {
           if (candlesOut) return; 
           candlesOut = true;
@@ -4736,6 +4978,42 @@
           
           // Start burst effect
           burstStart = t;
+          
+          // Spawn 3D sparkle blowout particles
+          const boGeo = new THREE.DodecahedronGeometry(0.045, 0);
+          const boColors = [0xFFD700, 0xFFFFFF, 0xFFB7C5, 0xC9B8F0, 0xFFF099];
+          
+          for (let k = 0; k < 45; k++) {
+            const color = boColors[Math.floor(Math.random() * boColors.length)];
+            const mat = new THREE.MeshBasicMaterial({
+              color: color,
+              transparent: true,
+              opacity: 0.95
+            });
+            const pm = new THREE.Mesh(boGeo, mat);
+            
+            // Randomly pick one of the 5 candle coordinates as start point
+            const targetCandle = cPos[Math.floor(Math.random() * cPos.length)];
+            pm.position.set(targetCandle[0], 3.72, targetCandle[1]);
+            
+            // Velocity: launch upwards and outwards in a 360-degree spray
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 1.2 + Math.random() * 3.2;
+            const vx = Math.cos(angle) * speed * 0.016;
+            const vz = Math.sin(angle) * speed * 0.016;
+            const vy = (1.8 + Math.random() * 3.5) * 0.016; // upward push
+            
+            scene.add(pm);
+            
+            blowoutParticles.push({
+              mesh: pm,
+              vx,
+              vy,
+              vz,
+              life: 1.0,
+              decay: 0.012 + Math.random() * 0.018
+            });
+          }
           
           // Visual burst
           const burst = document.getElementById('wishBurst');
@@ -4798,6 +5076,51 @@
               const dt = t - burstStart;
               burstLight.intensity = Math.max(0, 10 * Math.exp(-dt * 2.2));
               if (dt > 4) burstStart = -1;
+            }
+
+            // Animate floating sparks
+            if (typeof sparks !== 'undefined') {
+              sparks.forEach(s => {
+                s.angle += s.speed * 0.016;
+                const curBob = Math.sin(t * s.bobSpeed + s.seed) * s.bobHeight;
+                s.mesh.position.x = Math.cos(s.angle) * s.radius;
+                s.mesh.position.z = Math.sin(s.angle) * s.radius;
+                s.mesh.position.y = s.height + curBob;
+                
+                s.mesh.material.opacity = 0.45 + Math.sin(t * 4 + s.seed) * 0.35;
+                const sizeScale = 0.8 + Math.sin(t * 3 + s.seed) * 0.3;
+                s.mesh.scale.setScalar(sizeScale);
+              });
+            }
+
+            // Animate 3D blowout particles
+            if (typeof blowoutParticles !== 'undefined') {
+              for (let i = blowoutParticles.length - 1; i >= 0; i--) {
+                const p = blowoutParticles[i];
+                p.mesh.position.x += p.vx;
+                p.mesh.position.y += p.vy;
+                p.mesh.position.z += p.vz;
+                
+                // Gravity
+                p.vy -= 0.06 * 0.016;
+                // Air friction
+                p.vx *= 0.98;
+                p.vz *= 0.98;
+                
+                p.life -= p.decay;
+                p.mesh.material.opacity = Math.max(0, p.life);
+                p.mesh.scale.setScalar(Math.max(0.01, p.life));
+                
+                p.mesh.rotation.x += 0.1;
+                p.mesh.rotation.y += 0.08;
+                
+                if (p.life <= 0) {
+                  scene.remove(p.mesh);
+                  p.mesh.geometry.dispose();
+                  p.mesh.material.dispose();
+                  blowoutParticles.splice(i, 1);
+                }
+              }
             }
             
             renderer.render(scene, cam);

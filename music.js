@@ -43,6 +43,58 @@
     e: '&#9835;'
   }));
 
+  const trackImages = [
+    'images/track1.png',
+    'images/track2.jpg',
+    'images/track3.png',
+    'images/track4.png',
+    'images/track5.png',
+    'images/track6.png',
+    'images/track7.png',
+    'images/track8.png',
+    'images/track9.png',
+    'images/track10.png',
+    'images/track11.png',
+    'images/track12.jpg',
+    'images/track13.jpg',
+    'images/track14.png',
+    'images/track15.jpg'
+  ];
+
+  const assignedImages = [];
+  // Pre-calculate track images to ensure no repeats in any window of 5 tracks (current + next 4)
+  for (let i = 0; i < tracks.length; i++) {
+    let trackName = tracks[i].name;
+    let hash = 0;
+    for (let j = 0; j < trackName.length; j++) {
+      hash = trackName.charCodeAt(j) + ((hash << 5) - hash);
+    }
+    let baseIdx = Math.abs(hash) % trackImages.length;
+    
+    let finalIdx = baseIdx;
+    let usedInLast4 = true;
+    while (usedInLast4) {
+      usedInLast4 = false;
+      for (let step = 1; step <= 4; step++) {
+        let prevIdx = i - step;
+        if (prevIdx >= 0) {
+          if (assignedImages[prevIdx] === trackImages[finalIdx]) {
+            usedInLast4 = true;
+            break;
+          }
+        }
+      }
+      if (usedInLast4) {
+        finalIdx = (finalIdx + 1) % trackImages.length;
+      }
+    }
+    assignedImages.push(trackImages[finalIdx]);
+  }
+
+  function getTrackImage(index) {
+    return assignedImages[index] || trackImages[0];
+  }
+
   // ===== MUSIC CUSTOM STACK WRAPPER =====
   var EMOJIS = ['🎵','🎶','🎼','🎸','🎹','🎷','🎺','🥁','violin','✨'];
   var SWIPE_THRESHOLD = 70;
@@ -212,11 +264,11 @@
       if (!t.duration) t.duration = duration; // cache it
       var artist = t.artist || "Nafisa's Playlist";
 
+      var trackImgSrc = getTrackImage(i);
       card.innerHTML =
         '<div class="music-card-cover">' +
-          '<span class="cover-emoji">' + emoji + '</span>' +
-          '<span class="cover-track-num">Track ' + String(i + 1).padStart(2, '0') + ' of ' + mcTotal + '</span>' +
-          '<span class="music-now-badge">Now Playing</span>' +
+          '<img class="cover-bg-image" src="' + trackImgSrc + '" alt="' + t.name + ' cover">' +
+          '<div class="cover-overlay"></div>' +
           '<span class="music-swipe-arrow left">◀</span>' +
           '<span class="music-swipe-arrow right">▶</span>' +
         '</div>' +
