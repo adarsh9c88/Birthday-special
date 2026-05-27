@@ -585,6 +585,15 @@
         audioEl.currentTime = pct * audioEl.duration;
         return;
       }
+
+      // 5. Click on card body — open track picker modal
+      var cardBody = e.target.closest('.music-card');
+      if (cardBody) {
+        e.stopPropagation();
+        e.preventDefault();
+        openTrackPicker();
+        return;
+      }
     });
   }
 
@@ -626,6 +635,70 @@
   window.nextTrack = nextTrack;
   window.slidePlaylist = slidePlaylist;
   window.seekTrack = seekTrack;
+
+  // ===== TRACK PICKER MODAL =====
+  var pickerOverlay = document.getElementById('musicPickerOverlay');
+  var pickerGrid = document.getElementById('musicPickerGrid');
+  var pickerClose = document.getElementById('musicPickerClose');
+
+  window.openTrackPicker = function openTrackPicker() {
+    if (!pickerOverlay || !pickerGrid) return;
+
+    pickerGrid.innerHTML = '';
+    tracks.forEach(function(t, i) {
+      var item = document.createElement('div');
+      item.className = 'music-picker-item' + (i === curTrack ? ' active' : '');
+      item.setAttribute('data-track-idx', i);
+
+      var img = document.createElement('img');
+      img.className = 'music-picker-item-img';
+      img.src = getTrackImage(i);
+      img.alt = t.name;
+      img.loading = 'lazy';
+
+      var name = document.createElement('div');
+      name.className = 'music-picker-item-name';
+      name.textContent = t.name;
+
+      item.appendChild(img);
+      item.appendChild(name);
+
+      item.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var idx = parseInt(this.getAttribute('data-track-idx'));
+        selectTrack(idx, true);
+        closeTrackPicker();
+      });
+
+      pickerGrid.appendChild(item);
+    });
+
+    pickerOverlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  };
+
+  function closeTrackPicker() {
+    if (!pickerOverlay) return;
+    pickerOverlay.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+  window.closeTrackPicker = closeTrackPicker;
+
+  if (pickerClose) {
+    pickerClose.addEventListener('click', closeTrackPicker);
+  }
+
+  if (pickerOverlay) {
+    pickerOverlay.addEventListener('click', function(e) {
+      if (e.target === pickerOverlay) closeTrackPicker();
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && pickerOverlay && pickerOverlay.classList.contains('show')) {
+      closeTrackPicker();
+    }
+  });
 
   // Initialize
   buildMusicCards();
