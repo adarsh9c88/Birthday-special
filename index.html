@@ -1978,8 +1978,7 @@
         <div class="card-title">Year In Numbers</div>
         <div class="stat-grid" id="statGrid"></div>
       </div>
-    </div>
-  </section>
+
 
       <!-- Time travel -->
       <div class="card-section">
@@ -1993,7 +1992,8 @@
     <div class="tab-panel" data-tab="1">Right now, another year older and somehow even more you.</div>
     <div class="tab-panel" data-tab="2">And always — no matter the year — my favorite person to celebrate.</div>
   </div>
-  
+  </div>
+  </section>
 
   <!-- FINALE -->
   <section id="finale">
@@ -2328,7 +2328,14 @@
         if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); dropBtn.click(); }
       });
     })();
-
+    // ===== TIME TRAVEL TABS =====
+function showTab(idx, btn) {
+  document.querySelectorAll('.tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('show'));
+  btn.classList.add('active');
+  const panel = document.querySelector(`.tab-panel[data-tab="${idx}"]`);
+  if (panel) panel.classList.add('show');
+}
     // ===== PHOTO PUZZLE =====
     (function () {
       const GRID = 3;
