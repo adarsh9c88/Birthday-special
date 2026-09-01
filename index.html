@@ -1992,6 +1992,46 @@
     <div class="tab-panel" data-tab="1">Right now, another year older and somehow even more you.</div>
     <div class="tab-panel" data-tab="2">And always — no matter the year — my favorite person to celebrate.</div>
   </div>
+
+      <div class="card-section center">
+    <div class="card-title">Reasons I Adore You</div>
+    <div id="reasonBox"></div>
+    <button onclick="nextReason()">Give me another reason</button>
+  </div>
+ 
+  <div class="card-section cake-wrap">
+    <div class="card-title">Make a Wish</div>
+    <div id="cakeFlames">🕯️🕯️🕯️</div>
+    <p class="hint">Tap each flame to blow it out</p>
+    <div id="cakeMsg"></div>
+  </div>
+ 
+  <div class="card-section">
+    <div class="card-title">Guestbook</div>
+    <div class="guest-row">
+      <input type="text" id="noteInput" placeholder="Leave a birthday note...">
+      <button onclick="addNote()">Post</button>
+    </div>
+    <div id="notes"></div>
+  </div>
+
+    <div class="card-section center">
+    <div class="card-title">Choose Your Path</div>
+    <div class="path-choice">
+      <button onclick="choosePath('cake')">🍰 Cake first</button>
+      <button onclick="choosePath('gifts')">🎁 Gifts first</button>
+      <button onclick="choosePath('hug')">🤗 Hug first</button>
+    </div>
+    <div class="path-result" id="pathResult"></div>
+  </div>
+ 
+  <div class="card-section center voice-btn-wrap">
+    <div class="card-title">Hear It Out Loud</div>
+    <div class="voice-btn">
+      <button onclick="readLetterAloud()">🔊 Read the letter to me</button>
+      <button onclick="stopReading()">Stop</button>
+    </div>
+  </div>
   </div>
   </section>
 
