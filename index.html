@@ -1258,6 +1258,12 @@
     .stat-num { font-family: 'Pacifico', cursive; font-size: 1.6rem; color: #8B4513; }
     .stat-label { font-size: .74rem; color: var(--text-mid); font-weight: 700; }
 
+    /* ===== TIME TRAVEL TABS ===== */
+    .tabs{display:flex;gap:10px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+    .tab-btn{background:rgba(255,255,255,.6);color:var(--mocha);box-shadow:none;border:2px solid var(--caramel)}
+    .tab-btn.active{background:linear-gradient(135deg,var(--caramel),var(--mocha));color:#fff}
+    .tab-panel{display:none;text-align:center;font-weight:600;line-height:1.7}
+    .tab-panel.show{display:block}
 
     /* Finale Typewriter & SVG */
     #finale { background: linear-gradient(135deg, #FDF0E6 0%, #F5E6D3 100%); text-align: center; }
@@ -1975,6 +1981,19 @@
     </div>
   </section>
 
+      <!-- Time travel -->
+      <div class="card-section">
+    <div class="card-title">Time Travel</div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab(0,this)">Then</button>
+      <button class="tab-btn" onclick="showTab(1,this)">Now</button>
+      <button class="tab-btn" onclick="showTab(2,this)">Always</button>
+    </div>
+    <div class="tab-panel show" data-tab="0">Back when we first met, I never guessed you'd become this important to me.</div>
+    <div class="tab-panel" data-tab="1">Right now, another year older and somehow even more you.</div>
+    <div class="tab-panel" data-tab="2">And always — no matter the year — my favorite person to celebrate.</div>
+  </div>
+  
 
   <!-- FINALE -->
   <section id="finale">
