@@ -1105,6 +1105,338 @@
     </div>
   </section>
 
+  <!-- ================= MUNNI TRIVIA QUIZ SECTION ================= -->
+<section id="munni-trivia" class="trivia-section">
+    <div class="trivia-container">
+        <h2>✨ Munni's Birthday Trivia ✨</h2>
+        <p class="trivia-subtitle">Let's see how well you know yourself (and our friendship)! 😉</p>
+        
+        <!-- Canvas for Confetti Effect -->
+        <canvas id="trivia-confetti"></canvas>
+
+        <div class="quiz-box">
+            <!-- Question 1 -->
+            <div class="quiz-card active" data-question="1">
+                <div class="question-number">Question 1 of 3</div>
+                <h3 class="question-text">What is Dr. Munni's ultimate fuel for late-night MBBS study sessions? ☕</h3>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="checkAnswer(this, false)">Plain Water 💧</button>
+                    <button class="option-btn" onclick="checkAnswer(this, true)">Cozy Hot Coffee! ☕✨</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false)">Green Tea 🌿</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false)">Energy Drinks ⚡</button>
+                </div>
+                <div class="feedback-msg"></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="quiz-card" data-question="2">
+                <div class="question-number">Question 2 of 3</div>
+                <h3 class="question-text">How did this amazing friendship officially start? 🌟</h3>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="checkAnswer(this, false)">We met at a coffee shop 🏪</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false)">Mutual college friends 🏫</button>
+                    <button class="option-btn" onclick="checkAnswer(this, true)">A beautiful, random request acceptance! 🙏🌷</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false)">Wrong number text 📱</button>
+                </div>
+                <div class="feedback-msg"></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="quiz-card" data-question="3">
+                <div class="question-number">Question 3 of 3</div>
+                <h3 class="question-text">Which white coat title is waiting for you in the near future? 🩺</h3>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="checkAnswer(this, false)">Master of Arts 🎨</button>
+                    <button class="option-btn" onclick="checkAnswer(this, true)">Dr. Munni (MBBS Warrior) 👩‍⚕️🩺</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false)">Chief Coffee Barista ☕</button>
+                    <button class="option-btn" onclick="checkAnswer(this, false)">Botanical Garden Guide 🌸</button>
+                </div>
+                <div class="feedback-msg"></div>
+            </div>
+
+            <!-- Quiz Completed Screen -->
+            <div class="quiz-card" id="quiz-result-card">
+                <div class="result-icon">🐻🎈</div>
+                <h3>Yay! Quiz Completed!</h3>
+                <p>You nailed it! You truly are the best and most unexpected chapter of my book. Your smile means everything! 💕</p>
+                <button class="restart-btn" onclick="restartQuiz()">Play Again ⟳</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* --- Cozy Brown & Pink Trivia Styling --- */
+.trivia-section {
+    padding: 60px 20px;
+    background: #fdf6f0; /* Cozy warm background */
+    position: relative;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+.trivia-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.trivia-container h2 {
+    color: #bc7c7c; /* Warm rose/pink tint */
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+}
+
+.trivia-subtitle {
+    color: #8c6239; /* Cozy bear brown */
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+#trivia-confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.quiz-box {
+    background: #ffffff;
+    border: 3px dashed #e8c5c5;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(140, 98, 57, 0.1);
+    min-height: 320px;
+    position: relative;
+}
+
+.quiz-card {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.quiz-card.active {
+    display: block;
+}
+
+.question-number {
+    font-size: 0.9rem;
+    color: #bfa38a;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.question-text {
+    color: #5c3a21;
+    font-size: 1.3rem;
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+@media (min-width: 480px) {
+    .options-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.option-btn {
+    background: #fff5f5;
+    border: 2px solid #f2dbdb;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 1rem;
+    color: #734a26;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.option-btn:hover {
+    background: #ffebd3;
+    border-color: #e6b89c;
+    transform: translateY(-2px);
+}
+
+/* Correct/Incorrect button locks */
+.option-btn.correct {
+    background: #d4edda !important;
+    border-color: #c3e6cb !important;
+    color: #155724 !important;
+    font-weight: bold;
+}
+
+.option-btn.wrong {
+    background: #f8d7da !important;
+    border-color: #f5c6cb !important;
+    color: #721c24 !important;
+    opacity: 0.7;
+}
+
+.option-btn:disabled {
+    pointer-events: none;
+}
+
+.feedback-msg {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    min-height: 24px;
+}
+
+.feedback-msg.correct-text { color: #28a745; }
+.feedback-msg.wrong-text { color: #dc3545; }
+
+/* End Result Screen Styling */
+#quiz-result-card p {
+    color: #8c6239;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+.result-icon { font-size: 4rem; margin-bottom: 10px; }
+.restart-btn {
+    margin-top: 20px;
+    background: #bc7c7c;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.restart-btn:hover { background: #a66666; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+// --- Trivia Logic and Confetti Particle System ---
+let currentQuestionNum = 1;
+const totalQuestions = 3;
+let confettiActive = false;
+let confettiParticles = [];
+const canvas = document.getElementById('trivia-confetti');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+    canvas.width = canvas.parentElement.offsetWidth;
+    canvas.height = canvas.parentElement.offsetHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+
+function triggerConfetti() {
+    resizeCanvas();
+    confettiActive = true;
+    confettiParticles = [];
+    for (let i = 0; i < 60; i++) {
+        confettiParticles.push({
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            size: Math.random() * 6 + 4,
+            color: ['#ffb6c1', '#ffdab9', '#bc7c7c', '#f4a460', '#fff'][Math.floor(Math.random() * 5)],
+            speedX: (Math.random() - 0.5) * 8,
+            speedY: (Math.random() - 0.7) * 10,
+            gravity: 0.3,
+            opacity: 1
+        });
+    }
+    animateConfetti();
+}
+
+function animateConfetti() {
+    if (!confettiActive) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+
+    confettiParticles.forEach(p => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.speedY += p.gravity;
+        p.opacity -= 0.015;
+
+        if (p.opacity > 0) {
+            alive = true;
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.opacity;
+            ctx.fillRect(p.x, p.y, p.size, p.size);
+        }
+    });
+
+    ctx.globalAlpha = 1;
+    if (alive) {
+        requestAnimationFrame(animateConfetti);
+    } else {
+        confettiActive = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+}
+
+function checkAnswer(clickedBtn, isCorrect) {
+    const currentCard = clickedBtn.closest('.quiz-card');
+    const allButtons = currentCard.querySelectorAll('.option-btn');
+    const feedback = currentCard.querySelector('.feedback-msg');
+
+    // Disable all option buttons immediately so they can't click twice
+    allButtons.forEach(btn => btn.disabled = true);
+
+    if (isCorrect) {
+        clickedBtn.classList.add('correct');
+        feedback.innerText = "✨ Correct! You're awesome! 🎉";
+        feedback.className = "feedback-msg correct-text";
+        triggerConfetti();
+        
+        // Wait 2 seconds, then move to next question
+        setTimeout(() => {
+            goToNextQuestion();
+        }, 2000);
+    } else {
+        clickedBtn.classList.add('wrong');
+        feedback.innerText = "Oops! Try that option again! 🤔";
+        feedback.className = "feedback-msg wrong-text";
+        
+        // Wait 1.5 seconds, reset buttons so she can try again safely
+        setTimeout(() => {
+            clickedBtn.classList.remove('wrong');
+            feedback.innerText = "";
+            allButtons.forEach(btn => btn.disabled = false);
+        }, 1500);
+    }
+}
+
+function goToNextQuestion() {
+    const currentCard = document.querySelector(`.quiz-card[data-question="${currentQuestionNum}"]`);
+    currentCard.classList.remove('active');
+
+    currentQuestionNum++;
+
+    if (currentQuestionNum <= totalQuestions) {
+        const nextCard = document.querySelector(`.quiz-card[data-question="${currentQuestionNum}"]`);
+        nextCard.classList.add('active');
+    } else {
+        // Show completion card
+        document.getElementById('quiz-result-card').classList.add('active');
+        triggerConfetti();
+    }
+}
+
+
+  
   <section id="finale">
     <h2 class="section-title reveal">Finale 🎀</h2>
     <div class="card-section reveal" style="max-width: 950px; width: 90%; margin: 0 auto 20px; padding: 40px 30px;">
