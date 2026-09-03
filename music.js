@@ -262,7 +262,7 @@
       var emoji = EMOJIS[i % EMOJIS.length];
       var duration = t.duration || getRandomDuration();
       if (!t.duration) t.duration = duration; // cache it
-      var artist = t.artist || "Nafisa's Playlist";
+      var artist = t.artist || "munni's's Playlist";
 
       var trackImgSrc = getTrackImage(i);
       card.innerHTML =
