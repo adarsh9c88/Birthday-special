@@ -575,24 +575,27 @@
     /* ===== DARK / LIGHT THEME TOGGLE BUTTON ===== */
     .theme-toggle-btn{
       position:fixed;bottom:30px;right:26px;z-index:999;
-      width:46px;height:46px;border-radius:50%;
+      width:54px;height:54px;border-radius:50%;
       border:2px solid rgba(196,122,58,.45);
       background:linear-gradient(135deg,#fff,#F5E6D3);
       color:#8B4513;font-size:1.25rem;
       display:flex;align-items:center;justify-content:center;
-      cursor:pointer;box-shadow:0 6px 18px rgba(139,69,19,.28);
+      cursor:pointer;box-shadow: 0 8px 24px rgba(139, 69, 19, 0.35), 0 0 16px rgba(196, 122, 58, 0.4);
       transition:transform .4s cubic-bezier(.34,1.56,.64,1),background .4s ease,color .4s ease,border-color .4s ease;
     }
-    .theme-toggle-btn:hover{transform:translateY(-2px) rotate(12deg)}
+    .theme-toggle-btn:hover{transform:translateY(-3px) rotate(12deg);
+     box-shadow: 0 10px 28px rgba(139, 69, 19, 0.45), 0 0 24px rgba(196, 122, 58, 0.65);
+    }
     .theme-toggle-btn:active{transform:scale(.88)}
     .theme-toggle-btn .ttb-icon{display:inline-block;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .3s ease}
     .theme-toggle-btn.spin .ttb-icon{transform:rotate(360deg)}
-    @media(max-width:560px){ .theme-toggle-btn{bottom:16px;right:25px;width:40px;height:40px;font-size:1.05rem} }
+    @media(max-width:560px){ .theme-toggle-btn{bottom:16px;right:25px;width:46px;height:46px;font-size:1.05rem} }
 
     body.dark-theme{background:#1B140E;color:#F1E3D3}
     body.dark-theme,body.dark-theme *{scrollbar-color:#C47A3A #1B140E}
-    body.dark-theme .theme-toggle-btn{background:linear-gradient(135deg,#3A2A1D,#2A1D13);color:#F0C98A;border-color:rgba(232,168,85,.5)}
-
+    body.dark-theme .theme-toggle-btn{background:linear-gradient(135deg,#3A2A1D,#2A1D13);color:#F0C98A;border-color:rgba(255,204,0,0.7);box-shadow:0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(255,204,0,0.55);}
+    body.dark-theme .theme-toggle-btn:hover{box-shadow:0 10px 28px rgba(0,0,0,0.7), 0 0 30px rgba(255,204,0,0.85);}
+    
     body.dark-theme nav{background:rgba(20,15,10,.97);border-bottom-color:rgba(232,168,85,.25)}
     body.dark-theme .nav-logo{color:#F0C98A}
     body.dark-theme .nav-links a{color:#D9C2A6}
