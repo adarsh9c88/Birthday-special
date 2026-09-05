@@ -953,9 +953,9 @@
     }
 
     .vm3-stage{
-  position:relative;display:flex;align-items:center;justify-content:space-between;
-  gap:20px;width:100%;max-width:1100px;margin:0 auto;flex-wrap:wrap;min-height:460px;
-}
+      position:relative;display:flex;align-items:center;justify-content:center;
+      gap:40px;max-width:1100px;margin:0 auto;flex-wrap:wrap;min-height:420px;
+    }
     .vm3-flight-layer{position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:6}
     .vm3-flight-layer svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
     .vm3-heart-path{
@@ -979,7 +979,7 @@
 
     .vm3-col{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;box-sizing:border-box}
     .vm3-left{flex:0 0 260px;width:260px}
-    .vm3-right{flex:0 0 380px;width:380px;min-height:460px}
+    .vm3-right{flex:0 0 340px;width:340px;min-height:340px}
 
     /* ---- MACHINE (left) ---- */
     .vm3-machine{position:relative;width:220px;margin:0 auto;user-select:none}
@@ -1074,15 +1074,6 @@
     body.dark-theme .vm3-heart-fill-quote{color:#3D2314}
     body.dark-theme .vm3-heart-fill-sign{color:#6B3A2A}
 
-    .vm3-heart-fill-quote{font-size:1.28rem;max-width:220px}
-.vm3-heart-fill-sign{font-size:.95rem}
-
-@keyframes vm3HeartWaitPulse{
-  0%,100%{opacity:.4;filter:brightness(1) drop-shadow(0 0 0px var(--vm3-heart-glow))}
-  50%{opacity:.75;filter:brightness(1.15) drop-shadow(0 0 26px var(--vm3-heart-glow))}
-}
-.vm3-heart-fill.vm3-waiting{animation:vm3HeartWaitPulse 1.15s ease-in-out infinite}
-    
     .vm3-caption{
       margin-top:14px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:.86rem;color:#8B4513;
       opacity:0;transition:opacity .5s ease;text-align:center;
@@ -1460,7 +1451,7 @@
           <button class="tab-btn" onclick="showTab(1,this)">Now</button>
           <button class="tab-btn" onclick="showTab(2,this)">Always</button>
         </div>
-        <div class="tab-panel show" data-tab="0">when we first met, I never guessed you'd become this important.</div>
+        <div class="tab-panel show" data-tab="0">Back when we first met, I never guessed you'd become this important to me.</div>
         <div class="tab-panel" data-tab="1">Right now, another year older and somehow even more you.</div>
         <div class="tab-panel" data-tab="2">And always — no matter the year — my favorite person to celebrate.</div>
       </div>
@@ -2272,345 +2263,263 @@
       input.addEventListener('keypress', function (e) { if (e.key === 'Enter') checkPassword(); });
     })();
 
-(function(){
-  const stage = document.getElementById('vm3Stage');
-  const flightLayer = document.getElementById('vm3FlightLayer');
-  const svg = document.getElementById('vm3Svg');
-  const heartPath = document.getElementById('vm3HeartPath');
-  const dial = document.getElementById('vm3Dial');
-  const capsulesLayer = document.getElementById('vm3Capsules');
-  const chuteDoor = document.getElementById('vm3ChuteDoor');
-  const hint = document.getElementById('vm3Hint');
-  const rightCol = stage ? stage.querySelector('.vm3-right') : null;
-  const heartHit = document.getElementById('vm3HeartHit');
-  const heartFill = document.getElementById('vm3HeartFill');
-  const heartQuote = document.getElementById('vm3HeartQuote');
-  const caption = document.getElementById('vm3Caption');
-  const rerollBtn = document.getElementById('vm3RerollBtn');
+    // ===== VENDING MACHINE 3.0: HEART-PATH DELIVERY =====
+    (function(){
+      const stage = document.getElementById('vm3Stage');
+      const flightLayer = document.getElementById('vm3FlightLayer');
+      const svg = document.getElementById('vm3Svg');
+      const heartPath = document.getElementById('vm3HeartPath');
+      const dial = document.getElementById('vm3Dial');
+      const capsulesLayer = document.getElementById('vm3Capsules');
+      const chuteDoor = document.getElementById('vm3ChuteDoor');
+      const hint = document.getElementById('vm3Hint');
+      const rightCol = stage ? stage.querySelector('.vm3-right') : null;
+      const heartHit = document.getElementById('vm3HeartHit');
+      const heartFill = document.getElementById('vm3HeartFill');
+      const heartQuote = document.getElementById('vm3HeartQuote');
+      const caption = document.getElementById('vm3Caption');
+      const rerollBtn = document.getElementById('vm3RerollBtn');
 
-  if(!stage || !flightLayer || !svg || !heartPath || !dial || !capsulesLayer || !chuteDoor || !rightCol || !heartHit || !heartFill || !heartQuote || !caption || !rerollBtn) return;
+      if(!stage || !flightLayer || !svg || !heartPath || !dial || !capsulesLayer || !chuteDoor || !rightCol || !heartHit || !heartFill || !heartQuote || !caption || !rerollBtn) return;
 
-  const domeEmojis = ['🌸','💊','☕','✨','🩺'];
-  const tokenEmojis = ['💊','🌸','✨','🩺','🎀'];
-  const notes = [
-    "One day soon a stethoscope round your neck will feel as normal as your dupatta. Proud of you already, Doctor.",
-    "Whatever chapter is kicking your butt right now — it's temporary. Chai, revise, repeat. You've got this.",
-    "You've survived every single exam so far. That's a 100% success rate. Trust the process, Munni.",
-    "Reminder: you don't have to be perfect today. You just have to keep showing up. You always do.",
-    "Somewhere out there, a future patient is lucky they haven't met you yet — but they'll be in good hands.",
-    "Anatomy today, someone's life saved tomorrow. Every late night is worth it, even when it doesn't feel like it.",
-    "You didn't choose the easy path. You chose the one that matters. That says everything about your heart.",
-    "Small joys count too — this little heart, this silly website, this random day. Let yourself smile today.",
-    "Every topper started exactly where you are. Keep going — the white coat is closer than it feels.",
-    "On your hardest days, remember: someone out here is genuinely, quietly proud of everything you're becoming."
-  ];
+      const domeEmojis = ['🌸','💊','☕','✨','🩺'];
+      const tokenEmojis = ['💊','🌸','✨','🩺','🎀'];
+      const notes = [
+        "One day soon a stethoscope round your neck will feel as normal as your dupatta. Proud of you already, Doctor.",
+        "Whatever chapter is kicking your butt right now — it's temporary. Chai, revise, repeat. You've got this.",
+        "You've survived every single exam so far. That's a 100% success rate. Trust the process, Munni.",
+        "Reminder: you don't have to be perfect today. You just have to keep showing up. You always do.",
+        "Somewhere out there, a future patient is lucky they haven't met you yet — but they'll be in good hands.",
+        "Anatomy today, someone's life saved tomorrow. Every late night is worth it, even when it doesn't feel like it.",
+        "You didn't choose the easy path. You chose the one that matters. That says everything about your heart.",
+        "Small joys count too — this little heart, this silly website, this random day. Let yourself smile today.",
+        "Every topper started exactly where you are. Keep going — the white coat is closer than it feels.",
+        "On your hardest days, remember: someone out here is genuinely, quietly proud of everything you're becoming."
+      ];
 
-  for(let i=0;i<6;i++){
-    const s = document.createElement('span');
-    s.className = 'vm3-capsule-float';
-    s.textContent = domeEmojis[Math.floor(Math.random()*domeEmojis.length)];
-    s.style.left = (10 + Math.random()*75) + '%';
-    s.style.top = (8 + Math.random()*55) + '%';
-    s.style.animationDuration = (2.2 + Math.random()*1.8) + 's';
-    s.style.animationDelay = (-Math.random()*3) + 's';
-    capsulesLayer.appendChild(s);
-  }
+      // scatter floating capsules inside the dome
+      for(let i=0;i<6;i++){
+        const s = document.createElement('span');
+        s.className = 'vm3-capsule-float';
+        s.textContent = domeEmojis[Math.floor(Math.random()*domeEmojis.length)];
+        s.style.left = (10 + Math.random()*75) + '%';
+        s.style.top = (8 + Math.random()*55) + '%';
+        s.style.animationDuration = (2.2 + Math.random()*1.8) + 's';
+        s.style.animationDelay = (-Math.random()*3) + 's';
+        capsulesLayer.appendChild(s);
+      }
 
-  let busy = false;
-  let currentHeartCenter = null;
-  let currentHeartTranslate = { dx: 0, dy: 0 };
-  let currentHeartScale = 1;
+      let busy = false;
 
-  function easeInOutCubic(t){ return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
+      function easeInOutCubic(t){
+        return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+      }
 
-  function heartLocalPoint(t){
-    const x = 16 * Math.pow(Math.sin(t), 3);
-    const yMath = 13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
-    return { x: x, y: -yMath };
-  }
+      // classic parametric heart curve, sampled and mapped to stage pixel space
+      function heartLocalPoint(t){
+        const x = 16 * Math.pow(Math.sin(t), 3);
+        const yMath = 13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
+        return { x: x, y: -yMath };
+      }
 
-  function buildHeartGeometry(centerX, centerY, targetWidth, targetHeight, samples){
-    const raw = [];
-    for(let i=0;i<=samples;i++){
-      const t = (i/samples) * Math.PI * 2;
-      raw.push(heartLocalPoint(t));
-    }
-    let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
-    raw.forEach(p=>{
-      if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x;
-      if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y;
-    });
-    const scaleX = targetWidth / (maxX-minX);
-    const scaleY = targetHeight / (maxY-minY);
-    const midX = (minX+maxX)/2;
-    const midY = (minY+maxY)/2;
-    const points = raw.map(p=>({
-      x: centerX + (p.x - midX) * scaleX,
-      y: centerY + (p.y - midY) * scaleY
-    }));
-    let pMinX=Infinity,pMaxX=-Infinity,pMinY=Infinity,pMaxY=-Infinity;
-    points.forEach(p=>{
-      if(p.x<pMinX)pMinX=p.x; if(p.x>pMaxX)pMaxX=p.x;
-      if(p.y<pMinY)pMinY=p.y; if(p.y>pMaxY)pMaxY=p.y;
-    });
-    return { points, bbox:{minX:pMinX,maxX:pMaxX,minY:pMinY,maxY:pMaxY} };
-  }
+      function buildHeartGeometry(centerX, centerY, targetWidth, targetHeight, samples){
+        const raw = [];
+        for(let i=0;i<=samples;i++){
+          const t = (i/samples) * Math.PI * 2;
+          raw.push(heartLocalPoint(t));
+        }
+        let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+        raw.forEach(p=>{
+          if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x;
+          if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y;
+        });
+        const scaleX = targetWidth / (maxX-minX);
+        const scaleY = targetHeight / (maxY-minY);
+        const midX = (minX+maxX)/2;
+        const midY = (minY+maxY)/2;
 
-  function pointAtProgress(points, progress){
-    const idx = progress * (points.length - 1);
-    const i0 = Math.floor(idx);
-    const i1 = Math.min(points.length - 1, i0 + 1);
-    const frac = idx - i0;
-    const p0 = points[i0], p1 = points[i1];
-    return { x: p0.x + (p1.x - p0.x)*frac, y: p0.y + (p1.y - p0.y)*frac };
-  }
+        const points = raw.map(p=>({
+          x: centerX + (p.x - midX) * scaleX,
+          y: centerY + (p.y - midY) * scaleY
+        }));
 
-  function applyHeartTransform(scale){
-    const t = `translate(${currentHeartTranslate.dx}px, ${currentHeartTranslate.dy}px) scale(${scale})`;
-    svg.style.transform = t;
-    heartHit.style.transform = t;
-    heartFill.style.transform = t;
-    currentHeartScale = scale;
-  }
+        let pMinX=Infinity,pMaxX=-Infinity,pMinY=Infinity,pMaxY=-Infinity;
+        points.forEach(p=>{
+          if(p.x<pMinX)pMinX=p.x; if(p.x>pMaxX)pMaxX=p.x;
+          if(p.y<pMinY)pMinY=p.y; if(p.y>pMaxY)pMaxY=p.y;
+        });
 
-  function turnCrank(){
-    if(busy) return;
-    if(heartHit.classList.contains('vm3-ready') || heartFill.classList.contains('vm3-active')) return;
-    busy = true;
+        return { points, bbox:{minX:pMinX,maxX:pMaxX,minY:pMinY,maxY:pMaxY} };
+      }
 
-    dial.classList.add('vm3-spin');
-    capsulesLayer.classList.add('vm3-shake');
-    chuteDoor.classList.add('vm3-flap-open');
-    hint.textContent = '🔄 Dispensing...';
+      function pointAtProgress(points, progress){
+        // progress in [0,1] maps to the sampled point array (same sampling used for the drawn path)
+        const idx = progress * (points.length - 1);
+        const i0 = Math.floor(idx);
+        const i1 = Math.min(points.length - 1, i0 + 1);
+        const frac = idx - i0;
+        const p0 = points[i0], p1 = points[i1];
+        return { x: p0.x + (p1.x - p0.x)*frac, y: p0.y + (p1.y - p0.y)*frac };
+      }
 
-    setTimeout(()=>{
-      capsulesLayer.classList.remove('vm3-shake');
-      dial.classList.remove('vm3-spin');
-      startDelivery();
-    }, 500);
+      function turnCrank(){
+        if(busy) return;
+        if(heartHit.classList.contains('vm3-ready') || heartFill.classList.contains('vm3-active')) return;
+        busy = true;
 
-    setTimeout(()=>{ chuteDoor.classList.remove('vm3-flap-open'); }, 950);
-  }
+        dial.classList.add('vm3-spin');
+        capsulesLayer.classList.add('vm3-shake');
+        chuteDoor.classList.add('vm3-flap-open');
+        hint.textContent = '🔄 Dispensing...';
 
-  function startDelivery(){
-    const stageRect = stage.getBoundingClientRect();
-    const doorRect = chuteDoor.getBoundingClientRect();
+        setTimeout(()=>{
+          capsulesLayer.classList.remove('vm3-shake');
+          dial.classList.remove('vm3-spin');
+          startDelivery();
+        }, 500);
 
-    const startX = doorRect.left + doorRect.width/2 - stageRect.left;
-    const startY = doorRect.top + doorRect.height/2 - stageRect.top;
+        setTimeout(()=>{
+          chuteDoor.classList.remove('vm3-flap-open');
+        }, 950);
+      }
 
-    // Step 1: draw the heart at the CENTER of the stage
-    const centerX = stageRect.width/2;
-    const centerY = stageRect.height/2;
+      function startDelivery(){
+        const stageRect = stage.getBoundingClientRect();
+        const doorRect = chuteDoor.getBoundingClientRect();
+        const rightRect = rightCol.getBoundingClientRect();
 
-    const geo = buildHeartGeometry(centerX, centerY, 190, 175, 90);
-    const heartPoints = geo.points;
-    const bbox = geo.bbox;
+        const startX = doorRect.left + doorRect.width/2 - stageRect.left;
+        const startY = doorRect.top + doorRect.height/2 - stageRect.top;
 
-    heartHit.style.transition = 'none';
-    heartFill.style.transition = 'none';
-    svg.style.transition = 'none';
+        const heartCenterX = rightRect.left + rightRect.width/2 - stageRect.left;
+        const heartCenterY = rightRect.top + 92 - stageRect.top;
 
-    heartHit.style.left = bbox.minX + 'px';
-    heartHit.style.top = bbox.minY + 'px';
-    heartHit.style.width = (bbox.maxX - bbox.minX) + 'px';
-    heartHit.style.height = (bbox.maxY - bbox.minY) + 'px';
+        const geo = buildHeartGeometry(heartCenterX, heartCenterY, 160, 150, 90);
+        const heartPoints = geo.points;
+        const bbox = geo.bbox;
 
-    heartFill.style.left = bbox.minX + 'px';
-    heartFill.style.top = bbox.minY + 'px';
-    heartFill.style.width = (bbox.maxX - bbox.minX) + 'px';
-    heartFill.style.height = (bbox.maxY - bbox.minY) + 'px';
-    const clipPoints = heartPoints.map(p => `${p.x - bbox.minX}px ${p.y - bbox.minY}px`).join(',');
-    heartFill.style.clipPath = `polygon(${clipPoints})`;
-    heartFill.style.background = 'radial-gradient(circle at 50% 35%, #FFF9F0, #FFD3E0 65%, #F582A8 100%)';
+        // build & size the hit target + fill layer over the heart's bounding box
+        heartHit.style.left = bbox.minX + 'px';
+        heartHit.style.top = bbox.minY + 'px';
+        heartHit.style.width = (bbox.maxX - bbox.minX) + 'px';
+        heartHit.style.height = (bbox.maxY - bbox.minY) + 'px';
 
-    heartHit.style.transform = '';
-    heartFill.style.transform = '';
-    svg.style.transform = '';
+        heartFill.style.left = bbox.minX + 'px';
+        heartFill.style.top = bbox.minY + 'px';
+        heartFill.style.width = (bbox.maxX - bbox.minX) + 'px';
+        heartFill.style.height = (bbox.maxY - bbox.minY) + 'px';
+        const clipPoints = heartPoints.map(p => `${p.x - bbox.minX}px ${p.y - bbox.minY}px`).join(',');
+        heartFill.style.clipPath = `polygon(${clipPoints})`;
+        heartFill.style.background = 'radial-gradient(circle at 50% 35%, #FFF9F0, #FFD3E0 65%, #F582A8 100%)';
 
-    currentHeartCenter = { x: centerX, y: centerY };
-    currentHeartTranslate = { dx: 0, dy: 0 };
-    currentHeartScale = 1;
+        // draw path 'd' in stage-space for the visible trail
+        const d = 'M ' + heartPoints.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' L ') + ' Z';
+        heartPath.setAttribute('d', d);
+        heartPath.classList.remove('vm3-signal');
+        const totalLength = heartPath.getTotalLength();
+        heartPath.style.strokeDasharray = totalLength;
+        heartPath.style.strokeDashoffset = totalLength;
 
-    const d = 'M ' + heartPoints.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' L ') + ' Z';
-    heartPath.setAttribute('d', d);
-    heartPath.classList.remove('vm3-signal');
-    const totalLength = heartPath.getTotalLength();
-    heartPath.style.strokeDasharray = totalLength;
-    heartPath.style.strokeDashoffset = totalLength;
+        const notchPoint = heartPoints[0];
 
-    const notchPoint = heartPoints[0];
-    const controlX = (startX + notchPoint.x) / 2;
-    const controlY = Math.min(startY, notchPoint.y) - 90;
+        // ---- Phase 1: quick approach flight from chute to the heart's top notch ----
+        const controlX = (startX + notchPoint.x) / 2;
+        const controlY = Math.min(startY, notchPoint.y) - 90;
 
-    const token = document.createElement('div');
-    token.className = 'vm3-token';
-    token.textContent = tokenEmojis[Math.floor(Math.random()*tokenEmojis.length)];
-    token.style.left = startX + 'px';
-    token.style.top = startY + 'px';
-    flightLayer.appendChild(token);
+        const token = document.createElement('div');
+        token.className = 'vm3-token';
+        token.textContent = tokenEmojis[Math.floor(Math.random()*tokenEmojis.length)];
+        token.style.left = startX + 'px';
+        token.style.top = startY + 'px';
+        flightLayer.appendChild(token);
 
-    const approachDuration = 950;
-    let approachStart = null;
+        const approachDuration = 1000;
+        let approachStart = null;
 
-    function approachFrame(ts){
-      if(approachStart === null) approachStart = ts;
-      const rawT = Math.min(1, (ts - approachStart) / approachDuration);
-      const t = easeInOutCubic(rawT);
-      const x = (1-t)*(1-t)*startX + 2*(1-t)*t*controlX + t*t*notchPoint.x;
-      const y = (1-t)*(1-t)*startY + 2*(1-t)*t*controlY + t*t*notchPoint.y;
-      token.style.left = x + 'px';
-      token.style.top = y + 'px';
-      token.style.transform = `translate(-50%,-50%) rotate(${rawT*180}deg)`;
+        function approachFrame(ts){
+          if(approachStart === null) approachStart = ts;
+          const rawT = Math.min(1, (ts - approachStart) / approachDuration);
+          const t = easeInOutCubic(rawT);
+          const x = (1-t)*(1-t)*startX + 2*(1-t)*t*controlX + t*t*notchPoint.x;
+          const y = (1-t)*(1-t)*startY + 2*(1-t)*t*controlY + t*t*notchPoint.y;
+          token.style.left = x + 'px';
+          token.style.top = y + 'px';
+          token.style.transform = `translate(-50%,-50%) rotate(${rawT*180}deg)`;
 
-      if(rawT < 1){
+          if(rawT < 1){
+            requestAnimationFrame(approachFrame);
+          } else {
+            traceHeart(token, heartPoints, totalLength);
+          }
+        }
         requestAnimationFrame(approachFrame);
-      } else {
-        hint.textContent = '💗 Drawing your heart...';
-        traceHeart(token, heartPoints, totalLength);
       }
-    }
-    requestAnimationFrame(approachFrame);
-  }
 
-  // Step 2: trace the full heart outline at the center
-  function traceHeart(token, heartPoints, totalLength){
-    const traceDuration = 3000;
-    let traceStart = null;
+      // ---- Phase 2: slow trace of the full heart outline, drawing it in as the token travels ----
+      function traceHeart(token, heartPoints, totalLength){
+        const traceDuration = 3400; // slow, deliberate draw
+        let traceStart = null;
 
-    function traceFrame(ts){
-      if(traceStart === null) traceStart = ts;
-      const rawT = Math.min(1, (ts - traceStart) / traceDuration);
+        function traceFrame(ts){
+          if(traceStart === null) traceStart = ts;
+          const rawT = Math.min(1, (ts - traceStart) / traceDuration);
 
-      const pos = pointAtProgress(heartPoints, rawT);
-      token.style.left = pos.x + 'px';
-      token.style.top = pos.y + 'px';
-      token.style.transform = `translate(-50%,-50%) rotate(${180 + rawT*360}deg) scale(${1 - rawT*0.2})`;
+          const pos = pointAtProgress(heartPoints, rawT);
+          token.style.left = pos.x + 'px';
+          token.style.top = pos.y + 'px';
+          token.style.transform = `translate(-50%,-50%) rotate(${180 + rawT*360}deg) scale(${1 - rawT*0.2})`;
 
-      heartPath.style.strokeDashoffset = String(totalLength * (1 - rawT));
+          heartPath.style.strokeDashoffset = String(totalLength * (1 - rawT));
 
-      if(rawT < 1){
+          if(rawT < 1){
+            requestAnimationFrame(traceFrame);
+          } else {
+            token.remove();
+            onHeartComplete();
+          }
+        }
         requestAnimationFrame(traceFrame);
-      } else {
-        token.remove();
-        moveHeartToRight();
       }
-    }
-    requestAnimationFrame(traceFrame);
-  }
 
-  // Step 3: move the drawn heart from center to the right side and grow it
-  function moveHeartToRight(){
-    hint.textContent = '💗 Delivering your heart...';
-    const stageRect = stage.getBoundingClientRect();
-    const rightRect = rightCol.getBoundingClientRect();
+      function onHeartComplete(){
+        heartPath.classList.add('vm3-signal');
+        heartHit.classList.add('vm3-ready');
+        caption.classList.add('vm3-show');
+        hint.textContent = '💗 Your heart is ready!';
+        busy = false;
+      }
 
-    const targetX = rightRect.left + rightRect.width/2 - stageRect.left;
-    const targetY = rightRect.top + 110 - stageRect.top;
+      function openHeart(){
+        if(!heartHit.classList.contains('vm3-ready') || heartFill.classList.contains('vm3-active')) return;
+        heartPath.classList.remove('vm3-signal');
+        caption.classList.remove('vm3-show');
+        heartHit.classList.remove('vm3-ready');
 
-    const dx = targetX - currentHeartCenter.x;
-    const dy = targetY - currentHeartCenter.y;
-    currentHeartTranslate = { dx, dy };
+        const note = notes[Math.floor(Math.random()*notes.length)];
+        heartQuote.textContent = note;
+        heartFill.classList.add('vm3-active');
+        rerollBtn.classList.add('vm3-show');
+        hint.textContent = '💌 Your message has arrived';
+      }
 
-    const growScale = 1.55;
+      function resetMachine(){
+        heartFill.classList.remove('vm3-active');
+        heartHit.classList.remove('vm3-ready');
+        heartPath.classList.remove('vm3-signal');
+        heartPath.style.strokeDasharray = '';
+        heartPath.style.strokeDashoffset = '';
+        heartPath.setAttribute('d','');
+        caption.classList.remove('vm3-show');
+        rerollBtn.classList.remove('vm3-show');
+        heartQuote.textContent = '';
+        hint.textContent = '👉 Turn the crank';
+        busy = false;
+      }
 
-    svg.style.transformOrigin = `${currentHeartCenter.x}px ${currentHeartCenter.y}px`;
-    const hitLeft = parseFloat(heartHit.style.left);
-    const hitTop = parseFloat(heartHit.style.top);
-    const localOriginX = currentHeartCenter.x - hitLeft;
-    const localOriginY = currentHeartCenter.y - hitTop;
-    heartHit.style.transformOrigin = `${localOriginX}px ${localOriginY}px`;
-    heartFill.style.transformOrigin = `${localOriginX}px ${localOriginY}px`;
-
-    svg.style.transition = 'transform 1.1s cubic-bezier(.34,1.1,.4,1)';
-    heartHit.style.transition = 'transform 1.1s cubic-bezier(.34,1.1,.4,1)';
-    heartFill.style.transition = 'transform 1.1s cubic-bezier(.34,1.1,.4,1)';
-
-    applyHeartTransform(growScale);
-
-    setTimeout(onHeartArrived, 1150);
-  }
-
-  function onHeartArrived(){
-    heartPath.classList.add('vm3-signal');
-    heartFill.classList.add('vm3-waiting');
-    heartHit.classList.add('vm3-ready');
-    caption.classList.add('vm3-show');
-    hint.textContent = '💗 Your heart is ready — tap it!';
-    busy = false;
-  }
-
-  function openHeart(){
-    if(!heartHit.classList.contains('vm3-ready') || heartFill.classList.contains('vm3-active')) return;
-    heartPath.classList.remove('vm3-signal');
-    heartFill.classList.remove('vm3-waiting');
-    caption.classList.remove('vm3-show');
-    heartHit.classList.remove('vm3-ready');
-
-    const note = notes[Math.floor(Math.random()*notes.length)];
-    heartQuote.textContent = note;
-
-    // grow a little more when opened
-    applyHeartTransform(currentHeartScale * 1.12);
-
-    heartFill.classList.add('vm3-active');
-    rerollBtn.classList.add('vm3-show');
-    hint.textContent = '💌 Your message has arrived';
-
-    const hf = heartFill.getBoundingClientRect();
-    heartSparkleBurst(hf.left + hf.width/2, hf.top + hf.height/2);
-  }
-
-  function heartSparkleBurst(cx, cy){
-    const layer = document.getElementById('sparkleLayer');
-    if(!layer) return;
-    const cols = ['#FFB7C5','#C9B8F0','#B8EDD8','#FFD166','#FF8FAB','#FFFFFF'];
-    for(let i=0;i<30;i++){
-      const s = document.createElement('div');
-      s.className = 'sparkle';
-      const a = Math.random()*Math.PI*2;
-      const d = 40 + Math.random()*150;
-      const size = 5 + Math.random()*9;
-      s.style.cssText = `left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;background:${cols[Math.floor(Math.random()*cols.length)]};--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px`;
-      layer.appendChild(s);
-      setTimeout(()=>s.remove(), 700);
-    }
-  }
-
-  function resetMachine(){
-    heartFill.classList.remove('vm3-active','vm3-waiting');
-    heartHit.classList.remove('vm3-ready');
-    heartPath.classList.remove('vm3-signal');
-    heartPath.style.strokeDasharray = '';
-    heartPath.style.strokeDashoffset = '';
-    heartPath.setAttribute('d','');
-
-    svg.style.transition = 'none';
-    heartHit.style.transition = 'none';
-    heartFill.style.transition = 'none';
-    svg.style.transform = '';
-    heartHit.style.transform = '';
-    heartFill.style.transform = '';
-
-    caption.classList.remove('vm3-show');
-    rerollBtn.classList.remove('vm3-show');
-    heartQuote.textContent = '';
-    hint.textContent = '👉 Turn the crank';
-
-    currentHeartCenter = null;
-    currentHeartTranslate = { dx: 0, dy: 0 };
-    currentHeartScale = 1;
-    busy = false;
-  }
-
-  dial.addEventListener('click', turnCrank);
-  dial.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); turnCrank(); } });
-
-  heartHit.addEventListener('click', openHeart);
-  heartHit.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openHeart(); } });
-
-  rerollBtn.addEventListener('click', resetMachine);
-})();
+      dial.addEventListener('click', turnCrank);
+      dial.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); turnCrank(); }
+      });
 
       heartHit.addEventListener('click', openHeart);
       heartHit.addEventListener('keydown', (e)=>{
