@@ -574,7 +574,7 @@
 
     /* ===== DARK / LIGHT THEME TOGGLE BUTTON ===== */
     .theme-toggle-btn{
-      position:fixed;top:14px;right:18px;z-index:999;
+      position:fixed;bottom:30px;right:96px;z-index:999;
       width:46px;height:46px;border-radius:50%;
       border:2px solid rgba(196,122,58,.45);
       background:linear-gradient(135deg,#fff,#F5E6D3);
@@ -587,7 +587,7 @@
     .theme-toggle-btn:active{transform:scale(.88)}
     .theme-toggle-btn .ttb-icon{display:inline-block;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .3s ease}
     .theme-toggle-btn.spin .ttb-icon{transform:rotate(360deg)}
-    @media(max-width:560px){ .theme-toggle-btn{top:10px;right:10px;width:40px;height:40px;font-size:1.05rem} }
+    @media(max-width:560px){ .theme-toggle-btn{bottom:16px;right:70px;width:40px;height:40px;font-size:1.05rem} }
 
     body.dark-theme{background:#1B140E;color:#F1E3D3}
     body.dark-theme,body.dark-theme *{scrollbar-color:#C47A3A #1B140E}
@@ -610,7 +610,8 @@
     body.dark-theme #extras,
     body.dark-theme #finale,
     body.dark-theme #feedback,
-    body.dark-theme #wishes{
+    body.dark-theme #wishes,
+    body.dark-theme #cake{
       background:linear-gradient(160deg,#1B140E 0%,#241A11 55%,#2A1D13 100%);
     }
     body.dark-theme .section-title{color:#F0C98A;text-shadow:0 4px 20px rgba(0,0,0,.5)}
@@ -657,7 +658,6 @@
     body.dark-theme footer{background:linear-gradient(135deg,#241A11,#1B140E);border-top-color:rgba(232,168,85,.25)}
     body.dark-theme .footer-title{color:#F0C98A}
     body.dark-theme .footer-sub{color:#C9AF92}
-    body.dark-theme .back-to-top{background:linear-gradient(135deg,#3A2A1D,#241A11)}
     body.dark-theme #loveTimer{background:linear-gradient(135deg,rgba(30,22,15,.96),rgba(42,26,32,.96));border-color:rgba(240,150,170,.4)}
     body.dark-theme .love-timer-num{background:rgba(20,15,10,.75);color:#F0C98A}
     body.dark-theme .love-timer-days{color:#C9AF92}
@@ -678,6 +678,11 @@
     body.dark-theme #custom-alert-msg{color:#F1E3D3}
     body.dark-theme .puzzle-grid{background:#241A11}
     body.dark-theme .puzzle-shuffle-btn{background:rgba(42,31,21,.9);color:#F0C98A;border-color:rgba(232,168,85,.3)}
+
+    /* ===== Cake section dark-mode overrides (cake itself stays festive) ===== */
+    body.dark-theme #wishMsg{color:#FFB7C5;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+    body.dark-theme .cake-plate{background:linear-gradient(180deg,#3A2A2E,#241A1C);box-shadow:0 12px 24px rgba(0,0,0,.4),inset 0 -3px 6px rgba(0,0,0,.3)}
+    body.dark-theme .wish-btn{box-shadow:0 8px 25px rgba(0,0,0,.45)}
 
     /* ===== ENVELOPE UNFOLD ANIMATION FOR PASSWORD MESSAGE ===== */
     #envelopeStage{position:relative;width:100%;max-width:340px;margin:0 auto;min-height:250px;display:flex;align-items:center;justify-content:center}
@@ -1330,14 +1335,6 @@
     <div class="pookie-divider">🐻 🍯 🌰 🍂 🐾</div>
   </footer>
 
-  <button class="back-to-top" id="backToTop" aria-label="Back to top"
-    onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 19V5M5 12l7-7 7 7" />
-    </svg>
-  </button>
-
   <script>
     // ===== LOADER =====
     const lfEmojis = ['🐻', '🍯', '🌰', '🍂', '🐾', '🤎', '✨', '🌸', '☕', '🎀', '💛', '🌟', '🎵'];
@@ -1842,17 +1839,14 @@
       }
     }
 
-    // ===== SCROLL / NAVBAR / BACK TO TOP =====
+    // ===== SCROLL / NAVBAR =====
     (function () {
       const navbar = document.getElementById('navbar');
-      const backToTop = document.getElementById('backToTop');
       let ticking = false;
 
       function onScroll() {
         const scroll = window.scrollY;
         navbar.classList.toggle('scrolled', scroll > 50);
-        if (scroll > 500) backToTop.classList.add('visible');
-        else backToTop.classList.remove('visible');
         ticking = false;
       }
 
@@ -2377,7 +2371,7 @@
       });
     })();
 
-    // ===== INTERACTIVE ENVELOPE UNFOLD FOR PASSWORD MESSAGE =====
+    // ===== INTERACTIVE ENVELOPE UNFOLD FOR PASSWORD MESSAGE ===== 
     (function () {
       const wrap = document.getElementById('envelopeWrap');
       const stage = document.getElementById('envelopeStage');
