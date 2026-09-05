@@ -432,6 +432,401 @@
     .voice-btn button{cursor:pointer;font-family:inherit;font-weight:700;border:none;border-radius:10px;padding:10px 20px;background:linear-gradient(135deg,var(--caramel),var(--mocha));color:#fff;box-shadow:0 4px 12px rgba(139,69,19,.3)}
     .voice-btn button:disabled{opacity:.6;cursor:wait}
 
+    <!-- ==========================================
+     VENDING MACHINE SECTION
+     ========================================== -->
+<section id="vending-machine-section">
+  <div class="vm-container">
+    <div class="vm-header">
+      <span class="vm-badge">✨ Treat Yourself ✨</span>
+      <h2>Reasons to Smile Dispenser 🎀</h2>
+      <p>Need a quick smile, a reminder of who you are, or a little boost? Turn the dial!</p>
+    </div>
+
+    <!-- The Vending Machine Visual -->
+    <div class="vending-machine">
+      <!-- Top Dome / Glass Globe -->
+      <div class="vm-globe">
+        <div class="globe-shine"></div>
+        <div class="capsules-inside">
+          <span class="cap-bg" style="top: 20%; left: 25%; transform: rotate(15deg);">🌸</span>
+          <span class="cap-bg" style="top: 25%; right: 25%; transform: rotate(-25deg);">💊</span>
+          <span class="cap-bg" style="top: 55%; left: 20%; transform: rotate(45deg);">☕</span>
+          <span class="cap-bg" style="top: 50%; right: 22%; transform: rotate(-15deg);">✨</span>
+          <span class="cap-bg" style="top: 38%; left: 45%; transform: rotate(80deg);">🩺</span>
+          <span class="cap-bg" style="top: 65%; left: 40%; transform: rotate(-40deg);">🎀</span>
+        </div>
+      </div>
+
+      <!-- Machine Body -->
+      <div class="vm-body">
+        <!-- Coin / Turn Crank Area -->
+        <div class="vm-crank-area">
+          <button id="vm-crank-btn" class="crank-knob" title="Turn Dial">
+            <span class="dial-line"></span>
+          </button>
+          <span class="crank-hint">Tap Dial to Turn ↻</span>
+        </div>
+
+        <!-- Dispense Chute -->
+        <div class="vm-chute">
+          <div id="dispensed-capsule" class="dispensed-capsule hidden">
+            <span id="capsule-emoji">✨</span>
+          </div>
+        </div>
+      </div>
+      <div class="vm-base"></div>
+    </div>
+
+    <!-- Opened Note Card Modal / Popup -->
+    <div id="vm-card-modal" class="vm-card-modal hidden">
+      <div class="vm-note-card">
+        <div class="note-capsule-icon">💊✨</div>
+        <div class="note-label">A Capsule of Warmth</div>
+        <p id="vm-note-text">"Your smile is the easiest way to brighten anyone's room."</p>
+        <button id="vm-close-card" class="vm-btn-close">Tuck It In My Pocket 💌</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     VENDING MACHINE STYLING
+     ========================================== -->
+<style>
+  #vending-machine-section {
+    padding: 70px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .vm-container {
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+  }
+
+  .vm-header .vm-badge {
+    display: inline-block;
+    background: #ffe3ec;
+    color: #b04364;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+
+  .vm-header h2 {
+    font-size: 1.8rem;
+    color: #4a3b32;
+    margin: 4px 0 10px;
+  }
+
+  .vm-header p {
+    color: #7a6b63;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+  }
+
+  /* Physical Machine Styling */
+  .vending-machine {
+    width: 260px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    filter: drop-shadow(0 15px 25px rgba(224, 150, 172, 0.25));
+  }
+
+  .vm-globe {
+    width: 200px;
+    height: 190px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 5px solid #ffccd5;
+    border-radius: 50% 50% 45% 45%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 -12px 25px rgba(255, 182, 193, 0.4);
+  }
+
+  .globe-shine {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    width: 45px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    transform: rotate(25deg);
+    pointer-events: none;
+  }
+
+  .capsules-inside {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .cap-bg {
+    position: absolute;
+    font-size: 24px;
+    user-select: none;
+    transition: transform 0.4s ease;
+  }
+
+  .vm-body {
+    width: 220px;
+    height: 190px;
+    background: linear-gradient(145deg, #ffb6c1, #f497aa);
+    border-radius: 12px 12px 24px 24px;
+    border: 4px solid #f2829a;
+    border-top: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15px;
+    position: relative;
+  }
+
+  .vm-crank-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .crank-knob {
+    width: 52px;
+    height: 52px;
+    background: #ffffff;
+    border-radius: 50%;
+    border: 4px solid #e0718b;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    transition: transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  }
+
+  .crank-knob:active {
+    transform: scale(0.95);
+  }
+
+  .dial-line {
+    width: 6px;
+    height: 32px;
+    background: #e0718b;
+    border-radius: 4px;
+  }
+
+  .crank-hint {
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  }
+
+  .vm-chute {
+    position: absolute;
+    bottom: 12px;
+    width: 80px;
+    height: 60px;
+    background: #3a2e2b;
+    border-radius: 12px 12px 8px 8px;
+    box-shadow: inset 0 6px 10px rgba(0,0,0,0.6);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .dispensed-capsule {
+    width: 44px;
+    height: 44px;
+    background: #ffffff;
+    border: 3px solid #ff9ebb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    margin-bottom: 5px;
+    animation: capsuleDrop 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  @keyframes capsuleDrop {
+    0% { transform: translateY(-70px) rotate(0deg); }
+    70% { transform: translateY(0px) rotate(180deg); }
+    85% { transform: translateY(-8px) rotate(200deg); }
+    100% { transform: translateY(0px) rotate(210deg); }
+  }
+
+  .vm-base {
+    width: 250px;
+    height: 16px;
+    background: #d86882;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  /* Note Card Modal */
+  .vm-card-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 15, 20, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 100002;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .vm-note-card {
+    background: #fffdf9;
+    max-width: 380px;
+    width: 100%;
+    border-radius: 20px;
+    border: 2px dashed #f6b4c6;
+    padding: 30px 24px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+    text-align: center;
+    animation: scaleUp 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+  }
+
+  @keyframes scaleUp {
+    from { transform: scale(0.7) translateY(20px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  .note-capsule-icon {
+    font-size: 32px;
+    margin-bottom: 6px;
+  }
+
+  .note-label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #a46d74;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  #vm-note-text {
+    font-size: 1.05rem;
+    color: #4a3b32;
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 25px;
+  }
+
+  .vm-btn-close {
+    background: #ffe3ec;
+    border: 2px solid #ffb6c1;
+    color: #b04364;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .vm-btn-close:hover {
+    background: #ffd1df;
+    transform: scale(1.04);
+  }
+</style>
+
+<!-- ==========================================
+     VENDING MACHINE LOGIC
+     ========================================== -->
+<script>
+  (function () {
+    const smiles = [
+      "No MBBS anatomy book has a diagram capable of explaining how genuinely kind your heart is. 🩺",
+      "Even on days when you feel exhausted or quiet, you bring comfort just by being you. ☕",
+      "One day, patients will walk out of your clinic feeling lighter because you listened. 🌸",
+      "Fun fact: You were the most unexpected chapter of my life, but easily the best one. 📖",
+      "Take a deep breath and loosen your shoulders. You're working harder than you think. 🌿",
+      "A reminder: Stethoscopes and lab coats were basically made specifically for Dr. Munni. 👩‍⚕️",
+      "Whenever you doubt yourself, remember how much quiet strength you carry every day. ✨",
+      "Your genuine laugh is easily one of the sweetest things on this planet. 🎀"
+    ];
+
+    const icons = ['🌸', '🩺', '☕', '✨', '🎀', '🤍', '🍰'];
+
+    const crankBtn = document.getElementById('vm-crank-btn');
+    const capsule = document.getElementById('dispensed-capsule');
+    const capsuleEmoji = document.getElementById('capsule-emoji');
+    const modal = document.getElementById('vm-card-modal');
+    const noteText = document.getElementById('vm-note-text');
+    const closeBtn = document.getElementById('vm-close-card');
+    const bgCapsules = document.querySelectorAll('.cap-bg');
+
+    let rotation = 0;
+    let isDispensing = false;
+    let currentNote = "";
+
+    crankBtn.addEventListener('click', () => {
+      if (isDispensing) return;
+      isDispensing = true;
+
+      // Rotate Dial
+      rotation += 360;
+      crankBtn.style.transform = `rotate(${rotation}deg)`;
+
+      // Jiggle the capsules inside the glass
+      bgCapsules.forEach(cap => {
+        const randX = (Math.random() - 0.5) * 20;
+        const randY = (Math.random() - 0.5) * 20;
+        cap.style.transform += ` translate(${randX}px, ${randY}px)`;
+      });
+
+      // Prepare random note & icon
+      currentNote = smiles[Math.floor(Math.random() * smiles.length)];
+      capsuleEmoji.textContent = icons[Math.floor(Math.random() * icons.length)];
+
+      // Drop capsule after brief crank delay
+      setTimeout(() => {
+        capsule.classList.remove('hidden');
+        isDispensing = false;
+      }, 350);
+    });
+
+    // Clicking the capsule opens the note
+    capsule.addEventListener('click', () => {
+      noteText.textContent = currentNote;
+      modal.classList.remove('hidden');
+      capsule.classList.add('hidden');
+    });
+
+    // Close the note popup
+    closeBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+  })();
+</script>
+    
     /* Finale Typewriter & SVG */
     #finale{background:linear-gradient(135deg,#FDF0E6 0%,#F5E6D3 100%);text-align:center}
     #typingFinale{font-family:'Caveat',cursive;font-size:1.4rem;line-height:1.8;min-height:80px;max-width:700px;margin:0 auto}
