@@ -767,6 +767,7 @@
       <li><a href="#wishes">Letter</a></li>
       <li><a href="#garden">Garden</a></li>
       <li><a href="#music">Music</a></li>
+      <li><a href="#vending">Smile Machine</a></li>
       <li><a href="#art">Art</a></li>
       <li><a href="#wishjar">Wish Jar</a></li>
       <li><a href="#puzzle">Puzzle</a></li>
@@ -938,6 +939,226 @@
     <button id="playlistNext" style="display:none">&#8250;</button>
     <div id="vinyl" style="display:none"></div>
   </section>
+
+  <style>
+    /* ===== VENDING MACHINE 3.0: HEART-PATH DELIVERY ===== */
+    #vending{
+      background:linear-gradient(135deg,#FDF6EE 0%,#F5E6D3 100%);
+      text-align:center;padding:80px 20px;
+      --vm3-heart-stroke:#C47A3A;--vm3-heart-glow:rgba(255,143,171,.55);
+    }
+    body.dark-theme #vending{
+      background:linear-gradient(160deg,#1B140E 0%,#241A11 55%,#2A1D13 100%);
+      --vm3-heart-stroke:#F0C98A;--vm3-heart-glow:rgba(240,201,138,.5);
+    }
+
+    .vm3-stage{
+      position:relative;display:flex;align-items:center;justify-content:center;
+      gap:40px;max-width:1100px;margin:0 auto;flex-wrap:wrap;min-height:420px;
+    }
+    .vm3-flight-layer{position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:6}
+    .vm3-flight-layer svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+    .vm3-heart-path{
+      fill:none;stroke:var(--vm3-heart-stroke);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;
+      filter:drop-shadow(0 2px 6px rgba(139,69,19,.25));
+    }
+    .vm3-heart-path.vm3-signal{
+      animation:vm3HeartPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes vm3HeartPulse{
+      0%,100%{stroke-width:3.5;filter:drop-shadow(0 2px 6px rgba(139,69,19,.25)) drop-shadow(0 0 0px var(--vm3-heart-glow))}
+      50%{stroke-width:5;filter:drop-shadow(0 2px 10px rgba(139,69,19,.3)) drop-shadow(0 0 18px var(--vm3-heart-glow))}
+    }
+    .vm3-token{
+      position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;
+      background:radial-gradient(circle at 35% 30%, #fff, #FFD3E0 55%, #F582A8 100%);
+      box-shadow:0 6px 16px rgba(139,69,19,.4), 0 0 16px rgba(255,183,197,.6), inset 0 2px 4px rgba(255,255,255,.7);
+      display:flex;align-items:center;justify-content:center;font-size:1rem;
+      transform:translate(-50%,-50%);
+    }
+
+    .vm3-col{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;box-sizing:border-box}
+    .vm3-left{flex:0 0 260px;width:260px}
+    .vm3-right{flex:0 0 340px;width:340px;min-height:340px}
+
+    /* ---- MACHINE (left) ---- */
+    .vm3-machine{position:relative;width:220px;margin:0 auto;user-select:none}
+    .vm3-cap{display:flex;justify-content:center;position:relative;z-index:3}
+    .vm3-cap span{
+      width:24px;height:16px;margin:0 -4px;border-radius:50% 50% 0 0;
+      background:linear-gradient(160deg,#FFEFC2,#E8A855 55%,#9C6B24 100%);
+      box-shadow:0 2px 5px rgba(139,69,19,.35);
+    }
+    .vm3-dome{
+      position:relative;width:100%;height:140px;border-radius:50% 50% 12px 12px;margin-top:-2px;
+      background:radial-gradient(circle at 35% 25%, rgba(255,255,255,.88), rgba(255,240,248,.35) 45%, rgba(255,183,197,.18) 100%);
+      border:3px solid rgba(255,255,255,.75);
+      box-shadow:0 10px 28px rgba(139,69,19,.18), inset 0 0 28px rgba(255,255,255,.4);
+      overflow:hidden;
+    }
+    .vm3-dome-shine{
+      position:absolute;top:8px;left:20px;width:32px;height:78%;
+      background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,0));
+      border-radius:50%;transform:rotate(-8deg);pointer-events:none;
+    }
+    .vm3-capsules{position:absolute;inset:0}
+    .vm3-capsule-float{
+      position:absolute;font-size:1.4rem;
+      filter:drop-shadow(0 3px 6px rgba(139,69,19,.25));
+      animation-name:vm3Float;animation-timing-function:ease-in-out;animation-iteration-count:infinite;
+    }
+    .vm3-capsules.vm3-shake .vm3-capsule-float{animation-name:vm3Shake}
+    @keyframes vm3Float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(4deg)}}
+    @keyframes vm3Shake{
+      0%,100%{transform:translate(0,0) rotate(0)}
+      20%{transform:translate(-4px,2px) rotate(-8deg)}
+      40%{transform:translate(4px,-3px) rotate(8deg)}
+      60%{transform:translate(-3px,3px) rotate(-6deg)}
+      80%{transform:translate(3px,-2px) rotate(6deg)}
+    }
+    .vm3-body{
+      position:relative;width:100%;background:linear-gradient(160deg,#FFD3E0,#F5A9C0 60%,#EE8FAE);
+      border-radius:16px;padding:16px 14px 24px;margin-top:-6px;
+      box-shadow:0 12px 26px rgba(139,69,19,.2), inset 0 3px 6px rgba(255,255,255,.35);
+      border:2px solid rgba(255,255,255,.4);
+    }
+    .vm3-label{font-family:'Pacifico',cursive;color:#8B4513;font-size:1rem;margin:6px 0 14px;text-shadow:0 1px 2px rgba(255,255,255,.6)}
+    .vm3-dial-wrap{display:flex;justify-content:center;margin-bottom:10px}
+    .vm3-dial{
+      width:56px;height:56px;border-radius:50%;
+      background:radial-gradient(circle at 35% 30%, #FFEFC2, #E8A855 55%, #9C6B24 100%);
+      box-shadow:0 6px 14px rgba(139,69,19,.4), inset 0 2px 4px rgba(255,255,255,.55);
+      cursor:pointer;position:relative;transition:transform .8s cubic-bezier(.34,1.2,.4,1);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .vm3-dial:active{transform:scale(.94)}
+    .vm3-dial.vm3-spin{transform:rotate(360deg)}
+    .vm3-dial-grip{width:8px;height:22px;background:#6B3A2A;border-radius:4px;box-shadow:0 0 0 2px rgba(255,255,255,.3)}
+    .vm3-chute{
+      width:74px;height:26px;margin:0 auto;position:relative;perspective:220px;
+      background:#8B4513;border-radius:6px 6px 4px 4px;box-shadow:inset 0 4px 8px rgba(0,0,0,.35);
+    }
+    .vm3-chute-door{
+      position:absolute;left:50%;top:2px;transform:translateX(-50%);
+      width:48px;height:12px;border-radius:3px;
+      background:linear-gradient(160deg,#FFEFC2,#E8A855 60%,#9C6B24 100%);
+      box-shadow:0 2px 4px rgba(0,0,0,.25);
+      transform-origin:top center;transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+      z-index:3;
+    }
+    .vm3-chute-door.vm3-flap-open{transform:translateX(-50%) rotateX(-115deg)}
+    .vm3-base{width:112%;margin-left:-6%;height:16px;border-radius:10px;margin-top:6px;background:linear-gradient(180deg,#C47A3A,#8B4513);box-shadow:0 10px 20px rgba(139,69,19,.35)}
+    .vm3-hint{margin-top:16px;color:var(--text-mid);font-size:.86rem;font-weight:700;min-height:20px}
+
+    /* ---- HEART DESTINATION (right) ---- */
+    .vm3-heart-hit{
+      position:absolute;background:transparent;border:none;padding:0;margin:0;
+      cursor:default;pointer-events:none;
+    }
+    .vm3-heart-hit.vm3-ready{cursor:pointer;pointer-events:all}
+    .vm3-heart-fill{
+      position:absolute;opacity:0;transform:scale(.85);pointer-events:none;
+      transition:opacity .5s ease, transform .5s cubic-bezier(.34,1.56,.64,1);
+      display:flex;align-items:center;justify-content:center;padding:26px 22px 10px;
+      box-sizing:border-box;
+    }
+    .vm3-heart-fill.vm3-active{opacity:1;transform:scale(1)}
+    .vm3-heart-fill-inner{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;
+    }
+    .vm3-heart-fill-quote{
+      font-family:'Caveat',cursive;font-style:italic;font-size:1.15rem;line-height:1.5;color:#6B3A2A;
+      max-width:190px;
+    }
+    .vm3-heart-fill-sign{font-family:'Pacifico',cursive;font-size:.85rem;color:#C47A3A}
+    body.dark-theme .vm3-heart-fill-quote{color:#3D2314}
+    body.dark-theme .vm3-heart-fill-sign{color:#6B3A2A}
+
+    .vm3-caption{
+      margin-top:14px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:.86rem;color:#8B4513;
+      opacity:0;transition:opacity .5s ease;text-align:center;
+    }
+    .vm3-caption.vm3-show{opacity:1;animation:vm3CaptionPulse 1.6s ease-in-out infinite}
+    @keyframes vm3CaptionPulse{0%,100%{opacity:1}50%{opacity:.55}}
+
+    .vm3-reroll-btn{
+      margin-top:16px;border:none;border-radius:50px;padding:10px 26px;
+      font-family:'Quicksand',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;color:#fff;
+      background:linear-gradient(135deg,#D4956A,#8B4513);box-shadow:0 8px 20px rgba(139,69,19,.32);
+      transition:transform .2s ease, opacity .3s ease;opacity:0;pointer-events:none;
+    }
+    .vm3-reroll-btn.vm3-show{opacity:1;pointer-events:all}
+    .vm3-reroll-btn:hover{transform:translateY(-2px)}
+    .vm3-reroll-btn:active{transform:scale(.95)}
+
+    body.dark-theme .vm3-hint,
+    body.dark-theme .vm3-caption{color:#C9AF92}
+    body.dark-theme .vm3-label{color:#F0C98A}
+    body.dark-theme .vm3-dome{background:radial-gradient(circle at 35% 25%, rgba(255,255,255,.18), rgba(255,183,197,.1) 100%);border-color:rgba(232,168,85,.35)}
+    body.dark-theme .vm3-body{background:linear-gradient(160deg,#4A2E38,#3A2530 60%,#33212B);border-color:rgba(232,168,85,.3)}
+    body.dark-theme .vm3-base{background:linear-gradient(180deg,#8B6A3A,#5C4020)}
+    body.dark-theme .vm3-heart-fill{background:radial-gradient(circle at 50% 35%, #FBEFDB, #F0D9B5 70%, #E8C48A 100%) !important}
+
+    @media (max-width:900px){
+      .vm3-stage{flex-direction:column;gap:56px;min-height:0}
+      .vm3-left,.vm3-right{width:100%;max-width:340px}
+      .vm3-right{min-height:300px}
+    }
+    @media (max-width:480px){
+      .vm3-machine{width:190px}
+      .vm3-dome{height:120px}
+    }
+  </style>
+
+
+  <section id="vending">
+    <h2 class="section-title reveal">Reasons to Smile 🎀</h2>
+    <p class="section-sub reveal">Turn the dial and watch it draw a heart, just for you ✨</p>
+
+    <div class="vm3-stage" id="vm3Stage">
+      <div class="vm3-flight-layer" id="vm3FlightLayer" aria-hidden="true">
+        <svg id="vm3Svg"><path class="vm3-heart-path" id="vm3HeartPath" d=""></path></svg>
+      </div>
+
+      <div class="vm3-col vm3-left reveal from-left">
+        <div class="vm3-machine">
+          <div class="vm3-cap">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="vm3-dome">
+            <div class="vm3-dome-shine"></div>
+            <div class="vm3-capsules" id="vm3Capsules"></div>
+          </div>
+          <div class="vm3-body">
+            <div class="vm3-dial-wrap">
+              <div class="vm3-dial" id="vm3Dial" role="button" tabindex="0" aria-label="Turn the brass crank">
+                <div class="vm3-dial-grip"></div>
+              </div>
+            </div>
+            <div class="vm3-label">Reasons to Smile</div>
+            <div class="vm3-chute">
+              <div class="vm3-chute-door" id="vm3ChuteDoor"></div>
+            </div>
+          </div>
+          <div class="vm3-base"></div>
+        </div>
+        <p class="vm3-hint" id="vm3Hint">👉 Turn the crank</p>
+      </div>
+
+      <div class="vm3-col vm3-right reveal from-right">
+        <button class="vm3-heart-hit" id="vm3HeartHit" aria-label="Tap the heart to open your message"></button>
+        <div class="vm3-heart-fill" id="vm3HeartFill">
+          <div class="vm3-heart-fill-inner">
+            <p class="vm3-heart-fill-quote" id="vm3HeartQuote"></p>
+            <span class="vm3-heart-fill-sign">— With love 💕</span>
+          </div>
+        </div>
+        <p class="vm3-caption" id="vm3Caption">💗 Tap the heart to open!</p>
+        <button class="vm3-reroll-btn" id="vm3RerollBtn">Roll Again ↻</button>
+      </div>
+    </div>
+  </section>
+
 
   <section id="art">
     <h2 class="section-title reveal">Art Showcase 🎨</h2>
@@ -2041,6 +2262,274 @@
       btn.addEventListener('click', checkPassword);
       input.addEventListener('keypress', function (e) { if (e.key === 'Enter') checkPassword(); });
     })();
+
+    // ===== VENDING MACHINE 3.0: HEART-PATH DELIVERY =====
+    (function(){
+      const stage = document.getElementById('vm3Stage');
+      const flightLayer = document.getElementById('vm3FlightLayer');
+      const svg = document.getElementById('vm3Svg');
+      const heartPath = document.getElementById('vm3HeartPath');
+      const dial = document.getElementById('vm3Dial');
+      const capsulesLayer = document.getElementById('vm3Capsules');
+      const chuteDoor = document.getElementById('vm3ChuteDoor');
+      const hint = document.getElementById('vm3Hint');
+      const rightCol = stage ? stage.querySelector('.vm3-right') : null;
+      const heartHit = document.getElementById('vm3HeartHit');
+      const heartFill = document.getElementById('vm3HeartFill');
+      const heartQuote = document.getElementById('vm3HeartQuote');
+      const caption = document.getElementById('vm3Caption');
+      const rerollBtn = document.getElementById('vm3RerollBtn');
+
+      if(!stage || !flightLayer || !svg || !heartPath || !dial || !capsulesLayer || !chuteDoor || !rightCol || !heartHit || !heartFill || !heartQuote || !caption || !rerollBtn) return;
+
+      const domeEmojis = ['🌸','💊','☕','✨','🩺'];
+      const tokenEmojis = ['💊','🌸','✨','🩺','🎀'];
+      const notes = [
+        "One day soon a stethoscope round your neck will feel as normal as your dupatta. Proud of you already, Doctor.",
+        "Whatever chapter is kicking your butt right now — it's temporary. Chai, revise, repeat. You've got this.",
+        "You've survived every single exam so far. That's a 100% success rate. Trust the process, Munni.",
+        "Reminder: you don't have to be perfect today. You just have to keep showing up. You always do.",
+        "Somewhere out there, a future patient is lucky they haven't met you yet — but they'll be in good hands.",
+        "Anatomy today, someone's life saved tomorrow. Every late night is worth it, even when it doesn't feel like it.",
+        "You didn't choose the easy path. You chose the one that matters. That says everything about your heart.",
+        "Small joys count too — this little heart, this silly website, this random day. Let yourself smile today.",
+        "Every topper started exactly where you are. Keep going — the white coat is closer than it feels.",
+        "On your hardest days, remember: someone out here is genuinely, quietly proud of everything you're becoming."
+      ];
+
+      // scatter floating capsules inside the dome
+      for(let i=0;i<6;i++){
+        const s = document.createElement('span');
+        s.className = 'vm3-capsule-float';
+        s.textContent = domeEmojis[Math.floor(Math.random()*domeEmojis.length)];
+        s.style.left = (10 + Math.random()*75) + '%';
+        s.style.top = (8 + Math.random()*55) + '%';
+        s.style.animationDuration = (2.2 + Math.random()*1.8) + 's';
+        s.style.animationDelay = (-Math.random()*3) + 's';
+        capsulesLayer.appendChild(s);
+      }
+
+      let busy = false;
+
+      function easeInOutCubic(t){
+        return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+      }
+
+      // classic parametric heart curve, sampled and mapped to stage pixel space
+      function heartLocalPoint(t){
+        const x = 16 * Math.pow(Math.sin(t), 3);
+        const yMath = 13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
+        return { x: x, y: -yMath };
+      }
+
+      function buildHeartGeometry(centerX, centerY, targetWidth, targetHeight, samples){
+        const raw = [];
+        for(let i=0;i<=samples;i++){
+          const t = (i/samples) * Math.PI * 2;
+          raw.push(heartLocalPoint(t));
+        }
+        let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+        raw.forEach(p=>{
+          if(p.x<minX)minX=p.x; if(p.x>maxX)maxX=p.x;
+          if(p.y<minY)minY=p.y; if(p.y>maxY)maxY=p.y;
+        });
+        const scaleX = targetWidth / (maxX-minX);
+        const scaleY = targetHeight / (maxY-minY);
+        const midX = (minX+maxX)/2;
+        const midY = (minY+maxY)/2;
+
+        const points = raw.map(p=>({
+          x: centerX + (p.x - midX) * scaleX,
+          y: centerY + (p.y - midY) * scaleY
+        }));
+
+        let pMinX=Infinity,pMaxX=-Infinity,pMinY=Infinity,pMaxY=-Infinity;
+        points.forEach(p=>{
+          if(p.x<pMinX)pMinX=p.x; if(p.x>pMaxX)pMaxX=p.x;
+          if(p.y<pMinY)pMinY=p.y; if(p.y>pMaxY)pMaxY=p.y;
+        });
+
+        return { points, bbox:{minX:pMinX,maxX:pMaxX,minY:pMinY,maxY:pMaxY} };
+      }
+
+      function pointAtProgress(points, progress){
+        // progress in [0,1] maps to the sampled point array (same sampling used for the drawn path)
+        const idx = progress * (points.length - 1);
+        const i0 = Math.floor(idx);
+        const i1 = Math.min(points.length - 1, i0 + 1);
+        const frac = idx - i0;
+        const p0 = points[i0], p1 = points[i1];
+        return { x: p0.x + (p1.x - p0.x)*frac, y: p0.y + (p1.y - p0.y)*frac };
+      }
+
+      function turnCrank(){
+        if(busy) return;
+        if(heartHit.classList.contains('vm3-ready') || heartFill.classList.contains('vm3-active')) return;
+        busy = true;
+
+        dial.classList.add('vm3-spin');
+        capsulesLayer.classList.add('vm3-shake');
+        chuteDoor.classList.add('vm3-flap-open');
+        hint.textContent = '🔄 Dispensing...';
+
+        setTimeout(()=>{
+          capsulesLayer.classList.remove('vm3-shake');
+          dial.classList.remove('vm3-spin');
+          startDelivery();
+        }, 500);
+
+        setTimeout(()=>{
+          chuteDoor.classList.remove('vm3-flap-open');
+        }, 950);
+      }
+
+      function startDelivery(){
+        const stageRect = stage.getBoundingClientRect();
+        const doorRect = chuteDoor.getBoundingClientRect();
+        const rightRect = rightCol.getBoundingClientRect();
+
+        const startX = doorRect.left + doorRect.width/2 - stageRect.left;
+        const startY = doorRect.top + doorRect.height/2 - stageRect.top;
+
+        const heartCenterX = rightRect.left + rightRect.width/2 - stageRect.left;
+        const heartCenterY = rightRect.top + 92 - stageRect.top;
+
+        const geo = buildHeartGeometry(heartCenterX, heartCenterY, 160, 150, 90);
+        const heartPoints = geo.points;
+        const bbox = geo.bbox;
+
+        // build & size the hit target + fill layer over the heart's bounding box
+        heartHit.style.left = bbox.minX + 'px';
+        heartHit.style.top = bbox.minY + 'px';
+        heartHit.style.width = (bbox.maxX - bbox.minX) + 'px';
+        heartHit.style.height = (bbox.maxY - bbox.minY) + 'px';
+
+        heartFill.style.left = bbox.minX + 'px';
+        heartFill.style.top = bbox.minY + 'px';
+        heartFill.style.width = (bbox.maxX - bbox.minX) + 'px';
+        heartFill.style.height = (bbox.maxY - bbox.minY) + 'px';
+        const clipPoints = heartPoints.map(p => `${p.x - bbox.minX}px ${p.y - bbox.minY}px`).join(',');
+        heartFill.style.clipPath = `polygon(${clipPoints})`;
+        heartFill.style.background = 'radial-gradient(circle at 50% 35%, #FFF9F0, #FFD3E0 65%, #F582A8 100%)';
+
+        // draw path 'd' in stage-space for the visible trail
+        const d = 'M ' + heartPoints.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' L ') + ' Z';
+        heartPath.setAttribute('d', d);
+        heartPath.classList.remove('vm3-signal');
+        const totalLength = heartPath.getTotalLength();
+        heartPath.style.strokeDasharray = totalLength;
+        heartPath.style.strokeDashoffset = totalLength;
+
+        const notchPoint = heartPoints[0];
+
+        // ---- Phase 1: quick approach flight from chute to the heart's top notch ----
+        const controlX = (startX + notchPoint.x) / 2;
+        const controlY = Math.min(startY, notchPoint.y) - 90;
+
+        const token = document.createElement('div');
+        token.className = 'vm3-token';
+        token.textContent = tokenEmojis[Math.floor(Math.random()*tokenEmojis.length)];
+        token.style.left = startX + 'px';
+        token.style.top = startY + 'px';
+        flightLayer.appendChild(token);
+
+        const approachDuration = 1000;
+        let approachStart = null;
+
+        function approachFrame(ts){
+          if(approachStart === null) approachStart = ts;
+          const rawT = Math.min(1, (ts - approachStart) / approachDuration);
+          const t = easeInOutCubic(rawT);
+          const x = (1-t)*(1-t)*startX + 2*(1-t)*t*controlX + t*t*notchPoint.x;
+          const y = (1-t)*(1-t)*startY + 2*(1-t)*t*controlY + t*t*notchPoint.y;
+          token.style.left = x + 'px';
+          token.style.top = y + 'px';
+          token.style.transform = `translate(-50%,-50%) rotate(${rawT*180}deg)`;
+
+          if(rawT < 1){
+            requestAnimationFrame(approachFrame);
+          } else {
+            traceHeart(token, heartPoints, totalLength);
+          }
+        }
+        requestAnimationFrame(approachFrame);
+      }
+
+      // ---- Phase 2: slow trace of the full heart outline, drawing it in as the token travels ----
+      function traceHeart(token, heartPoints, totalLength){
+        const traceDuration = 3400; // slow, deliberate draw
+        let traceStart = null;
+
+        function traceFrame(ts){
+          if(traceStart === null) traceStart = ts;
+          const rawT = Math.min(1, (ts - traceStart) / traceDuration);
+
+          const pos = pointAtProgress(heartPoints, rawT);
+          token.style.left = pos.x + 'px';
+          token.style.top = pos.y + 'px';
+          token.style.transform = `translate(-50%,-50%) rotate(${180 + rawT*360}deg) scale(${1 - rawT*0.2})`;
+
+          heartPath.style.strokeDashoffset = String(totalLength * (1 - rawT));
+
+          if(rawT < 1){
+            requestAnimationFrame(traceFrame);
+          } else {
+            token.remove();
+            onHeartComplete();
+          }
+        }
+        requestAnimationFrame(traceFrame);
+      }
+
+      function onHeartComplete(){
+        heartPath.classList.add('vm3-signal');
+        heartHit.classList.add('vm3-ready');
+        caption.classList.add('vm3-show');
+        hint.textContent = '💗 Your heart is ready!';
+        busy = false;
+      }
+
+      function openHeart(){
+        if(!heartHit.classList.contains('vm3-ready') || heartFill.classList.contains('vm3-active')) return;
+        heartPath.classList.remove('vm3-signal');
+        caption.classList.remove('vm3-show');
+        heartHit.classList.remove('vm3-ready');
+
+        const note = notes[Math.floor(Math.random()*notes.length)];
+        heartQuote.textContent = note;
+        heartFill.classList.add('vm3-active');
+        rerollBtn.classList.add('vm3-show');
+        hint.textContent = '💌 Your message has arrived';
+      }
+
+      function resetMachine(){
+        heartFill.classList.remove('vm3-active');
+        heartHit.classList.remove('vm3-ready');
+        heartPath.classList.remove('vm3-signal');
+        heartPath.style.strokeDasharray = '';
+        heartPath.style.strokeDashoffset = '';
+        heartPath.setAttribute('d','');
+        caption.classList.remove('vm3-show');
+        rerollBtn.classList.remove('vm3-show');
+        heartQuote.textContent = '';
+        hint.textContent = '👉 Turn the crank';
+        busy = false;
+      }
+
+      dial.addEventListener('click', turnCrank);
+      dial.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); turnCrank(); }
+      });
+
+      heartHit.addEventListener('click', openHeart);
+      heartHit.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openHeart(); }
+      });
+
+      rerollBtn.addEventListener('click', resetMachine);
+    })();
+
+
 
     // ===== NEW ADDED SCRIPTS FOR MINIGAMES & SURPRISES =====
     const CONFIG = {
