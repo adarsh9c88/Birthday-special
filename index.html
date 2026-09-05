@@ -2367,8 +2367,7 @@
 
       let savedTheme = null;
       try { savedTheme = localStorage.getItem('MunniTheme'); } catch (e) {}
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      applyTheme(savedTheme ? savedTheme === 'dark' : !!prefersDark);
+      applyTheme(savedTheme === 'dark');
 
       btn.addEventListener('click', () => {
         const goingDark = !document.body.classList.contains('dark-theme');
